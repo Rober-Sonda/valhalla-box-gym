@@ -11,7 +11,7 @@ const AboutUs = () => {
           <p>
             Valhalla Box Gym nació de la pasión por el entrenamiento real. Cansados de los 
             gimnasios comerciales donde pasas desapercibido entre máquinas de poleas, 
-            decidimos construir un verdadero "Salón de los Caídos". Un lugar donde puedes 
+            decidimos construir un verdadero "Bastión del Norte". Un lugar donde puedes 
             gritar al levantar pesado, donde soltar barras no es un delito, y donde 
             todos conocen tu nombre.
           </p>
