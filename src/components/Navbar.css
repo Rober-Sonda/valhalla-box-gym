@@ -62,7 +62,21 @@
 .logo-text {
   font-family: var(--font-heading);
   font-size: 1.5rem;
+  font-weight: 700;
   letter-spacing: 2px;
+  transition: color 0.3s ease;
+}
+
+.logo-text .text-gold {
+  transition: color 0.3s ease;
+}
+
+.logo-container:hover .logo-text {
+  color: var(--accent-gold);
+}
+
+.logo-container:hover .logo-text .text-gold {
+  color: var(--text-light);
 }
 
 .nav-links {
