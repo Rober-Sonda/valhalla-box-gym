@@ -13,25 +13,29 @@ const Armeria = () => {
       id: 1,
       name: 'Camiseta Berserker Oversize',
       price: '$35.00',
-      tag: 'Más Vendido'
+      tag: 'Más Vendido',
+      image: '/assets/images/products/tshirt.png'
     },
     {
       id: 2,
-      name: 'Muñequeras Valhalla Pro',
-      price: '$20.00',
-      tag: 'Equipamiento'
+      name: 'Musculosa Stringer Valhalla',
+      price: '$30.00',
+      tag: 'Entrenamiento',
+      image: '/assets/images/products/tanktop.png'
     },
     {
       id: 3,
-      name: 'Manto de Odín (Hoodie)',
-      price: '$55.00',
-      tag: 'Invierno'
+      name: 'Pantalón Corto Táctico',
+      price: '$40.00',
+      tag: 'Nuevo',
+      image: '/assets/images/products/shorts.png'
     },
     {
       id: 4,
-      name: 'Calleras Tácticas',
-      price: '$25.00',
-      tag: 'Equipamiento'
+      name: 'Jogger de Fuerza (Pantalón Largo)',
+      price: '$55.00',
+      tag: 'Invierno',
+      image: '/assets/images/products/joggers.png'
     }
   ];
 
@@ -52,8 +56,8 @@ const Armeria = () => {
         <div className="armeria-grid">
           {products.map((prod) => (
             <div className="product-card" key={prod.id}>
-              <div className="product-image-placeholder">
-                <ShoppingBag size={48} className="product-icon" />
+              <div className="product-image-container">
+                <img src={prod.image} alt={prod.name} className="product-image" />
               </div>
               <div className="product-info">
                 <span className="product-tag">{prod.tag}</span>
