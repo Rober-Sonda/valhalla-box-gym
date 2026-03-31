@@ -24,7 +24,7 @@ const Services = () => {
     {
       id: 4,
       title: 'MOBILITY',
-      image: 'https://images.unsplash.com/photo-1552824672-019623e60dd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      image: '/assets/images/mobility.png',
       description: 'recovery & yoga'
     }
   ];
