@@ -37,7 +37,7 @@ const AboutUs = () => {
             <div className="trainer-card">
               <div 
                 className="trainer-img" 
-                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1594381898411-846e7d193883?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')` }}
+                style={{ backgroundImage: `url('/assets/images/lautaro.png')` }}
               ></div>
               <div className="trainer-info">
                 <h3>LAUTARO</h3>
@@ -49,7 +49,7 @@ const AboutUs = () => {
             <div className="trainer-card">
               <div 
                 className="trainer-img" 
-                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')` }}
+                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop')` }}
               ></div>
               <div className="trainer-info">
                 <h3>SANTINO</h3>
