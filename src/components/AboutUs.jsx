@@ -42,7 +42,7 @@ const AboutUs = () => {
               <div className="trainer-info">
                 <h3>LAUTARO</h3>
                 <p className="specialty">Functional & Agility</p>
-                <p className="quote">"La velocidad gana batallas, la resistencia gana la guerra. Forja un cuerpo que no sepa retroceder."</p>
+                <p className="quote">"La motivación es temporal. La disciplina te hace leyenda."</p>
               </div>
             </div>
 
