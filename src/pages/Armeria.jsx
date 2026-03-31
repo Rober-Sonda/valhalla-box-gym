@@ -17,28 +17,28 @@ const Armeria = () => {
     {
       id: 1,
       name: 'Camiseta Berserker Oversize',
-      price: '35.00',
+      price: '15000',
       tag: 'Más Vendido',
       image: '/assets/images/products/tshirt.png'
     },
     {
       id: 2,
       name: 'Musculosa Stringer Valhalla',
-      price: '30.00',
+      price: '14000',
       tag: 'Entrenamiento',
       image: '/assets/images/products/tanktop.png'
     },
     {
       id: 3,
       name: 'Pantalón Corto Táctico',
-      price: '40.00',
+      price: '25000',
       tag: 'Nuevo',
       image: '/assets/images/products/shorts.png'
     },
     {
       id: 4,
       name: 'Jogger de Fuerza (Pantalón Largo)',
-      price: '55.00',
+      price: '32000',
       tag: 'Invierno',
       image: '/assets/images/products/joggers.png'
     }
