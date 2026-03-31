@@ -56,7 +56,7 @@ const Services = () => {
 
         <div className="services-cta text-center mt-5">
           <p className="cta-text">¿Listo para entrar al Valhalla? No dejes para mañana el guerrero que puedes ser hoy.</p>
-          <button className="btn-primary">VER TARIFAS</button>
+          <a href="#pricing" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>VER TARIFAS</a>
         </div>
       </div>
     </section>
