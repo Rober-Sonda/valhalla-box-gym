@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, Dumbbell } from 'lucide-react';
 import './Navbar.css';
 
@@ -17,16 +18,16 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
-        <div className="logo-container">
+        <Link to="/" className="logo-container">
           <Dumbbell className="logo-icon" size={32} />
           <span className="logo-text">VALHALLA <span className="text-gold">BOX GYM</span></span>
-        </div>
+        </Link>
         
         <div className="nav-links desktop-only">
-          <a href="#philosophy">La Tribu</a>
-          <a href="#services">Entrenamiento</a>
-          <a href="#schedule">Horarios</a>
-          <a href="#pricing">Tarifas</a>
+          <a href="/#philosophy">La Tribu</a>
+          <a href="/#services">Entrenamiento</a>
+          <a href="/#schedule">Horarios</a>
+          <a href="/#pricing">Tarifas</a>
           <button className="btn-primary nav-btn">Únete Ahora</button>
         </div>
 
@@ -39,10 +40,10 @@ const Navbar = () => {
       
       {mobileMenuOpen && (
         <div className="mobile-menu">
-          <a href="#philosophy" onClick={() => setMobileMenuOpen(false)}>La Tribu</a>
-          <a href="#services" onClick={() => setMobileMenuOpen(false)}>Entrenamiento</a>
-          <a href="#schedule" onClick={() => setMobileMenuOpen(false)}>Horarios</a>
-          <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>Tarifas</a>
+          <a href="/#philosophy" onClick={() => setMobileMenuOpen(false)}>La Tribu</a>
+          <a href="/#services" onClick={() => setMobileMenuOpen(false)}>Entrenamiento</a>
+          <a href="/#schedule" onClick={() => setMobileMenuOpen(false)}>Horarios</a>
+          <a href="/#pricing" onClick={() => setMobileMenuOpen(false)}>Tarifas</a>
           <button className="btn-primary mobile-btn">Únete Ahora</button>
         </div>
       )}

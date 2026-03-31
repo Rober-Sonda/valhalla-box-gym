@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Hero.css';
 
 const Hero = () => {
@@ -14,7 +15,7 @@ const Hero = () => {
         </p>
         <div className="hero-actions animate-fade-in delay-200">
           <button className="btn-primary">Reserva Clase de Prueba</button>
-          <button className="btn-outline">Ver Instalaciones</button>
+          <Link to="/instalaciones" className="btn-outline">Ver Instalaciones</Link>
         </div>
       </div>
     </section>

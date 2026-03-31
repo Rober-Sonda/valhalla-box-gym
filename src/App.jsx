@@ -1,23 +1,18 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Philosophy from './components/Philosophy';
-import Services from './components/Services';
-import AboutUs from './components/AboutUs';
-import Schedule from './components/Schedule';
-import Pricing from './components/Pricing';
 import Footer from './components/Footer';
+import Home from './pages/Home';
+import Facilities from './pages/Facilities';
 
 function App() {
   return (
     <div className="app-container">
       <Navbar />
-      <Hero />
-      <Philosophy />
-      <Services />
-      <AboutUs />
-      <Schedule />
-      <Pricing />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/instalaciones" element={<Facilities />} />
+      </Routes>
       <Footer />
     </div>
   );
