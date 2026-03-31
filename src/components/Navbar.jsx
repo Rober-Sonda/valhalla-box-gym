@@ -55,6 +55,7 @@ const Navbar = () => {
           <a href="/#services">Entrenamiento</a>
           <a href="/#schedule">Horarios</a>
           <a href="/#pricing">Tarifas</a>
+          <Link to="/armeria">La Armería</Link>
           <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle Theme">
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
@@ -77,6 +78,7 @@ const Navbar = () => {
           <a href="/#services" onClick={() => setMobileMenuOpen(false)}>Entrenamiento</a>
           <a href="/#schedule" onClick={() => setMobileMenuOpen(false)}>Horarios</a>
           <a href="/#pricing" onClick={() => setMobileMenuOpen(false)}>Tarifas</a>
+          <Link to="/armeria" onClick={() => setMobileMenuOpen(false)}>La Armería</Link>
           <button className="btn-primary mobile-btn">Únete Ahora</button>
         </div>
       )}

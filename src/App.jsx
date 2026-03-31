@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Facilities from './pages/Facilities';
+import Armeria from './pages/Armeria';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/instalaciones" element={<Facilities />} />
+        <Route path="/armeria" element={<Armeria />} />
       </Routes>
       <Footer />
     </div>
