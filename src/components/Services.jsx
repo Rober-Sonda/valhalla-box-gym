@@ -5,27 +5,21 @@ const Services = () => {
   const services = [
     {
       id: 1,
-      title: 'STRIKING',
-      image: '/assets/images/striking.png',
-      description: 'boxeo & muay thai'
+      title: 'MUSCULACIÓN',
+      image: '/assets/images/strength.png',
+      description: 'fuerza y desarrollo libre'
     },
     {
       id: 2,
-      title: 'FUNCTIONAL',
+      title: 'GAP',
       image: '/assets/images/functional.png',
-      description: 'hiit & conditioning'
+      description: 'glúteos, abdomen y piernas'
     },
     {
       id: 3,
-      title: 'STRENGTH',
-      image: '/assets/images/strength.png',
-      description: 'halterofilia & powerlifting'
-    },
-    {
-      id: 4,
-      title: 'MOBILITY',
-      image: '/assets/images/mobility.png',
-      description: 'recovery & yoga'
+      title: 'KICKBOXING',
+      image: '/assets/images/striking.png',
+      description: 'combate y striking'
     }
   ];
 
@@ -33,7 +27,7 @@ const Services = () => {
     <section className="services-section" id="services">
       <div className="container">
         <div className="section-header text-center">
-          <h2>ENTRENAMIENTO <span className="text-gold">NÓRDICO</span></h2>
+          <h2>NUESTRAS <span className="text-gold">DISCIPLINAS</span></h2>
           <p className="subtitle">ELIGE TU CAMPO DE BATALLA</p>
         </div>
 

@@ -5,18 +5,28 @@ const Schedule = () => {
   const [filter, setFilter] = useState('All');
 
   const classes = [
-    { day: 'Lunes', time: '07:00 AM', name: 'FUNCTIONAL WOD', trainer: 'Erik', type: 'Functional' },
-    { day: 'Lunes', time: '18:00 PM', name: 'STRENGTH LIFT', trainer: 'Erik', type: 'Strength' },
-    { day: 'Martes', time: '08:00 AM', name: 'BOXING TACTICS', trainer: 'Ragnar', type: 'Striking' },
-    { day: 'Martes', time: '19:00 PM', name: 'MOBILITY', trainer: 'Freya', type: 'Mobility' },
-    { day: 'Miércoles', time: '07:00 AM', name: 'HIIT BURN', trainer: 'Freya', type: 'Functional' },
-    { day: 'Miércoles', time: '20:00 PM', name: 'POWERLIFTING', trainer: 'Erik', type: 'Strength' },
-    { day: 'Jueves', time: '09:00 AM', name: 'SPARRING', trainer: 'Ragnar', type: 'Striking' },
-    { day: 'Viernes', time: '18:00 PM', name: 'VALHALLA WOD (TEAM)', trainer: 'Erik', type: 'Functional' },
-    { day: 'Sábado', time: '10:00 AM', name: 'YOGA FOR LIFTERS', trainer: 'Freya', type: 'Mobility' },
+    { day: 'Lunes', time: '08:00 AM', name: 'MUSCULACIÓN', trainer: 'Lautaro', type: 'Musculación' },
+    { day: 'Lunes', time: '13:00 PM', name: 'GAP', trainer: 'Nacho', type: 'GAP' },
+    { day: 'Lunes', time: '19:00 PM', name: 'MUSCULACIÓN', trainer: 'Santino', type: 'Musculación' },
+    
+    { day: 'Martes', time: '08:00 AM', name: 'MUSCULACIÓN', trainer: 'Lautaro', type: 'Musculación' },
+    { day: 'Martes', time: '13:00 PM', name: 'GAP', trainer: 'Nacho', type: 'GAP' },
+    { day: 'Martes', time: '20:00 PM', name: 'KICKBOXING', trainer: 'Nacho', type: 'Kickboxing' },
+
+    { day: 'Miércoles', time: '08:00 AM', name: 'MUSCULACIÓN', trainer: 'Lautaro', type: 'Musculación' },
+    { day: 'Miércoles', time: '13:00 PM', name: 'GAP', trainer: 'Nacho', type: 'GAP' },
+    { day: 'Miércoles', time: '19:00 PM', name: 'MUSCULACIÓN', trainer: 'Santino', type: 'Musculación' },
+
+    { day: 'Jueves', time: '08:00 AM', name: 'MUSCULACIÓN', trainer: 'Lautaro', type: 'Musculación' },
+    { day: 'Jueves', time: '13:00 PM', name: 'GAP', trainer: 'Nacho', type: 'GAP' },
+    { day: 'Jueves', time: '20:00 PM', name: 'KICKBOXING', trainer: 'Nacho', type: 'Kickboxing' },
+
+    { day: 'Viernes', time: '08:00 AM', name: 'MUSCULACIÓN', trainer: 'Lautaro', type: 'Musculación' },
+    { day: 'Viernes', time: '13:00 PM', name: 'GAP', trainer: 'Nacho', type: 'GAP' },
+    { day: 'Viernes', time: '19:00 PM', name: 'MUSCULACIÓN', trainer: 'Santino', type: 'Musculación' },
   ];
 
-  const types = ['All', 'Functional', 'Strength', 'Striking', 'Mobility'];
+  const types = ['All', 'Musculación', 'GAP', 'Kickboxing'];
 
   const filteredClasses = filter === 'All' ? classes : classes.filter(c => c.type === filter);
 
