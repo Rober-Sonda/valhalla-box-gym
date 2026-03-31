@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ShoppingBag } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import './Armeria.css';
 
 const Armeria = () => {
+  const { addToCart } = useCart();
+  const { currentUser, setIsAuthModalOpen } = useAuth();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -12,32 +17,40 @@ const Armeria = () => {
     {
       id: 1,
       name: 'Camiseta Berserker Oversize',
-      price: '$35.00',
+      price: '35.00',
       tag: 'Más Vendido',
       image: '/assets/images/products/tshirt.png'
     },
     {
       id: 2,
       name: 'Musculosa Stringer Valhalla',
-      price: '$30.00',
+      price: '30.00',
       tag: 'Entrenamiento',
       image: '/assets/images/products/tanktop.png'
     },
     {
       id: 3,
       name: 'Pantalón Corto Táctico',
-      price: '$40.00',
+      price: '40.00',
       tag: 'Nuevo',
       image: '/assets/images/products/shorts.png'
     },
     {
       id: 4,
       name: 'Jogger de Fuerza (Pantalón Largo)',
-      price: '$55.00',
+      price: '55.00',
       tag: 'Invierno',
       image: '/assets/images/products/joggers.png'
     }
   ];
+
+  const handleAddToCart = (product) => {
+    if (!currentUser) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    addToCart({ ...product, price: parseFloat(product.price) });
+  };
 
   return (
     <div className="armeria-page">
@@ -62,8 +75,13 @@ const Armeria = () => {
               <div className="product-info">
                 <span className="product-tag">{prod.tag}</span>
                 <h3>{prod.name}</h3>
-                <p className="product-price text-gold">{prod.price}</p>
-                <button className="btn-outline product-btn">Agregar al Botín</button>
+                <p className="product-price text-gold">${prod.price}</p>
+                <button 
+                  className="btn-outline product-btn"
+                  onClick={() => handleAddToCart(prod)}
+                >
+                  Agregar al Botín
+                </button>
               </div>
             </div>
           ))}

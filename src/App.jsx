@@ -6,17 +6,24 @@ import Home from './pages/Home';
 import Facilities from './pages/Facilities';
 import Armeria from './pages/Armeria';
 
+import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
+
 function App() {
   return (
-    <div className="app-container">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/instalaciones" element={<Facilities />} />
-        <Route path="/armeria" element={<Armeria />} />
-      </Routes>
-      <Footer />
-    </div>
+    <AuthProvider>
+      <CartProvider>
+        <div className="app-container">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/instalaciones" element={<Facilities />} />
+            <Route path="/armeria" element={<Armeria />} />
+          </Routes>
+          <Footer />
+        </div>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
