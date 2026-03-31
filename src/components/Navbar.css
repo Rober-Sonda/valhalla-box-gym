@@ -10,7 +10,7 @@
 }
 
 .navbar.scrolled {
-  background-color: rgba(10, 10, 12, 0.95);
+  background-color: var(--overlay-dark);
   backdrop-filter: blur(10px);
   padding: 1rem 2rem;
   border-bottom: 1px solid var(--border-color);
@@ -75,7 +75,7 @@
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: rgba(10, 10, 12, 0.98);
+  background-color: var(--overlay-dark);
   backdrop-filter: blur(10px);
   padding: 2rem;
   display: flex;
@@ -115,6 +115,8 @@
     display: none;
   }
   .mobile-only {
-    display: block;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
   }
 }

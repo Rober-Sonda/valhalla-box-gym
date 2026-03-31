@@ -51,7 +51,7 @@ const Navbar = () => {
           <button className="btn-primary nav-btn">Únete Ahora</button>
         </div>
 
-        <div className="mobile-only" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <div className="mobile-only">
           <button onClick={toggleTheme} className="theme-toggle-btn">
             {isDark ? <Sun size={24} /> : <Moon size={24} />}
           </button>
