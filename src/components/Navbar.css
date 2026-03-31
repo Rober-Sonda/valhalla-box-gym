@@ -202,4 +202,21 @@
     gap: 1rem;
     align-items: center;
   }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+    font-size: 1.1rem;
+    letter-spacing: 1.5px;
+  }
+
+  .logo-valhalla {
+    display: block;
+  }
+
+  .logo-boxgym {
+    display: block;
+  }
 }

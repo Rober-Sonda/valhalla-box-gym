@@ -53,7 +53,10 @@ const Navbar = () => {
         <div className="navbar-container">
           <Link to="/" className="logo-container">
             <Dumbbell className="logo-icon" size={32} />
-            <span className="logo-text">VALHALLA <span className="text-gold">BOX GYM</span></span>
+            <span className="logo-text">
+              <span className="logo-valhalla">VALHALLA</span>
+              <span className="logo-boxgym text-gold">BOX GYM</span>
+            </span>
           </Link>
           
           <div className="nav-links desktop-only">
