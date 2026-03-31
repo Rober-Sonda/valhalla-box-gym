@@ -3,17 +3,31 @@
 @tailwind utilities;
 
 :root {
+  /* ========================================================== */
+  /* CAMBIA ESTOS COLORES PARA MODIFICAR EL ESTILO DE TODA LA APP */
+  --accent-gold: #c5a059; 
+  --accent-gold-hover: #e0b86a;
+  /* ========================================================== */
+
   --bg-dark: #0a0a0c;
   --bg-card: #151518;
-  --accent-gold: #c5a059;
-  --accent-gold-hover: #e0b86a;
   --accent-red: #8b0000;
   --text-light: #f0f0f0;
   --text-muted: #b0b0b0;
   --border-color: #333;
+  --overlay-dark: rgba(10,10,12,0.9);
   
   --font-heading: 'Anton', sans-serif;
   --font-body: 'Open Sans', sans-serif;
+}
+
+[data-theme="light"] {
+  --bg-dark: #f0f2f5;
+  --bg-card: #ffffff;
+  --text-light: #111827;
+  --text-muted: #4b5563;
+  --border-color: #d1d5db;
+  --overlay-dark: rgba(255,255,255,0.85);
 }
 
 * {
