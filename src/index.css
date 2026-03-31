@@ -33,10 +33,12 @@
 [data-theme="light"] {
   --bg-dark: #f0f2f5;
   --bg-card: #ffffff;
-  --text-light: #1a1a1a;
-  --text-muted: #4a4a4a;
-  --border-color: #e0e0e0;
-  --overlay-dark: rgba(255,255,255,0.95);
+  --text-light: #18181b;
+  --text-muted: #27272a;
+  --border-color: #d4d4d8;
+  --overlay-dark: rgba(255,255,255,0.98);
+  --accent-gold: #a1782e; /* Darker bronze-gold for 4.5:1 contrast against white */
+  --accent-gold-hover: #b48a3e;
 }
 
 * {
