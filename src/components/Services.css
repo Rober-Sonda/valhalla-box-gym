@@ -103,16 +103,18 @@
 .service-content h3 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
+  color: #ffffff;
 }
 
 .service-content p {
-  color: var(--text-light);
+  color: #e4e4e7;
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: 2px;
   font-size: 0.9rem;
-  opacity: 0.8;
+  opacity: 0.9;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
 }
 
 .mt-5 {
