@@ -28,7 +28,7 @@ const AboutUs = () => {
                 style={{ backgroundImage: `url('/assets/images/trainer.png')` }}
               ></div>
               <div className="trainer-info">
-                <h3>ERIK "EL OSO"</h3>
+                <h3>NACHO</h3>
                 <p className="specialty">Head Coach & Strength</p>
                 <p className="quote">"El hierro no miente. Te da exactamente lo que le entregas."</p>
               </div>
@@ -40,7 +40,7 @@ const AboutUs = () => {
                 style={{ backgroundImage: `url('https://images.unsplash.com/photo-1594381898411-846e7d193883?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')` }}
               ></div>
               <div className="trainer-info">
-                <h3>FREYA</h3>
+                <h3>LAUTARO</h3>
                 <p className="specialty">Functional & Agility</p>
                 <p className="quote">"No se trata de estar motivado todos los días, se trata de ser disciplinado."</p>
               </div>
@@ -52,7 +52,7 @@ const AboutUs = () => {
                 style={{ backgroundImage: `url('https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')` }}
               ></div>
               <div className="trainer-info">
-                <h3>RAGNAR</h3>
+                <h3>SANTINO</h3>
                 <p className="specialty">Striking Specialist</p>
                 <p className="quote">"Entrena tan duro que la vida real parezca fácil."</p>
               </div>
