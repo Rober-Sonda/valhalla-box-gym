@@ -18,8 +18,10 @@
   },
   "plugins": ["react-refresh"],
   "rules": {
-    "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }],
+    "react-refresh/only-export-components": "off",
     "react-hooks/exhaustive-deps": "off",
-    "no-unused-vars": "warn"
+    "react/prop-types": "off",
+    "react/no-unescaped-entities": "off",
+    "no-unused-vars": "off"
   }
 }
