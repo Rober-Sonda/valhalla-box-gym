@@ -47,6 +47,7 @@
   gap: 0.5rem;
   cursor: pointer;
   color: inherit;
+  margin-right: 3rem;
 }
 
 .logo-icon {
@@ -218,5 +219,6 @@
 
   .logo-boxgym {
     display: block;
+    white-space: nowrap;
   }
 }
