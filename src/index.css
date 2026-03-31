@@ -73,7 +73,7 @@ a:hover {
 
 .btn-primary {
   background-color: var(--accent-gold);
-  color: #111827;
+  color: #000000 !important;
   font-family: var(--font-heading);
   padding: 1rem 2rem;
   font-size: 1.2rem;
@@ -99,7 +99,7 @@ a:hover {
 
 .btn-primary:hover {
   background-color: var(--accent-gold-hover);
-  color: #111827;
+  color: #000000 !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(197, 160, 89, 0.4);
 }
