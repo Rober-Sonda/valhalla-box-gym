@@ -43,7 +43,7 @@ const CartDrawer = () => {
         cart.map(item => `- ${item.quantity}x ${item.name} ($${item.price}) = $${item.quantity * item.price}`).join('\n') +
         `\n\nTotal del Botín: $${cartTotal}`;
 
-      const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`;
+      const whatsappUrl = `https://wa.me/542317472432?text=${encodeURIComponent(message)}`;
       
       clearCart();
       setIsCartOpen(false);
