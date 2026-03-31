@@ -25,7 +25,7 @@ const CartDrawer = () => {
     setIsCheckingOut(true);
 
     try {
-      // 1. Guardar orden en la Base de Datos (Firestore)
+      // 1. Guardar orden en la Base de Datos (en segundo plano para evitar bloqueos)
       const order = {
         userId: currentUser.uid,
         userName: currentUser.displayName || 'Guerrero Valhalla',
@@ -36,7 +36,7 @@ const CartDrawer = () => {
         status: 'pending'
       };
 
-      await addDoc(collection(db, 'orders'), order);
+      addDoc(collection(db, 'orders'), order).catch(err => console.error("Error BD:", err));
 
       // 2. Formatear mensaje para WhatsApp al Administrador
       const message = `¡Skål! Soy ${order.userName}, y quiero forjar mi armadura con este pedido:\n\n` +
@@ -47,6 +47,7 @@ const CartDrawer = () => {
       
       clearCart();
       setIsCartOpen(false);
+      setIsCheckingOut(false);
       
       // Abrir chat con admin
       window.open(whatsappUrl, '_blank');
