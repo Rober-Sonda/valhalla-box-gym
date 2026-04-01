@@ -15,7 +15,14 @@
 }
 
 .navbar:not(.scrolled) .theme-toggle-btn,
-.navbar:not(.scrolled) .mobile-menu-btn {
+.navbar:not(.scrolled) .mobile-menu-btn,
+.navbar:not(.scrolled) .cart-toggle-btn {
+  color: #f0f0f0;
+}
+
+/* Armería Link (React Router) must match plain <a> links in all states */
+.navbar:not(.scrolled) .nav-links a,
+.navbar:not(.scrolled) .nav-links a:visited {
   color: #f0f0f0;
 }
 
@@ -29,7 +36,8 @@
 }
 
 .navbar.scrolled .theme-toggle-btn,
-.navbar.scrolled .mobile-menu-btn {
+.navbar.scrolled .mobile-menu-btn,
+.navbar.scrolled .cart-toggle-btn {
   color: var(--text-light);
 }
 
@@ -86,7 +94,8 @@
   gap: 2.5rem;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-links a:visited {
   color: inherit;
   font-weight: 600;
   text-transform: uppercase;
@@ -160,7 +169,7 @@
 .cart-toggle-btn {
   background: transparent;
   border: none;
-  color: var(--text-light);
+  color: inherit;
   cursor: pointer;
   display: flex;
   align-items: center;
