@@ -14,7 +14,7 @@ const Hero = () => {
           En Valhalla Box Gym no es solo sudor, es honor. Únete a la tribu definitiva de guerreros modernos.
         </p>
         <div className="hero-actions animate-fade-in delay-200">
-          <button className="btn-primary">Reserva Clase de Prueba</button>
+          <a href="/#pricing" className="btn-primary">TU CAMBIO COMIENZA HOY</a>
           <Link to="/instalaciones" className="btn-outline">Ver Instalaciones</Link>
         </div>
       </div>

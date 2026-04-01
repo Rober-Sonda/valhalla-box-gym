@@ -97,7 +97,7 @@ const Pricing = () => {
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`pricing-card${plan.popular ? ' popular' : ''}`}
+              className={`pricing-card plan-${plan.id}${plan.popular ? ' popular' : ''}`}
             >
               {plan.popular && <div className="popular-badge">RECOMENDADA</div>}
 
