@@ -193,9 +193,14 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
             <span>Al forjar inscripción, tu información se subirá a nuestro sistema y se generará un enlace oficial que enviaremos a nuestro WhatsApp para asentar tu base en el Bastión.</span>
           </div>
 
-          <button type="submit" className="btn-primary w-100 mt-4 d-flex-center" disabled={isUploading}>
-            {isUploading ? 'FORJANDO PASE EN LA NUBE...' : 'FORJAR INSCRIPCIÓN'}
-          </button>
+          <div className="form-actions mt-4">
+            <button type="button" className="btn-outline w-100 d-flex-center" onClick={onClose} disabled={isUploading}>
+              CANCELAR
+            </button>
+            <button type="submit" className="btn-primary w-100 d-flex-center" disabled={isUploading}>
+              {isUploading ? 'FORJANDO...' : 'FORJAR INSCRIPCIÓN'}
+            </button>
+          </div>
         </form>
       </div>
     </div>
