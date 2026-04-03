@@ -1,0 +1,159 @@
+.inscripcion-view {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  background-color: var(--bg-dark);
+}
+
+.inscripcion-card {
+  background-color: #1a1a1c;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 700px;
+  padding: 3rem 2rem;
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative inner border */
+.inscripcion-card::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.inscripcion-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.inscripcion-header .title {
+  color: var(--gold);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.inscripcion-header .subtitle {
+  color: #ccc;
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.5), transparent);
+  margin: 1rem 0;
+}
+
+.plan-details {
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  border-left: 3px solid var(--gold);
+}
+
+.plan-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.plan-price {
+  font-size: 1.25rem;
+  color: #fff;
+  margin: 0;
+}
+
+.user-details {
+  margin-top: 2.5rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #333;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .data-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.data-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.data-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-label {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.data-value {
+  font-size: 1.1rem;
+  color: #eee;
+}
+
+.inscripcion-footer {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.footer-text {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-date {
+  color: #aaa;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Loading & Error views */
+.loading-view, .error-view {
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
