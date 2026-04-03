@@ -63,10 +63,8 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
         createdAt: serverTimestamp()
       };
 
-      // Guardar en 2do plano en vez de usar await para no bloquear el popup
-      setDoc(newDocRef, inscriptionData).catch(err => {
-        console.error("Error BD:", err);
-      });
+      // Guardar con await para asegurar que los datos existan antes de navegar
+      await setDoc(newDocRef, inscriptionData);
 
       // Crear URL dinámica
       const inscriptionUrl = `${window.location.origin}/inscripcion/${docId}`;

@@ -15,16 +15,29 @@ const InscripcionView = () => {
     const fetchInscripcion = async () => {
       try {
         const docRef = doc(db, 'inscriptions', id);
-        const docSnap = await getDoc(docRef);
+        
+        // Timeout preventivo si Firebase se queda pensando (offline / adblocker)
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('timeout')), 10000)
+        );
+        
+        const docSnap = await Promise.race([
+          getDoc(docRef),
+          timeoutPromise
+        ]);
 
         if (docSnap.exists()) {
           setData(docSnap.data());
         } else {
-          setError('El pase de inscripción no se ha encontrado en nuestros registros.');
+          setError('El pase de inscripción no se ha encontrado. Es posible que el proceso se haya interrumpido antes de guardarse.');
         }
       } catch (err) {
         console.error("Error fetching doc:", err);
-        setError('Ocurrió un error al buscar el pase. Intenta nuevamente.');
+        if (err.message === 'timeout') {
+          setError('La conexión con nuestra base de datos tardó demasiado. Verifica tu conexión o intenta desactivar bloqueadores de anuncios.');
+        } else {
+          setError('Ocurrió un error al buscar el pase. Es posible que falten permisos en la Base de Datos.');
+        }
       } finally {
         setLoading(false);
       }
