@@ -33,63 +33,76 @@
   border-color: var(--accent-gold);
 }
 
-.schedule-table-container {
-  overflow-x: auto;
+.schedule-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.class-card {
+  flex: 1 1 300px;
+  max-width: 400px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
+  padding: 2rem 1.5rem;
+  border-radius: 4px;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.schedule-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
+.class-card:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
-.schedule-table th, 
-.schedule-table td {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.schedule-table th {
-  font-family: var(--font-heading);
-  letter-spacing: 1px;
+.class-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
   color: var(--text-light);
-  text-transform: uppercase;
-  background-color: var(--bg-dark);
 }
 
-.schedule-table tbody tr:hover {
-  background-color: rgba(197, 160, 89, 0.05);
+.font-heading {
+  font-family: var(--font-heading);
 }
 
-.schedule-table tbody tr:last-child td {
-  border-bottom: none;
+.text-2xl {
+  font-size: 1.8rem;
 }
 
-.font-bold {
-  font-weight: 700;
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .book-btn {
   background: transparent;
   color: var(--accent-gold);
   border: 1px solid var(--accent-gold);
-  padding: 0.5rem 1rem;
+  padding: 0.8rem 1rem;
   font-family: var(--font-heading);
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-top: auto;
 }
 
 .book-btn:hover {
   background: var(--accent-gold);
   color: var(--bg-dark);
-}
-
-@media (max-width: 768px) {
-  .schedule-table th, 
-  .schedule-table td {
-    padding: 1rem;
-    font-size: 0.9rem;
-  }
 }

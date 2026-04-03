@@ -1,0 +1,57 @@
+.plan-modal-content {
+  max-width: 550px !important; /* Más grande que el auth modal para agrupar más data */
+  padding: 2.5rem;
+}
+
+.plan-form {
+  gap: 1rem !important;
+}
+
+.form-group-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.flex-fill {
+  flex: 1;
+}
+
+.disclaimer-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: rgba(197, 160, 89, 0.08);
+  border-left: 3px solid var(--accent-gold);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.disclaimer-info span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+}
+
+.d-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+/* Response móvil */
+@media (max-width: 600px) {
+  .form-group-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

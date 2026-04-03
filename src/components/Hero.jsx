@@ -10,8 +10,8 @@ const Hero = () => {
         <h1 className="hero-title animate-fade-in">
           FORJA TU <span className="text-gold">LEYENDA</span>.<br/>ENTRENA COMO UN DIOS.
         </h1>
-        <p className="hero-subtitle animate-fade-in delay-100">
-          En Valhalla Box Gym no es solo sudor, es honor. Únete a la tribu definitiva de guerreros.
+        <p className="hero-subtitle mb-8 animate-fade-in delay-200">
+          En Valhalla Box Gym no es solo sudor, es honor. Únete a nuestra tribu de guerreros.
         </p>
         <div className="hero-actions animate-fade-in delay-200">
           <a href="/#pricing" className="btn-primary">TU CAMBIO COMIENZA HOY</a>

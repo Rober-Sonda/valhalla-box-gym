@@ -12,11 +12,17 @@ const Services = () => {
     {
       id: 2,
       title: 'GAP',
-      image: '/assets/images/functional.png',
+      image: '/assets/images/gap.png',
       description: 'glúteos, abdomen y piernas'
     },
     {
       id: 3,
+      title: 'CROSSTRAINING',
+      image: '/assets/images/crosstraining.png',
+      description: 'entrenamiento de alta intensidad'
+    },
+    {
+      id: 4,
       title: 'KICKBOXING',
       image: '/assets/images/striking.png',
       description: 'combate y striking'

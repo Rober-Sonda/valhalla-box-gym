@@ -56,12 +56,10 @@ const Armeria = () => {
     <div className="armeria-page">
       <div className="armeria-header">
         <div className="armeria-overlay"></div>
-        <div className="container relative z-10 text-center pt-24 pb-12">
-          <Link to="/" className="back-link">
-            <ArrowLeft size={20} /> Volver a Inicio
-          </Link>
+        <div className="container relative z-10 text-center" style={{ paddingTop: '11rem', paddingBottom: '4rem' }}>
+
           <h1 className="page-title mt-4">LA <span className="text-gold">ARMERÍA</span></h1>
-          <p className="page-subtitle">VÍSTETE PARA LA BATALLA. PIEL DE BERSERKER PARA GUERREROS.</p>
+          <p className="page-subtitle">VÍSTETE PARA LA BATALLA. ARMADURA BERSERKER PARA GUERREROS.</p>
         </div>
       </div>
 

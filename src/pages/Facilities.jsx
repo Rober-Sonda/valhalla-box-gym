@@ -33,10 +33,8 @@ const Facilities = () => {
     <div className="facilities-page">
       <div className="facilities-header">
         <div className="facilities-overlay"></div>
-        <div className="container relative z-10 text-center pt-24 pb-12">
-          <Link to="/" className="back-link">
-            <ArrowLeft size={20} /> Volver a Inicio
-          </Link>
+        <div className="container relative z-10 text-center" style={{ paddingTop: '11rem', paddingBottom: '4rem' }}>
+
           <h1 className="page-title mt-4">NUESTRAS <span className="text-gold">INSTALACIONES</span></h1>
           <p className="page-subtitle">El terreno sagrado donde las leyendas sudan y sangran.</p>
         </div>

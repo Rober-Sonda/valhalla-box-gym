@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Pricing.css';
 import { Check } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import PlanRegistrationModal from './PlanRegistrationModal';
 
 const WHATSAPP_NUMBER = '542317533963';
 
@@ -68,6 +69,8 @@ const plans = [
 
 const Pricing = () => {
   const { currentUser, setIsAuthModalOpen } = useAuth();
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   const handleSelectPlan = (plan) => {
     if (!currentUser) {
@@ -75,14 +78,8 @@ const Pricing = () => {
       return;
     }
 
-    const userName = currentUser.displayName || 'Guerrero';
-    const message =
-      `⚔️ ¡Skål! Soy ${userName}, guerrero del Valhalla Box Gym.\n` +
-      `He decidido forjar mi camino con el plan *${plan.name}* ($${plan.price}/mes).\n\n` +
-      `¡Que Odin guíe mi entrenamiento y Mjolnir forje mi fuerza! 🪓🛡️`;
-
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    setSelectedPlan(plan);
+    setIsRegistrationModalOpen(true);
   };
 
   return (
@@ -154,6 +151,12 @@ const Pricing = () => {
           </div>
         </div>
       </div>
+
+      <PlanRegistrationModal 
+        plan={selectedPlan}
+        isOpen={isRegistrationModalOpen}
+        onClose={() => setIsRegistrationModalOpen(false)}
+      />
     </section>
   );
 };

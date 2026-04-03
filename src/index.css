@@ -132,6 +132,35 @@ section {
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+.page-title {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2.5rem;
+  }
+  .page-subtitle {
+    font-size: 1rem;
+  }
 }
 
 .text-gold {

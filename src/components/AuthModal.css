@@ -80,7 +80,7 @@
   color: var(--text-muted);
 }
 
-.form-group input {
+.form-group input, .form-group select {
   width: 100%;
   background-color: var(--bg-dark);
   border: 1px solid var(--border-color);
@@ -91,11 +91,21 @@
   transition: border-color 0.3s ease;
 }
 
-.form-group input::placeholder {
+.form-group select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.form-group select option {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+}
+
+.form-group input::placeholder, .form-group select:invalid {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.form-group input:focus {
+.form-group input:focus, .form-group select:focus {
   outline: none;
   border-color: var(--accent-gold);
 }
