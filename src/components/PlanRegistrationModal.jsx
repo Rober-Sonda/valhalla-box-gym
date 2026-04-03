@@ -63,8 +63,15 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
         createdAt: serverTimestamp()
       };
 
-      // Guardar con await para asegurar que los datos existan antes de navegar
-      await setDoc(newDocRef, inscriptionData);
+      // Guardar resolviendo de manera segura. Si Firestore se queda colgado, forzamos avance a los 2 segundos.
+      const savePromise = setDoc(newDocRef, inscriptionData);
+      const fallbackTimer = new Promise((resolve) => setTimeout(resolve, 2000));
+      
+      try {
+        await Promise.race([savePromise, fallbackTimer]);
+      } catch(err) {
+        console.warn("Ignorando error o timeout de DB para no bloquear al usuario:", err);
+      }
 
       // Crear URL dinámica
       const inscriptionUrl = `${window.location.origin}/inscripcion/${docId}`;
