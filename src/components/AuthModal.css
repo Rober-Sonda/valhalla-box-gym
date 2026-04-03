@@ -29,15 +29,21 @@
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .auth-close-btn:hover {
   color: var(--accent-gold);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .auth-header {
@@ -83,6 +89,10 @@
   border-radius: 4px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .form-group input:focus {
@@ -175,6 +185,15 @@
 .twitter-btn:hover {
   background-color: rgba(255, 255, 255, 0.08) !important;
   border-color: #e7e7e7 !important;
+}
+
+.tiktok-btn {
+  color: var(--text-light);
+}
+
+.tiktok-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: #69C9D0 !important;
 }
 
 @keyframes fadeIn {

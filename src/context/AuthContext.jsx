@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   TwitterAuthProvider,
+  OAuthProvider,
   signInWithPopup
 } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -48,6 +49,12 @@ export const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, provider);
   };
 
+  const loginWithTiktok = () => {
+    const provider = new OAuthProvider('tiktok.com');
+    // Para entornos web, Identity Platform provee el flujo usual
+    return signInWithPopup(auth, provider);
+  };
+
   const logout = () => {
     return signOut(auth);
   };
@@ -66,6 +73,7 @@ export const AuthProvider = ({ children }) => {
     loginWithGoogle,
     loginWithFacebook,
     loginWithTwitter,
+    loginWithTiktok,
     signup,
     logout,
     isAuthModalOpen,

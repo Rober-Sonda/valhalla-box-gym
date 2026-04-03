@@ -61,7 +61,7 @@ const Armeria = () => {
             <ArrowLeft size={20} /> Volver a Inicio
           </Link>
           <h1 className="page-title mt-4">LA <span className="text-gold">ARMERÍA</span></h1>
-          <p className="page-subtitle">VÍSTETE PARA LA BATALLA. PIEL DE BERSERKER PARA GUERREROS MODERNOS.</p>
+          <p className="page-subtitle">VÍSTETE PARA LA BATALLA. PIEL DE BERSERKER PARA GUERREROS.</p>
         </div>
       </div>
 

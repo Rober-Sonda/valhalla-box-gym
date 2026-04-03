@@ -4,7 +4,7 @@ import { X, Dumbbell } from 'lucide-react';
 import './AuthModal.css';
 
 const AuthModal = ({ isOpen, onClose }) => {
-  const { login, signup, loginWithGoogle, loginWithFacebook, loginWithTwitter } = useAuth();
+  const { login, signup, loginWithGoogle, loginWithFacebook, loginWithTwitter, loginWithTiktok } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -159,6 +159,19 @@ const AuthModal = ({ isOpen, onClose }) => {
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             Continuar con Twitter / X
+          </button>
+
+          {/* TikTok */}
+          <button
+            type="button"
+            className="google-btn tiktok-btn w-100"
+            onClick={() => handleSocialLogin(loginWithTiktok, 'TikTok')}
+            disabled={loading}
+          >
+            <svg className="google-icon" viewBox="0 0 448 512" fill="currentColor">
+              <path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V278.2a74.62 74.62 0 1 0 52.23 71.18V0l88 0a121.18 121.18 0 0 0 1.86 22.17h0A122.18 122.18 0 0 0 381 102.39a121.43 121.43 0 0 0 67 20.14Z"/>
+            </svg>
+            Continuar con TikTok
           </button>
         </div>
 
