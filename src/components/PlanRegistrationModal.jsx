@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { X, FileText, Dumbbell } from 'lucide-react';
 import { db } from '../firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import './PlanRegistrationModal.css';
-
 const WHATSAPP_NUMBER = '542317533963';
 
 const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
@@ -44,8 +43,11 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
     setIsUploading(true);
 
     try {
-      // 1. Guardar los datos en Firestore en la colección "inscriptions"
-      const docRef = await addDoc(collection(db, "inscriptions"), {
+      // Generar una referencia y un ID síncronamente para poder usar window.open de inmediato
+      const newDocRef = doc(collection(db, "inscriptions"));
+      const docId = newDocRef.id;
+      
+      const inscriptionData = {
         userId: currentUser?.uid || null,
         nombre: formData.nombre,
         email: formData.email,
@@ -59,26 +61,31 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
           period: plan.period || ''
         },
         createdAt: serverTimestamp()
+      };
+
+      // Guardar en 2do plano en vez de usar await para no bloquear el popup
+      setDoc(newDocRef, inscriptionData).catch(err => {
+        console.error("Error BD:", err);
       });
 
-      // 2. Crear URL dinámica para la vista de inscripción
-      const inscriptionUrl = `${window.location.origin}/inscripcion/${docRef.id}`;
+      // Crear URL dinámica
+      const inscriptionUrl = `${window.location.origin}/inscripcion/${docId}`;
 
-      // 3. Generar mensaje de WhatsApp
+      // Generar mensaje de WhatsApp
       const message = 
         `⚔️ ¡Skål Valhalla! Soy *${formData.nombre}* (DNI: ${formData.dni}).\n` +
         `Me he registrado desde la web para el plan *${plan.name}*.\n\n` +
         `🪓 *AQUÍ ESTÁ MI PASE OFICIAL DE INSCRIPCIÓN*: ${inscriptionUrl}`;
 
-      // 4. Redirigir a WhatsApp
+      // Redirigir a WhatsApp usando redireccion directa para evitar bloqueos
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
       
-      window.open(whatsappUrl, '_blank');
-      onClose(); // Cerrar el modal
+      window.location.href = whatsappUrl;
+      onClose();
 
     } catch (error) {
       console.error("Error al generar la inscripción:", error);
-      alert("Hubo un error forjando el pase en nuestro servidor. Intenta de nuevo.");
+      alert("Hubo un error en el servidor: " + error.message + ". \nIntenta de nuevo.");
     } finally {
       setIsUploading(false);
     }
