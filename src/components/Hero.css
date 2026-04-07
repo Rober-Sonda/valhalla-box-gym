@@ -22,9 +22,51 @@
   z-index: 1;
 }
 
+.hero-watermark-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  color: var(--accent-gold);
+  opacity: 0.1;
+  transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-watermark svg {
+  width: 80vh;
+  height: 80vh;
+  max-width: 800px;
+  max-height: 800px;
+  stroke-width: 0.8px;
+  filter: drop-shadow(0 0 40px var(--accent-gold));
+}
+
+@media (max-width: 768px) {
+  .hero-watermark svg {
+    width: 150vw;
+    height: 150vw;
+  }
+}
+
+.hero-section:hover .hero-watermark {
+  opacity: 0.2;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   padding: 0 1rem;
 }
 

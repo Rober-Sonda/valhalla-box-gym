@@ -53,6 +53,43 @@
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.watermark-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.jarl-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0;
+  color: rgba(197, 160, 89, 0.4);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.jarl-watermark svg {
+  width: 220px;
+  height: 220px;
+  opacity: 0.15;
+  stroke-width: 1.2px;
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+.class-card:hover .jarl-watermark {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+  color: rgba(197, 160, 89, 0.9);
 }
 
 .class-card:hover {

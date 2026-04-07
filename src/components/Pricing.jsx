@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Pricing.css';
-import { Check } from 'lucide-react';
+import { Check, Banknote } from 'lucide-react';
+import { EpicShield, EpicSword, EpicDoubleAxe, EpicBerserker } from './EpicIcons';
 import { useAuth } from '../context/AuthContext';
 import PlanRegistrationModal from './PlanRegistrationModal';
 
@@ -10,9 +11,8 @@ const plans = [
   {
     id: 'escaldo',
     name: 'ESCALDO',
-    desc: 'Plan de entrenamiento mas nutrición',
-    priceCash: '36.000',
-    priceTransfer: '39.000',
+    desc: 'Plan de entrenamiento más nutrición',
+    price: '39.000',
     period: '/mes',
     features: [
       'APP Exclusiva',
@@ -21,13 +21,13 @@ const plans = [
     ],
     btnClass: 'btn-outline',
     popular: false,
+    weapon: EpicShield,
   },
   {
     id: 'guerrero',
     name: 'GUERRERO',
     desc: 'Sala de Musculación',
-    priceCash: '34.000',
-    priceTransfer: '37.000',
+    price: '37.000',
     period: '/mes',
     features: [
       'Rutinas guiadas',
@@ -36,29 +36,28 @@ const plans = [
     ],
     btnClass: 'btn-outline',
     popular: false,
+    weapon: EpicSword,
   },
   {
     id: 'vikingo',
     name: 'VIKINGO',
     desc: 'Acceso exclusivo a Clases',
-    priceCash: '36.000',
-    priceTransfer: '39.000',
+    price: '39.000',
     period: '/mes',
     features: [
-      'APP Exclusiva',
       'Kick Boxing',
       'G.A.P',
       'Crosstraining',
     ],
     btnClass: 'btn-primary',
     popular: true,
+    weapon: EpicDoubleAxe,
   },
   {
     id: 'berserker',
     name: 'BERSERKER',
     desc: 'Pase Libre: Musculación + Clases',
-    priceCash: '40.000',
-    priceTransfer: '44.000',
+    price: '44.000',
     period: '/mes',
     features: [
       'Rutinas guiadas',
@@ -68,6 +67,7 @@ const plans = [
     ],
     btnClass: 'btn-outline',
     popular: false,
+    weapon: EpicBerserker,
   },
 ];
 
@@ -100,6 +100,12 @@ const Pricing = () => {
               key={plan.id}
               className={`pricing-card plan-${plan.id}${plan.popular ? ' popular' : ''}`}
             >
+              <div className="watermark-container">
+                <div className="card-watermark">
+                  <plan.weapon />
+                </div>
+              </div>
+
               {plan.popular && <div className="popular-badge">RECOMENDADA</div>}
 
               {/* Left: name + price + desktop button */}
@@ -107,17 +113,13 @@ const Pricing = () => {
                 <h3>{plan.name}</h3>
                 <p className="plan-desc">{plan.desc}</p>
                 <div className="price-container">
-                  <div className="price cash-price">
+                  <div className="price main-price">
                     <span className="currency">$</span>
-                    <span className="amount">{plan.priceCash}</span>
+                    <span className="amount">{plan.price}</span>
                     <span className="period">{plan.period}</span>
-                    <div className="price-label">Efectivo</div>
                   </div>
-                  <div className="price transfer-price">
-                    <span className="currency">$</span>
-                    <span className="amount">{plan.priceTransfer}</span>
-                    <span className="period">{plan.period}</span>
-                    <div className="price-label">Transferencia</div>
+                  <div className="discount-badge">
+                    <Banknote size={16} className="discount-icon" /> 10% OFF abonando en efectivo
                   </div>
                 </div>
                 {/* Desktop button — hidden on mobile via CSS */}
