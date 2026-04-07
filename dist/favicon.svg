@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="173 44 253.33333333333331 253.33333333333331">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="129 0 342 342">
   <style>
     @media (prefers-color-scheme: dark) {
       .logo {
-        filter: drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.5)) drop-shadow(0px 0px 5px rgba(255, 255, 255, 1));
+        filter: drop-shadow(0px 0px 17px rgba(255, 255, 255, 0.5)) drop-shadow(0px 0px 6px rgba(255, 255, 255, 1));
       }
     }
   </style>

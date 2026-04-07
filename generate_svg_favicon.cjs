@@ -32,10 +32,16 @@ try {
     
     console.log(`Dimensiones de imagen: ${width}x${height}`);
 
-    // 3. Compute 1:1 ViewBox centered
-    const size = Math.min(width, height);
+    // 3. Compute 1:1 ViewBox centered and zoomed in
+    const zoomFactor = 1.35; // Aumentamos 35% el tamaño aparente recortando más bordes
+    const rawSize = Math.min(width, height);
+    const size = rawSize / zoomFactor;
+    // Centralizamos el nuevo cuadro de recorte
     const offsetX = Math.floor((width - size) / 2);
     const offsetY = Math.floor((height - size) / 2);
+    
+    const shadowV = Math.floor(size * 0.05);
+    const shadowR = Math.floor(size * 0.02);
 
     const base64Data = pngData.toString('base64');
     
@@ -44,7 +50,7 @@ try {
   <style>
     @media (prefers-color-scheme: dark) {
       .logo {
-        filter: drop-shadow(0px 0px ${Math.floor(size * 0.05)}px rgba(255, 255, 255, 0.5)) drop-shadow(0px 0px ${Math.floor(size * 0.02)}px rgba(255, 255, 255, 1));
+        filter: drop-shadow(0px 0px ${shadowV}px rgba(255, 255, 255, 0.5)) drop-shadow(0px 0px ${shadowR}px rgba(255, 255, 255, 1));
       }
     }
   </style>
