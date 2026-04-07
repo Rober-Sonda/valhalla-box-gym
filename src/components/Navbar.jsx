@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Dumbbell, Sun, Moon, Anvil } from 'lucide-react';
+import { Menu, X, Dumbbell, Sun, Moon, Coins } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import AuthModal from './AuthModal';
 import CartDrawer from './CartDrawer';
 import './Navbar.css';
+
+const GoldSack = ({ size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22C7 22 4 18 4 13c0-3 2-6 3.5-7.5.5-.5.8-1.2.8-1.9V3h7.4v.6c0 .7.3 1.4.8 1.9C18 7 20 10 20 13c0 5-3 9-8 9z" />
+    <path d="M8 7h8" />
+    <path d="M12 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="var(--accent-gold, #C5A059)" stroke="none" />
+    <path d="M12 12.5v3M10.5 14h3" stroke="var(--bg-dark, #0a0a0a)" strokeWidth="1.5" />
+  </svg>
+);
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -71,7 +80,7 @@ const Navbar = () => {
             </button>
             
             <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn">
-              <Anvil size={20} />
+              <GoldSack size={22} />
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </button>
 
@@ -89,7 +98,7 @@ const Navbar = () => {
 
           <div className="mobile-only">
             <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn" style={{ marginRight: '0.5rem' }}>
-              <Anvil size={24} />
+              <GoldSack size={24} />
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </button>
             <button onClick={toggleTheme} className="theme-toggle-btn">
