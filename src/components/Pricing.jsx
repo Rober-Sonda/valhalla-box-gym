@@ -10,13 +10,14 @@ const plans = [
   {
     id: 'escaldo',
     name: 'ESCALDO',
-    desc: 'Solo la planilla de entrenamiento',
-    price: '15.000',
+    desc: 'Plan de entrenamiento mas nutrición',
+    priceCash: '36.000',
+    priceTransfer: '39.000',
     period: '/mes',
     features: [
-      'Planilla de entrenamiento semanal',
-      'Guía de ejercicios en PDF',
-      'Acceso al grupo de guerreros',
+      'APP Exclusiva',
+      'Plan Nutricional',
+      'Seguimiento 100%',
     ],
     btnClass: 'btn-outline',
     popular: false,
@@ -24,13 +25,14 @@ const plans = [
   {
     id: 'guerrero',
     name: 'GUERRERO',
-    desc: 'Para los que inician su camino',
-    price: '25.000',
+    desc: 'Sala de Musculación',
+    priceCash: '34.000',
+    priceTransfer: '37.000',
     period: '/mes',
     features: [
-      '3 Clases por semana',
-      'Acceso a zona funcional',
-      'Plan básico de introducción',
+      'Rutinas guiadas',
+      'APP Exclusiva',
+      '1 vez al día los 5 días (Lun-Sáb)',
     ],
     btnClass: 'btn-outline',
     popular: false,
@@ -38,14 +40,15 @@ const plans = [
   {
     id: 'vikingo',
     name: 'VIKINGO',
-    desc: 'Para los guerreros consistentes',
-    price: '32.000',
+    desc: 'Acceso exclusivo a Clases',
+    priceCash: '36.000',
+    priceTransfer: '39.000',
     period: '/mes',
     features: [
-      'Clases ILIMITADAS',
-      'Acceso libre al box',
-      'Acceso a talleres mensuales',
-      '1 Evaluación física al mes',
+      'APP Exclusiva',
+      'Kick Boxing',
+      'G.A.P',
+      'Crosstraining',
     ],
     btnClass: 'btn-primary',
     popular: true,
@@ -53,14 +56,15 @@ const plans = [
   {
     id: 'berserker',
     name: 'BERSERKER',
-    desc: 'Dedicación absoluta',
-    price: '42.000',
+    desc: 'Pase Libre: Musculación + Clases',
+    priceCash: '40.000',
+    priceTransfer: '44.000',
     period: '/mes',
     features: [
-      'Todo el Plan Vikingo',
-      '2 Sesiones Personales/mes',
-      'Plan nutricional adaptado',
-      'Recuperación (masaje mensual)',
+      'Rutinas guiadas',
+      'Clases incluidas',
+      'APP Exclusiva',
+      'De Lunes a Sábados',
     ],
     btnClass: 'btn-outline',
     popular: false,
@@ -102,10 +106,19 @@ const Pricing = () => {
               <div className="pricing-card-left">
                 <h3>{plan.name}</h3>
                 <p className="plan-desc">{plan.desc}</p>
-                <div className="price">
-                  <span className="currency">$</span>
-                  <span className="amount">{plan.price}</span>
-                  <span className="period">{plan.period}</span>
+                <div className="price-container">
+                  <div className="price cash-price">
+                    <span className="currency">$</span>
+                    <span className="amount">{plan.priceCash}</span>
+                    <span className="period">{plan.period}</span>
+                    <div className="price-label">Efectivo</div>
+                  </div>
+                  <div className="price transfer-price">
+                    <span className="currency">$</span>
+                    <span className="amount">{plan.priceTransfer}</span>
+                    <span className="period">{plan.period}</span>
+                    <div className="price-label">Transferencia</div>
+                  </div>
                 </div>
                 {/* Desktop button — hidden on mobile via CSS */}
                 <button

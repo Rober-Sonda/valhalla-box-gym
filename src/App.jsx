@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Facilities from './pages/Facilities';
 import Armeria from './pages/Armeria';
 import InscripcionView from './pages/InscripcionView';
+import AuthHandler from './pages/AuthHandler';
 
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -21,6 +22,7 @@ function App() {
             <Route path="/instalaciones" element={<Facilities />} />
             <Route path="/armeria" element={<Armeria />} />
             <Route path="/inscripcion/:id" element={<InscripcionView />} />
+            <Route path="/auth-callback" element={<AuthHandler />} />
           </Routes>
           <Footer />
         </div>

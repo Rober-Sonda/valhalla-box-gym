@@ -7,33 +7,32 @@ const Schedule = () => {
   const disciplines = [
     {
       name: 'Musculación',
-      trainer: 'Lautaro & Santino',
+      trainer: 'Lautaro, Santino & Nacho (Jarl)',
       schedules: [
-        { days: 'Lunes a Viernes', time: '08:00 a 12:00\n14:00 a 21:30' },
+        { days: 'Lunes a Viernes', time: '08:00 a 10:00\n13:00 a 21:30' },
         { days: 'Sábados', time: '11:00 a 14:00' }
       ]
     },
     {
       name: 'Crosstraining',
-      trainer: 'Santino',
+      trainer: 'Santino & Nacho (Jarl)',
       schedules: [
-        { days: 'Lunes a Viernes', time: '08:00 a 12:00\n14:00 a 21:30' },
-        { days: 'Sábados', time: '11:00 a 14:00' }
+        { days: 'Lunes, Miérc y Viernes', time: '14:00 a 15:00\n20:15 a 21:15' }
       ]
     },
     {
       name: 'GAP',
-      trainer: 'Nacho',
+      trainer: 'Nacho (Jarl)',
       schedules: [
-        { days: 'Lunes, Miérc y Viernes', time: '14:00 a 15:00\n19:00 a 20:00' }
+        { days: 'Martes y Jueves', time: '14:00 a 15:00\n20:00 a 21:00' }
       ]
     },
     {
       name: 'Kickboxing',
-      trainer: 'Nacho',
+      trainer: 'Nacho (Jarl)',
       schedules: [
-        { days: 'Martes y Jueves', time: '20:00 a 21:30' },
-        { days: 'Sábados', time: '11:00 a 12:30' }
+        { days: 'Lunes, Miérc y Viernes', time: '13:00 a 14:00\n19:15 a 20:15' },
+        { days: 'Martes y Jueves', time: '19:00 a 20:00' }
       ]
     }
   ];

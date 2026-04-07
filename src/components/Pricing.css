@@ -46,16 +46,62 @@
   font-size: 0.95rem;
 }
 
-.price {
-  margin-bottom: 2.5rem;
+.price-container {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
 }
 
-.currency {
+.price {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.cash-price {
+  color: var(--text-light);
+}
+
+.cash-price .amount {
+  font-size: 3.2rem;
+  color: var(--accent-gold);
+}
+
+.cash-price .currency {
   font-size: 1.5rem;
   color: var(--accent-gold);
-  margin-top: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.transfer-price {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.transfer-price .amount {
+  font-size: 2rem;
+}
+
+.transfer-price .currency {
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+}
+
+.price-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.cash-price .price-label {
+  background-color: rgba(197, 160, 89, 0.2);
+  color: var(--accent-gold);
 }
 
 .amount {
@@ -201,7 +247,7 @@
   .seleccionar-mobile {
     display: block;
   }
-  .price {
+  .price-container {
     margin-bottom: 1.5rem;
   }
 }

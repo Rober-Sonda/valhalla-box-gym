@@ -9,7 +9,8 @@ import {
   FacebookAuthProvider,
   TwitterAuthProvider,
   OAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  signInWithCustomToken
 } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -49,10 +50,21 @@ export const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, provider);
   };
 
+  // Redireccionar al Backend (ACTUALMENTE COMENTADO/DESACTIVADO A PEDIDO DEL USUARIO)
   const loginWithTiktok = () => {
-    const provider = new OAuthProvider('tiktok.com');
-    // Para entornos web, Identity Platform provee el flujo usual
-    return signInWithPopup(auth, provider);
+    /*
+    const apiUrl = "https://us-central1-valhalla-box-gym-app.cloudfunctions.net/api"; 
+    window.location.href = `${apiUrl}/auth/tiktok?redirect_to=${encodeURIComponent(window.location.origin)}`;
+    */
+    alert("Inició el flujo de TikTok, actualmente desactivado.");
+  };
+
+  const loginWithInstagram = () => {
+    /*
+    const apiUrl = "https://us-central1-valhalla-box-gym-app.cloudfunctions.net/api"; 
+    window.location.href = `${apiUrl}/auth/instagram?redirect_to=${encodeURIComponent(window.location.origin)}`;
+    */
+    console.log("Instagram OAuth redirigido a Facebook Login en la UI."); // Ahora se usa Facebook nativamente en el Modal
   };
 
   const logout = () => {
@@ -74,7 +86,9 @@ export const AuthProvider = ({ children }) => {
     loginWithFacebook,
     loginWithTwitter,
     loginWithTiktok,
+    loginWithInstagram,
     signup,
+    loginWithCustomToken: (token) => Object.keys(token).length ? signInWithCustomToken(auth, token) : null,
     logout,
     isAuthModalOpen,
     setIsAuthModalOpen
