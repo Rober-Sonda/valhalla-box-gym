@@ -39,10 +39,40 @@ const Navbar = () => {
     localStorage.setItem('theme', newTheme);
   };
 
+  const [activeSection, setActiveSection] = useState('');
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Only execute generic scroll highlighting on homepage
+    if (window.location.pathname !== '/') return;
+
+    const sections = document.querySelectorAll('section[id]');
+    const observerOptions = {
+      root: null,
+      rootMargin: '-40% 0px -40% 0px',
+      threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          setActiveSection(id);
+          // Actualización silenciosa de URL
+          window.history.replaceState(null, null, `#${id}`);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach(sec => observer.observe(sec));
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -69,10 +99,10 @@ const Navbar = () => {
           </Link>
           
           <div className="nav-links desktop-only">
-            <a href="/#philosophy">La Tribu</a>
-            <a href="/#services">Entrenamiento</a>
-            <a href="/#schedule">Horarios</a>
-            <a href="/#pricing">Tarifas</a>
+            <a href="/#philosophy" className={activeSection === 'philosophy' ? 'active' : ''}>La Tribu</a>
+            <a href="/#services" className={activeSection === 'services' ? 'active' : ''}>Entrenamiento</a>
+            <a href="/#schedule" className={activeSection === 'schedule' ? 'active' : ''}>Horarios</a>
+            <a href="/#pricing" className={activeSection === 'pricing' ? 'active' : ''}>Tarifas</a>
             <Link to="/armeria">Armería</Link>
             
             <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle Theme">
@@ -112,10 +142,10 @@ const Navbar = () => {
         
         {mobileMenuOpen && (
           <div className="mobile-menu">
-            <a href="/#philosophy" onClick={() => setMobileMenuOpen(false)}>La Tribu</a>
-            <a href="/#services" onClick={() => setMobileMenuOpen(false)}>Entrenamiento</a>
-            <a href="/#schedule" onClick={() => setMobileMenuOpen(false)}>Horarios</a>
-            <a href="/#pricing" onClick={() => setMobileMenuOpen(false)}>Tarifas</a>
+            <a href="/#philosophy" className={activeSection === 'philosophy' ? 'active' : ''} onClick={() => setMobileMenuOpen(false)}>La Tribu</a>
+            <a href="/#services" className={activeSection === 'services' ? 'active' : ''} onClick={() => setMobileMenuOpen(false)}>Entrenamiento</a>
+            <a href="/#schedule" className={activeSection === 'schedule' ? 'active' : ''} onClick={() => setMobileMenuOpen(false)}>Horarios</a>
+            <a href="/#pricing" className={activeSection === 'pricing' ? 'active' : ''} onClick={() => setMobileMenuOpen(false)}>Tarifas</a>
             <Link to="/armeria" onClick={() => setMobileMenuOpen(false)}>Armería</Link>
             
             {currentUser ? (

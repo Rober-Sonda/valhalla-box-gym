@@ -107,7 +107,8 @@
   letter-spacing: 1px;
 }
 
-.nav-links a:hover {
+.nav-links a:hover, .nav-links a.active, .mobile-menu a.active {
+  color: var(--accent-gold) !important;
   text-shadow: 0 0 10px rgba(197, 160, 89, 0.5);
 }
 

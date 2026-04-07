@@ -56,14 +56,13 @@ const Armeria = () => {
     <div className="armeria-page">
       <div className="armeria-header">
         <div className="armeria-overlay"></div>
-        <div className="container relative z-10 text-center" style={{ paddingTop: '11rem', paddingBottom: '4rem' }}>
-
-          <h1 className="page-title mt-4">LA <span className="text-gold">ARMERÍA</span></h1>
-          <p className="page-subtitle">VÍSTETE PARA LA BATALLA. ARMADURA BERSERKER PARA GUERREROS.</p>
+        <div className="container relative z-10 text-center" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: '10rem', paddingBottom: '7rem', color: '#fff' }}>
+          <h1 className="page-title">LA <span className="text-gold">ARMERÍA</span></h1>
+          <p className="page-subtitle" style={{ maxWidth: '600px' }}>VÍSTETE PARA LA BATALLA. ARMADURA BERSERKER PARA GUERREROS.</p>
         </div>
       </div>
 
-      <div className="container py-12">
+      <div className="container armeria-products-section">
         <div className="armeria-grid">
           {products.map((prod) => (
             <div className="product-card" key={prod.id}>
