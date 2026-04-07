@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Dumbbell, Sun, Moon, ShoppingBag } from 'lucide-react';
+import { Menu, X, Dumbbell, Sun, Moon, Anvil } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import AuthModal from './AuthModal';
@@ -71,7 +71,7 @@ const Navbar = () => {
             </button>
             
             <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn">
-              <ShoppingBag size={20} />
+              <Anvil size={20} />
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </button>
 
@@ -89,7 +89,7 @@ const Navbar = () => {
 
           <div className="mobile-only">
             <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn" style={{ marginRight: '0.5rem' }}>
-              <ShoppingBag size={24} />
+              <Anvil size={24} />
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </button>
             <button onClick={toggleTheme} className="theme-toggle-btn">
