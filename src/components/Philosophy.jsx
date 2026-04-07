@@ -13,7 +13,7 @@ const Philosophy = () => {
             <p>
               "En Valhalla Box Gym no solo entrenamos el cuerpo; forjamos el espíritu de guerrero. 
               Creemos en la disciplina, el trabajo duro y la comunidad. Aquí no hay espejos de vanidad,
-              solo acero, sudor y el sonido de progreso."
+              solo acero, sudor y el sonido del progreso."
             </p>
           </div>
           <div className="philosophy-features">
