@@ -29,7 +29,7 @@
 
 .disclaimer-info span {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-muted);
   line-height: 1.4;
 }
 
@@ -69,4 +69,60 @@
   .form-actions {
     flex-direction: column-reverse; /* Boton secundario abajo */
   }
+}
+
+/* Payment Toggle Switch */
+.payment-toggle {
+  display: flex;
+  background-color: var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  padding: 4px;
+}
+
+.toggle-option {
+  flex: 1;
+  text-align: center;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  color: var(--text-muted);
+  user-select: none;
+  font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-watermark {
+  position: absolute;
+  right: 0;
+  bottom: -5px;
+  opacity: 0.15;
+  color: currentColor;
+  transform: rotate(-15deg);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.toggle-option.active .toggle-watermark {
+  opacity: 0.25;
+}
+
+.toggle-content {
+  position: relative;
+  z-index: 2;
+}
+
+.toggle-option.active {
+  background-color: var(--accent-gold);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }

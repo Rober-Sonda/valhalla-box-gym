@@ -182,9 +182,9 @@
 
 /* Colors matching the card tints */
 .plan-escaldo .card-watermark { color: rgba(70, 130, 180, 0.8); }
-.plan-guerrero .card-watermark { color: rgba(200, 120, 40, 0.8); }
+.plan-guerrero .card-watermark { color: rgba(46, 160, 80, 0.8); }
 .plan-vikingo .card-watermark { color: var(--accent-gold); }
-.plan-berserker .card-watermark { color: rgba(180, 20, 20, 0.8); }
+.plan-berserker .card-watermark { color: rgba(235, 50, 50, 0.95); }
 
 .pricing-card:hover .card-watermark,
 .pricing-card:active .card-watermark {
@@ -248,11 +248,11 @@
 }
 
 .pricing-card.plan-guerrero {
-  background: linear-gradient(135deg, rgba(200, 120, 40, 0.07) 0%, var(--bg-card) 60%);
-  border-color: rgba(200, 120, 40, 0.25);
+  background: linear-gradient(135deg, rgba(46, 160, 80, 0.07) 0%, var(--bg-card) 60%);
+  border-color: rgba(46, 160, 80, 0.25);
 }
 .pricing-card.plan-guerrero:hover {
-  border-color: rgba(200, 120, 40, 0.55);
+  border-color: rgba(46, 160, 80, 0.55);
 }
 
 .pricing-card.plan-vikingo {
@@ -261,8 +261,8 @@
 }
 
 .pricing-card.plan-berserker {
-  background: linear-gradient(135deg, rgba(139, 0, 0, 0.08) 0%, var(--bg-card) 60%);
-  border-color: rgba(139, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(235, 40, 40, 0.1) 0%, var(--bg-card) 60%);
+  border-color: rgba(235, 50, 50, 0.35);
 }
 .pricing-card.plan-berserker:hover {
   border-color: rgba(180, 20, 20, 0.6);

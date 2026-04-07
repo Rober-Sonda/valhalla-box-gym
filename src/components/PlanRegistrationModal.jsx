@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { X, FileText, Dumbbell } from 'lucide-react';
+import { X, FileText, Dumbbell, Landmark, Banknote, Copy, Check, ChevronDown } from 'lucide-react';
 import { db } from '../firebase';
 import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import './PlanRegistrationModal.css';
@@ -9,17 +9,24 @@ const WHATSAPP_NUMBER = '542317533963';
 const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
   const { currentUser } = useAuth();
   
-  // States para el formulario
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
     dni: '',
     telefono: '',
     direccion: '',
-    genero: ''
+    genero: '',
+    pago: 'transferencia'
   });
   
   const [isUploading, setIsUploading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyAlias = () => {
+    navigator.clipboard.writeText('valhalla.box.gym');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   // Pre-llenar si hay currentUser
   useEffect(() => {
@@ -47,6 +54,11 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
       const newDocRef = doc(collection(db, "inscriptions"));
       const docId = newDocRef.id;
       
+      const numericPrice = Number(plan.price.replace(/\./g, ''));
+      const discountedPrice = numericPrice * 0.9;
+      const isEfectivo = formData.pago === 'efectivo';
+      const finalPriceFormatted = new Intl.NumberFormat('es-AR').format(isEfectivo ? discountedPrice : numericPrice);
+
       const inscriptionData = {
         userId: currentUser?.uid || null,
         nombre: formData.nombre,
@@ -55,6 +67,8 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
         telefono: formData.telefono,
         direccion: formData.direccion,
         genero: formData.genero,
+        pago: formData.pago,
+        precioFinal: finalPriceFormatted,
         plan: {
           name: plan.name,
           price: plan.price,
@@ -80,7 +94,9 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
       const message = 
         `⚔️ ¡Skål Valhalla! Soy *${formData.nombre}* (DNI: ${formData.dni}).\n` +
         `Me he registrado desde la web para el plan *${plan.name}*.\n\n` +
-        `🪓 *AQUÍ ESTÁ MI PASE OFICIAL DE INSCRIPCIÓN*: ${inscriptionUrl}`;
+        `💰 *Método de Pago*: ${isEfectivo ? 'Efectivo (10% OFF)' : 'Transferencia'}\n` +
+        `💳 *Total a coordinar*: $${finalPriceFormatted}\n\n` +
+        `🪓 *MI PASE OFICIAL*: ${inscriptionUrl}`;
 
       // Redirigir a WhatsApp usando redireccion directa para evitar bloqueos
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -128,7 +144,7 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
             </div>
 
             <div className="form-group flex-fill">
-              <label>Identificación (DNI)</label>
+              <label>DNI</label>
               <input
                 type="text"
                 name="dni"
@@ -142,7 +158,7 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
 
           <div className="form-group-row">
             <div className="form-group flex-fill">
-              <label>Teléfono Celular</label>
+              <label>Celular</label>
               <input
                 type="tel"
                 name="telefono"
@@ -154,13 +170,13 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
             </div>
 
             <div className="form-group flex-fill">
-              <label>Dirección Terrenal</label>
+              <label>Dirección</label>
               <input
                 type="text"
                 name="direccion"
                 value={formData.direccion}
                 onChange={handleChange}
-                placeholder="Calle Vikinga 123, Ciudad"
+                placeholder="Tu dirección"
                 required
               />
             </div>
@@ -181,23 +197,77 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
 
             <div className="form-group flex-fill">
               <label>Género</label>
-              <select
-                name="genero"
-                value={formData.genero}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Selecciona tu género</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-                <option value="Prefiero no decirlo">Prefiero no decirlo</option>
-              </select>
+              <div style={{ position: 'relative' }}>
+                <select
+                  name="genero"
+                  value={formData.genero}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled>Selecciona tu género</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                  <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                </select>
+                <ChevronDown size={20} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-muted)' }} />
+              </div>
             </div>
           </div>
 
+          <div className="form-group-row mt-2 d-block">
+            <div className="form-group w-100">
+              <label>Método de Pago (Para coordinar por WhatsApp)</label>
+              <div className="payment-toggle mt-2">
+                <div 
+                  className={`toggle-option ${formData.pago === 'transferencia' ? 'active' : ''}`}
+                  onClick={() => setFormData({...formData, pago: 'transferencia'})}
+                >
+                  <div className="toggle-watermark">
+                    <Landmark size={36} />
+                  </div>
+                  <span className="toggle-content">Transferencia</span>
+                </div>
+                <div 
+                  className={`toggle-option ${formData.pago === 'efectivo' ? 'active' : ''}`}
+                  onClick={() => setFormData({...formData, pago: 'efectivo'})}
+                >
+                  <div className="toggle-watermark">
+                    <Banknote size={36} />
+                  </div>
+                  <span className="toggle-content">Efectivo (-10%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {formData.pago === 'efectivo' && (
+            <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(197, 160, 89, 0.1)', border: '1px solid rgba(197, 160, 89, 0.3)', borderRadius: '8px' }}>
+              <strong className="text-gold">¡10% de Descuento Aplicado!</strong><br />
+              El precio final a abonar será de <strong>${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) * 0.9)}</strong> {plan.period}
+            </div>
+          )}
+
+          {formData.pago === 'transferencia' && (
+            <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+              <strong>Alias para transferencia:</strong> <br />
+              <div className="d-flex-center mt-2 mb-2">
+                <code style={{ fontSize: '1.3em', color: 'var(--accent-gold)' }}>valhalla.box.gym</code>
+                <button 
+                  type="button" 
+                  onClick={handleCopyAlias}
+                  style={{ background: 'var(--bg-dark)', border: '1px solid var(--border-color)', borderRadius: '4px', cursor: 'pointer', padding: '6px', display: 'flex', marginLeft: '10px' }}
+                  title="Copiar Alias"
+                >
+                  {copied ? <Check size={18} color="var(--accent-gold)" /> : <Copy size={18} color="var(--text-muted)" />}
+                </button>
+              </div>
+              <small className="text-muted">El pago final es de ${plan.price}. Se coordinará enviando el comprobante por WhatsApp.</small>
+            </div>
+          )}
+
           <div className="disclaimer-info mt-3">
             <FileText size={18} className="text-gold" />
-            <span>Al forjar inscripción, tu información se subirá a nuestro sistema y se generará un enlace oficial que enviaremos a nuestro WhatsApp para asentar tu base en el Bastión.</span>
+            <span>Al forjar tu alianza, tu información se subirá a nuestro sistema y se generará un enlace oficial que enviaremos a nuestro WhatsApp para asentar tu base en el Bastión.</span>
           </div>
 
           <div className="form-actions mt-4">
@@ -205,7 +275,7 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
               CANCELAR
             </button>
             <button type="submit" className="btn-primary w-100 d-flex-center" disabled={isUploading}>
-              {isUploading ? 'FORJANDO...' : 'FORJAR INSCRIPCIÓN'}
+              {isUploading ? 'FORJANDO...' : 'FORJAR ALIANZA'}
             </button>
           </div>
         </form>

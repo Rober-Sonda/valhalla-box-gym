@@ -105,6 +105,16 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+/* Chrome/Webkit Autofill form styles fix */
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover, 
+.form-group input:-webkit-autofill:focus, 
+.form-group input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--bg-dark) inset !important;
+    -webkit-text-fill-color: var(--text-light) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 .form-group input:focus, .form-group select:focus {
   outline: none;
   border-color: var(--accent-gold);

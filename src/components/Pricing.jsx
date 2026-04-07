@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Pricing.css';
 import { Check, Banknote } from 'lucide-react';
-import { EpicShield, EpicSword, EpicDoubleAxe, EpicBerserker } from './EpicIcons';
+import { EpicShield, EpicSword, EpicDoubleAxe, EpicBerserker, StockShield, StockAxeShield, StockHammers, StockHelmet } from './EpicIcons';
 import { useAuth } from '../context/AuthContext';
 import PlanRegistrationModal from './PlanRegistrationModal';
 
@@ -21,7 +21,7 @@ const plans = [
     ],
     btnClass: 'btn-outline',
     popular: false,
-    weapon: EpicShield,
+    weapon: StockShield,
   },
   {
     id: 'guerrero',
@@ -36,7 +36,7 @@ const plans = [
     ],
     btnClass: 'btn-outline',
     popular: false,
-    weapon: EpicSword,
+    weapon: StockAxeShield,
   },
   {
     id: 'vikingo',
@@ -51,7 +51,7 @@ const plans = [
     ],
     btnClass: 'btn-primary',
     popular: true,
-    weapon: EpicDoubleAxe,
+    weapon: StockHammers,
   },
   {
     id: 'berserker',
@@ -67,7 +67,7 @@ const plans = [
     ],
     btnClass: 'btn-outline',
     popular: false,
-    weapon: EpicBerserker,
+    weapon: StockHelmet,
   },
 ];
 
