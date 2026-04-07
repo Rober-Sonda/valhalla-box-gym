@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Schedule.css';
-import { EpicHelmet } from './EpicIcons';
+import { StockHelmet } from './EpicIcons';
 
 const Schedule = () => {
   const [filter, setFilter] = useState('Musculación');
@@ -63,7 +63,7 @@ const Schedule = () => {
               <div className="class-card animate-fade-in" key={index}>
                 <div className="watermark-container">
                   <div className="jarl-watermark">
-                    <EpicHelmet />
+                    <StockHelmet />
                   </div>
                 </div>
                 <div style={{ position: 'relative', zIndex: 1 }}>

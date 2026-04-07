@@ -56,7 +56,7 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
       
       const numericPrice = Number(plan.price.replace(/\./g, ''));
       const discountedPrice = numericPrice * 0.9;
-      const isEfectivo = formData.pago === 'efectivo';
+      const isEfectivo = formData.pago === 'efectivo' && plan?.id !== 'escaldo';
       const finalPriceFormatted = new Intl.NumberFormat('es-AR').format(isEfectivo ? discountedPrice : numericPrice);
 
       const inscriptionData = {
@@ -217,9 +217,14 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
           <div className="form-group-row mt-2 d-block">
             <div className="form-group w-100">
               <label>Método de Pago (Para coordinar por WhatsApp)</label>
+              {plan?.id === 'escaldo' && (
+                <div className="p-2 mb-2 text-center" style={{ backgroundColor: 'rgba(70, 130, 180, 0.1)', border: '1px solid rgba(70, 130, 180, 0.3)', borderRadius: '4px', fontSize: '0.85rem' }}>
+                  <strong className="text-light">Atención:</strong> El Plan Escaldo (A Distancia) se abona exclusivamente por transferencia.
+                </div>
+              )}
               <div className="payment-toggle mt-2">
                 <div 
-                  className={`toggle-option ${formData.pago === 'transferencia' ? 'active' : ''}`}
+                  className={`toggle-option ${formData.pago === 'transferencia' || plan?.id === 'escaldo' ? 'active' : ''}`}
                   onClick={() => setFormData({...formData, pago: 'transferencia'})}
                 >
                   <div className="toggle-watermark">
@@ -228,8 +233,12 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                   <span className="toggle-content">Transferencia</span>
                 </div>
                 <div 
-                  className={`toggle-option ${formData.pago === 'efectivo' ? 'active' : ''}`}
-                  onClick={() => setFormData({...formData, pago: 'efectivo'})}
+                  className={`toggle-option ${(formData.pago === 'efectivo' && plan?.id !== 'escaldo') ? 'active' : ''} ${plan?.id === 'escaldo' ? 'disabled' : ''}`}
+                  onClick={() => {
+                    if (plan?.id !== 'escaldo') setFormData({...formData, pago: 'efectivo'})
+                  }}
+                  style={plan?.id === 'escaldo' ? { opacity: 0.4, cursor: 'not-allowed', filter: 'grayscale(1)' } : {}}
+                  title={plan?.id === 'escaldo' ? 'No disponible en planes a distancia' : ''}
                 >
                   <div className="toggle-watermark">
                     <Banknote size={36} />
@@ -240,14 +249,14 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
             </div>
           </div>
 
-          {formData.pago === 'efectivo' && (
+          {(formData.pago === 'efectivo' && plan?.id !== 'escaldo') && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(197, 160, 89, 0.1)', border: '1px solid rgba(197, 160, 89, 0.3)', borderRadius: '8px' }}>
               <strong className="text-gold">¡10% de Descuento Aplicado!</strong><br />
               El precio final a abonar será de <strong>${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) * 0.9)}</strong> {plan.period}
             </div>
           )}
 
-          {formData.pago === 'transferencia' && (
+          {(formData.pago === 'transferencia' || plan?.id === 'escaldo') && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
               <strong>Alias para transferencia:</strong> <br />
               <div className="d-flex-center mt-2 mb-2">
