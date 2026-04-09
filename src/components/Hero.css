@@ -96,5 +96,6 @@
 @media (max-width: 768px) {
   .hero-section {
     background-attachment: scroll; /* Better performance on mobile */
+    background-position: center 30%; /* Focus on the upper/center area */
   }
 }

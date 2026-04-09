@@ -135,6 +135,9 @@
 }
 
 @media (max-width: 992px) {
+  .facilities-header {
+    background-position: center 30%;
+  }
   .facility-card {
     grid-template-columns: 1fr;
   }
