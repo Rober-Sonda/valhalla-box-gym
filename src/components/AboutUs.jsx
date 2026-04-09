@@ -25,7 +25,7 @@ const AboutUs = () => {
             <div className="trainer-card">
               <div 
                 className="trainer-img" 
-                style={{ backgroundImage: `url('/assets/images/trainer.png')` }}
+                style={{ backgroundImage: `url('/assets/images/jarl_nacho_v9.png')` }}
               ></div>
               <div className="trainer-info">
                 <h3>NACHO</h3>
@@ -37,7 +37,7 @@ const AboutUs = () => {
             <div className="trainer-card">
               <div 
                 className="trainer-img" 
-                style={{ backgroundImage: `url('/assets/images/lautaro.png')` }}
+                style={{ backgroundImage: `url('/assets/images/jarl_lautaro_v1.png')` }}
               ></div>
               <div className="trainer-info">
                 <h3>LAUTARO</h3>
