@@ -10,6 +10,18 @@ const Facilities = () => {
 
   const facilities = [
     {
+      id: -1,
+      image: '/assets/images/facility_hero.jpg',
+      title: 'LAS PUERTAS DEL VALHALLA',
+      desc: 'La majestuosa entrada a nuestro gran salón. Aquí dejas las excusas y entras a forjar tu leyenda vikinga.'
+    },
+    {
+      id: 0,
+      image: '/assets/images/facility_reception.jpg',
+      title: 'RECEPCIÓN Y ARMERÍA',
+      desc: 'El primer paso en Valhalla. Ingreso, equipamiento de combate y suplementación deportiva.'
+    },
+    {
       id: 1,
       image: '/assets/images/facility_weights.png',
       title: 'ZONA DE HIERRO Y FUERZA',

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Dumbbell, ArrowLeft, Loader2, User, Phone, MapPin, Mail } from 'lucide-react';
+import { Dumbbell, ArrowLeft, Loader2, User, Phone, MapPin, Mail, Copy } from 'lucide-react';
 import './InscripcionView.css';
 
 const InscripcionView = () => {
@@ -10,6 +10,7 @@ const InscripcionView = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetchInscripcion = async () => {
@@ -73,6 +74,32 @@ const InscripcionView = () => {
     month: 'long',
     year: 'numeric'
   }) : 'Fecha no disponible';
+
+  const handleCopyData = () => {
+    if (!data) return;
+    
+    const textData = `🛡️ VALHALLA BOX GYM - NUEVO PASE
+-------------------------------
+PLAN: ${data.plan.name.toUpperCase()}
+VALOR: $${data.plan.price}
+
+⚔️ DATOS DEL GUERRERO:
+Nombre: ${data.nombre}
+DNI: ${data.dni}
+Teléfono: ${data.telefono}
+Correo: ${data.email}
+Dirección: ${data.direccion}
+Género: ${data.genero}
+Fecha exp.: ${date}
+-------------------------------`;
+
+    navigator.clipboard.writeText(textData)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 3000);
+      })
+      .catch(err => console.error("Error al copiar: ", err));
+  };
 
   return (
     <div className="inscripcion-view">
@@ -150,11 +177,16 @@ const InscripcionView = () => {
           <p className="footer-date">Fecha de Iniciación: {date}</p>
         </div>
       </div>
-      
-      <Link to="/" className="btn-secondary mt-4 mb-5" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-        <ArrowLeft size={18} />
-        Volver al Inicio
-      </Link>
+      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+        <button onClick={handleCopyData} className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', border: 'none', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          <Copy size={18} />
+          {copied ? '¡Copiado al portapapeles!' : 'Copiar Datos del Pase'}
+        </button>
+        <Link to="/" className="btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+          <ArrowLeft size={18} />
+          Volver al Inicio
+        </Link>
+      </div>
     </div>
   );
 };
