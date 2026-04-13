@@ -152,3 +152,153 @@
     padding: 2rem;
   }
 }
+
+/* Modal Styles */
+.facility-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.facility-modal-content {
+  position: relative;
+  background-color: var(--bg-card);
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  animation: modalFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.facility-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  background: rgba(0,0,0,0.5);
+  color: var(--text-light);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.facility-modal-close:hover {
+  background: var(--accent-gold);
+  color: var(--bg-dark);
+}
+
+.facility-modal-image-container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.facility-modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.carousel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: var(--text-light);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.carousel-control:hover {
+  background: var(--accent-gold);
+  color: var(--bg-dark);
+}
+
+.carousel-control.prev {
+  left: 20px;
+}
+
+.carousel-control.next {
+  right: 20px;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.indicator-dot.active {
+  background-color: var(--accent-gold);
+  transform: scale(1.2);
+}
+
+.facility-modal-info {
+  padding: 2rem;
+  background: var(--bg-card);
+}
+
+.facility-modal-info h3 {
+  color: var(--accent-gold);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.facility-modal-info p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .facility-modal-backdrop {
+    padding: 1rem;
+  }
+  .facility-modal-image-container {
+    height: 40vh;
+  }
+}
