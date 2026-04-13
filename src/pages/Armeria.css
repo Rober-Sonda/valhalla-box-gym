@@ -192,16 +192,15 @@
 /* Elixir product real image styling */
 .elixir-bg {
   position: relative;
-  background: radial-gradient(circle at center, #2a2215 0%, #0a0a0c 100%);
+  background: #ffffff;
   overflow: hidden;
 }
-
-
 
 .elixir-image {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important;
+  object-fit: contain !important;
+  padding: 1rem;
   transition: all 0.3s ease;
 }
 
