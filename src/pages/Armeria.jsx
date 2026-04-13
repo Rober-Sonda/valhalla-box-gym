@@ -163,10 +163,10 @@ const Armeria = () => {
     },
     {
       id: 21,
-      name: 'AminoX BCAA (BSN)',
+      name: 'Ultra-Whey Premium Isolate',
       price: '55000',
       tag: 'Resistencia de Odín',
-      image: '/assets/images/products/supp_aminox.png'
+      image: '/assets/images/products/new_ultra_whey.png'
     }
   ];
 
