@@ -2,9 +2,10 @@ const { Jimp } = require('jimp');
 const fs = require('fs');
 
 const files = [
-  'supp_on.jpg', 'supp_ena.jpg', 'supp_c4.jpg', 'supp_animal.jpg', 
-  'supp_syntha.jpg', 'supp_iso100.jpg', 'supp_star.jpg', 
-  'supp_glutamina.jpg', 'supp_aminox.jpg'
+  'new_ena.png',
+  'new_protein.png',
+  'new_performax.png',
+  'new_nitro.png'
 ];
 
 async function processImages() {
@@ -29,9 +30,8 @@ async function processImages() {
         }
       });
       
-      const newPath = path.replace('.jpg', '.png');
-      await image.write(newPath); // Note: Jimp 1.6 removes writeAsync, using write or writeAsync depends on version. If write returns promise, use it.
-      console.log(`Saved ${newPath}`);
+      await image.write(path);
+      console.log(`Saved ${path} without background`);
       
     } catch(err) {
       console.log(`Failed on ${file}:`, err.message);

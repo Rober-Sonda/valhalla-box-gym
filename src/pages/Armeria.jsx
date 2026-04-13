@@ -117,21 +117,21 @@ const Armeria = () => {
       name: 'Creatina Monohidrato (ENA)',
       price: '45000',
       tag: 'Fuerza Bruta',
-      image: '/assets/images/products/supp_ena.png'
+      image: '/assets/images/products/new_ena.png'
     },
     {
       id: 15,
-      name: 'Pre-Entreno C4 Explosive (Cellucor)',
+      name: 'Nitro Fuel Pre-Workout',
       price: '60000',
       tag: 'Furia de Berserker',
-      image: '/assets/images/products/supp_c4.png'
+      image: '/assets/images/products/new_nitro.png'
     },
     {
       id: 16,
-      name: 'Animal Pak Multivitamínico (Universal)',
+      name: 'Pre-Workout Performax',
       price: '85000',
-      tag: 'Vitalidad Ancestral',
-      image: '/assets/images/products/supp_animal.png'
+      tag: 'Concentración Absoluta',
+      image: '/assets/images/products/new_performax.png'
     },
     {
       id: 17,
@@ -149,10 +149,10 @@ const Armeria = () => {
     },
     {
       id: 19,
-      name: 'Whey Protein (Star Nutrition)',
+      name: 'Elite Protein Powder (Vibrant Health)',
       price: '75000',
       tag: 'Armadura Muscular',
-      image: '/assets/images/products/supp_star.png'
+      image: '/assets/images/products/new_protein.png'
     },
     {
       id: 20,
