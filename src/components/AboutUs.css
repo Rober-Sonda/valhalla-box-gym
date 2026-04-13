@@ -31,7 +31,7 @@
 .about-story p {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-muted);
 }
 
 .trainers-grid {
@@ -84,7 +84,7 @@
 
 .quote {
   font-style: italic;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.5;
   padding: 0 1rem;

@@ -12,6 +12,7 @@
   "dependencies": {
     "firebase": "^12.11.0",
     "heic-decode": "^2.1.0",
+    "jimp": "^1.6.1",
     "jpeg-js": "^0.4.4",
     "jspdf": "^4.2.1",
     "lucide-react": "^0.330.0",

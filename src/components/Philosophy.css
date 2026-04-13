@@ -39,7 +39,7 @@
 }
 
 .philosophy-text p {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-muted);
   font-size: 1.1rem;
   line-height: 1.8;
   font-style: italic;
@@ -76,7 +76,7 @@
 }
 
 .feature-item p {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-muted);
   line-height: 1.5;
 }
 

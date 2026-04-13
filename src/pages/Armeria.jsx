@@ -110,63 +110,63 @@ const Armeria = () => {
       name: 'Proteína Gold Standard (Optimum Nutrition)',
       price: '110000',
       tag: 'Elixir de Recuperación',
-      image: '/assets/images/products/supp_on.jpg'
+      image: '/assets/images/products/supp_on.png'
     },
     {
       id: 14,
       name: 'Creatina Monohidrato (ENA)',
       price: '45000',
       tag: 'Fuerza Bruta',
-      image: '/assets/images/products/supp_ena.jpg'
+      image: '/assets/images/products/supp_ena.png'
     },
     {
       id: 15,
       name: 'Pre-Entreno C4 Explosive (Cellucor)',
       price: '60000',
       tag: 'Furia de Berserker',
-      image: '/assets/images/products/supp_c4.jpg'
+      image: '/assets/images/products/supp_c4.png'
     },
     {
       id: 16,
       name: 'Animal Pak Multivitamínico (Universal)',
       price: '85000',
       tag: 'Vitalidad Ancestral',
-      image: '/assets/images/products/supp_animal.jpg'
+      image: '/assets/images/products/supp_animal.png'
     },
     {
       id: 17,
       name: 'Syntha-6 Protein Blend (BSN)',
       price: '95000',
       tag: 'Sabor de Valhalla',
-      image: '/assets/images/products/supp_syntha.jpg'
+      image: '/assets/images/products/supp_syntha.png'
     },
     {
       id: 18,
       name: 'ISO100 Hidrolizada (Dymatize)',
       price: '130000',
       tag: 'Absorción Relámpago',
-      image: '/assets/images/products/supp_iso100.jpg'
+      image: '/assets/images/products/supp_iso100.png'
     },
     {
       id: 19,
       name: 'Whey Protein (Star Nutrition)',
       price: '75000',
       tag: 'Armadura Muscular',
-      image: '/assets/images/products/supp_star.jpg'
+      image: '/assets/images/products/supp_star.png'
     },
     {
       id: 20,
       name: 'L-Glutamina Pura (SPX)',
       price: '38000',
       tag: 'Aliento Sanador',
-      image: '/assets/images/products/supp_glutamina.jpg'
+      image: '/assets/images/products/supp_glutamina.png'
     },
     {
       id: 21,
       name: 'AminoX BCAA (BSN)',
       price: '55000',
       tag: 'Resistencia de Odín',
-      image: '/assets/images/products/supp_aminox.jpg'
+      image: '/assets/images/products/supp_aminox.png'
     }
   ];
 
@@ -182,7 +182,7 @@ const Armeria = () => {
     <div className="armeria-page">
       <div className="armeria-header">
         <div className="armeria-overlay"></div>
-        <div className="container relative z-10 text-center" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: '10rem', paddingBottom: '7rem', color: '#fff' }}>
+        <div className="container relative z-10 text-center" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: '10rem', paddingBottom: '7rem', color: 'var(--text-light)' }}>
           <h1 className="page-title">LA <span className="text-gold">ARMERÍA</span></h1>
           <p className="page-subtitle" style={{ maxWidth: '600px' }}>VÍSTETE PARA LA BATALLA. ARMADURA BERSERKER PARA GUERREROS.</p>
         </div>
@@ -304,7 +304,7 @@ const Armeria = () => {
                     />
                   </div>
                   <div className="product-info">
-                    <span className="product-tag" style={{ backgroundColor: 'var(--accent-gold)', color: '#000', fontWeight: 'bold' }}>{prod.tag}</span>
+                    <span className="product-tag" style={{ backgroundColor: 'var(--accent-gold)', color: 'var(--bg-dark)', fontWeight: 'bold' }}>{prod.tag}</span>
                     <h3>{prod.name}</h3>
                     <p className="product-price text-gold" style={{ fontSize: '1.2rem', marginTop: 'auto', marginBottom: '1.5rem' }}>${prod.price}</p>
                     <button 

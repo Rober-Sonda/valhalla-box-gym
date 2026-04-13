@@ -102,7 +102,7 @@
 }
 
 .form-group input::placeholder, .form-group select:invalid {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-muted);
 }
 
 /* Chrome/Webkit Autofill form styles fix */

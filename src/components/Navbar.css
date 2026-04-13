@@ -194,7 +194,7 @@
   top: 0px;
   right: 0px;
   background-color: #ef4444;
-  color: white;
+  color: var(--text-light);
   font-size: 0.65rem;
   font-weight: bold;
   border-radius: 50%;
