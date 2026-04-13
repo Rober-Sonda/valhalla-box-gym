@@ -107,66 +107,66 @@ const Armeria = () => {
   const supplementProducts = [
     {
       id: 13,
-      name: 'Pro Elite Mass Gainer (Muscle Fuel)',
+      name: 'Proteína Gold Standard (Optimum Nutrition)',
       price: '110000',
-      tag: 'Tamaño Colosal',
-      image: '/assets/images/products/new_mass_gainer.png'
+      tag: 'Elixir de Recuperación',
+      image: '/assets/images/products/supp_on.jpg'
     },
     {
       id: 14,
       name: 'Creatina Monohidrato (ENA)',
       price: '45000',
       tag: 'Fuerza Bruta',
-      image: '/assets/images/products/new_ena.png'
+      image: '/assets/images/products/supp_ena.jpg'
     },
     {
       id: 15,
-      name: 'Nitro Fuel Pre-Workout',
+      name: 'Pre-Entreno C4 Explosive (Cellucor)',
       price: '60000',
       tag: 'Furia de Berserker',
-      image: '/assets/images/products/new_nitro.png'
+      image: '/assets/images/products/supp_c4.jpg'
     },
     {
       id: 16,
-      name: 'Pre-Workout Performax',
+      name: 'Animal Pak Multivitamínico (Universal)',
       price: '85000',
-      tag: 'Concentración Absoluta',
-      image: '/assets/images/products/new_performax.png'
+      tag: 'Vitalidad Ancestral',
+      image: '/assets/images/products/supp_animal.jpg'
     },
     {
       id: 17,
-      name: 'Advanced Whey (Muscle Fuel)',
+      name: 'Syntha-6 Protein Blend (BSN)',
       price: '95000',
       tag: 'Sabor de Valhalla',
-      image: '/assets/images/products/new_adv_whey.png'
+      image: '/assets/images/products/supp_syntha.jpg'
     },
     {
       id: 18,
-      name: 'Ultra-Whey Isolate Premium',
+      name: 'ISO100 Hidrolizada (Dymatize)',
       price: '130000',
       tag: 'Absorción Relámpago',
-      image: '/assets/images/products/new_ultra_whey.png'
+      image: '/assets/images/products/supp_iso100.jpg'
     },
     {
       id: 19,
-      name: 'Elite Protein Powder (Vibrant Health)',
+      name: 'Whey Protein (Star Nutrition)',
       price: '75000',
       tag: 'Armadura Muscular',
-      image: '/assets/images/products/new_protein.png'
+      image: '/assets/images/products/supp_star.jpg'
     },
     {
       id: 20,
-      name: 'Glow Biotics Daily Probiotic',
+      name: 'L-Glutamina Pura (SPX)',
       price: '38000',
       tag: 'Aliento Sanador',
-      image: '/assets/images/products/new_biotics.png'
+      image: '/assets/images/products/supp_glutamina.jpg'
     },
     {
       id: 21,
-      name: 'Ultra-Whey Premium Isolate',
+      name: 'AminoX BCAA (BSN)',
       price: '55000',
       tag: 'Resistencia de Odín',
-      image: '/assets/images/products/new_ultra_whey.png'
+      image: '/assets/images/products/supp_aminox.jpg'
     }
   ];
 

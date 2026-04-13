@@ -191,7 +191,21 @@
 
 /* Elixir product real image styling */
 .elixir-bg {
+  position: relative;
   background: radial-gradient(circle at center, #2a2215 0%, #0a0a0c 100%);
+  overflow: hidden;
+}
+
+.elixir-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .elixir-image {
