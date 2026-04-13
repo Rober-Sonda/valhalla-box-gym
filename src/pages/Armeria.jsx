@@ -107,10 +107,10 @@ const Armeria = () => {
   const supplementProducts = [
     {
       id: 13,
-      name: 'Proteína Gold Standard (Optimum Nutrition)',
+      name: 'Pro Elite Mass Gainer (Muscle Fuel)',
       price: '110000',
-      tag: 'Elixir de Recuperación',
-      image: '/assets/images/products/supp_on.png'
+      tag: 'Tamaño Colosal',
+      image: '/assets/images/products/new_mass_gainer.png'
     },
     {
       id: 14,
@@ -135,17 +135,17 @@ const Armeria = () => {
     },
     {
       id: 17,
-      name: 'Syntha-6 Protein Blend (BSN)',
+      name: 'Advanced Whey (Muscle Fuel)',
       price: '95000',
       tag: 'Sabor de Valhalla',
-      image: '/assets/images/products/supp_syntha.png'
+      image: '/assets/images/products/new_adv_whey.png'
     },
     {
       id: 18,
-      name: 'ISO100 Hidrolizada (Dymatize)',
+      name: 'Ultra-Whey Isolate Premium',
       price: '130000',
       tag: 'Absorción Relámpago',
-      image: '/assets/images/products/supp_iso100.png'
+      image: '/assets/images/products/new_ultra_whey.png'
     },
     {
       id: 19,
@@ -156,10 +156,10 @@ const Armeria = () => {
     },
     {
       id: 20,
-      name: 'L-Glutamina Pura (SPX)',
+      name: 'Glow Biotics Daily Probiotic',
       price: '38000',
       tag: 'Aliento Sanador',
-      image: '/assets/images/products/supp_glutamina.png'
+      image: '/assets/images/products/new_biotics.png'
     },
     {
       id: 21,

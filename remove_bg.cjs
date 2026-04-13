@@ -2,10 +2,10 @@ const { Jimp } = require('jimp');
 const fs = require('fs');
 
 const files = [
-  'new_ena.png',
-  'new_protein.png',
-  'new_performax.png',
-  'new_nitro.png'
+  'new_adv_whey.png',
+  'new_ultra_whey.png',
+  'new_mass_gainer.png',
+  'new_biotics.png'
 ];
 
 async function processImages() {
