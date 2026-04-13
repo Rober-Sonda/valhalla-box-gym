@@ -116,7 +116,7 @@ const Facilities = () => {
       id: 3,
       image: ['/assets/images/facilities/epic_plates_v2.png', '/assets/images/facilities/epic_plates_v2_2.png'],
       title: 'EL HIERRO DE ASGARD',
-      desc: 'Los cimientos de la pura fuerza. Hierro acumulado para aquellos que no temen añadir un desafío más a su propia leyenda personal.'
+      desc: 'Los cimientos de la verdadera fuerza bruta. Auténtico hierro nórdico para aquellos que no temen ganarse un lugar en la leyenda del Valhalla.'
     },
     {
       id: 4,

@@ -8,6 +8,7 @@ import './Armeria.css';
 const Armeria = () => {
   const { addToCart } = useCart();
   const { currentUser, setIsAuthModalOpen } = useAuth();
+  const [activeCategory, setActiveCategory] = React.useState('todos');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -103,6 +104,72 @@ const Armeria = () => {
     }
   ];
 
+  const supplementProducts = [
+    {
+      id: 13,
+      name: 'Proteína Gold Standard (Optimum Nutrition)',
+      price: '110000',
+      tag: 'Elixir de Recuperación',
+      image: '/assets/images/products/supp_on.jpg'
+    },
+    {
+      id: 14,
+      name: 'Creatina Monohidrato (ENA)',
+      price: '45000',
+      tag: 'Fuerza Bruta',
+      image: '/assets/images/products/supp_ena.jpg'
+    },
+    {
+      id: 15,
+      name: 'Pre-Entreno C4 Explosive (Cellucor)',
+      price: '60000',
+      tag: 'Furia de Berserker',
+      image: '/assets/images/products/supp_c4.jpg'
+    },
+    {
+      id: 16,
+      name: 'Animal Pak Multivitamínico (Universal)',
+      price: '85000',
+      tag: 'Vitalidad Ancestral',
+      image: '/assets/images/products/supp_animal.jpg'
+    },
+    {
+      id: 17,
+      name: 'Syntha-6 Protein Blend (BSN)',
+      price: '95000',
+      tag: 'Sabor de Valhalla',
+      image: '/assets/images/products/supp_syntha.jpg'
+    },
+    {
+      id: 18,
+      name: 'ISO100 Hidrolizada (Dymatize)',
+      price: '130000',
+      tag: 'Absorción Relámpago',
+      image: '/assets/images/products/supp_iso100.jpg'
+    },
+    {
+      id: 19,
+      name: 'Whey Protein (Star Nutrition)',
+      price: '75000',
+      tag: 'Armadura Muscular',
+      image: '/assets/images/products/supp_star.jpg'
+    },
+    {
+      id: 20,
+      name: 'L-Glutamina Pura (SPX)',
+      price: '38000',
+      tag: 'Aliento Sanador',
+      image: '/assets/images/products/supp_glutamina.jpg'
+    },
+    {
+      id: 21,
+      name: 'AminoX BCAA (BSN)',
+      price: '55000',
+      tag: 'Resistencia de Odín',
+      image: '/assets/images/products/supp_aminox.jpg'
+    }
+  ];
+
   const handleAddToCart = (product) => {
     if (!currentUser) {
       setIsAuthModalOpen(true);
@@ -122,57 +189,136 @@ const Armeria = () => {
       </div>
 
       <div className="container armeria-products-section">
-        <h2 className="text-center" style={{ fontSize: '2rem', marginBottom: '2rem' }}>FORJA LOCAL <span className="text-gold">(EN STOCK)</span></h2>
+        <div className="armeria-tabs">
+          <button 
+            className={`armeria-tab-btn ${activeCategory === 'todos' ? 'active' : ''}`} 
+            onClick={() => setActiveCategory('todos')}
+          >
+            TODOS
+          </button>
+          <button 
+            className={`armeria-tab-btn ${activeCategory === 'vestimenta' ? 'active' : ''}`} 
+            onClick={() => setActiveCategory('vestimenta')}
+          >
+            FORJA LOCAL
+          </button>
+          <button 
+            className={`armeria-tab-btn ${activeCategory === 'equipamiento' ? 'active' : ''}`} 
+            onClick={() => setActiveCategory('equipamiento')}
+          >
+            EQUIPO DE BATALLA
+          </button>
+          <button 
+            className={`armeria-tab-btn ${activeCategory === 'elixires' ? 'active' : ''}`} 
+            onClick={() => setActiveCategory('elixires')}
+          >
+            ELIXIRES (SUPLEMENTOS)
+          </button>
+        </div>
         
-        <div className="armeria-grid" style={{ marginBottom: '4rem' }}>
-          {stockProducts.map((prod) => (
-            <div className="product-card" key={prod.id}>
-              <div className="product-image-container">
-                <img src={prod.image} alt={prod.name} className="product-image" />
-              </div>
-              <div className="product-info">
-                <span className="product-tag">{prod.tag}</span>
-                <h3>{prod.name}</h3>
-                <p className="product-price text-gold">${prod.price}</p>
-                <button 
-                  className="btn-outline product-btn"
-                  onClick={() => handleAddToCart(prod)}
-                >
-                  Agregar al Botín
-                </button>
-              </div>
+        {(activeCategory === 'vestimenta' || activeCategory === 'todos') && (
+          <div className="category-section">
+            <h2 className="section-title">FORJA LOCAL <span className="text-gold">(EN STOCK)</span></h2>
+            <p className="section-description">
+              Vístete con los colores del Valhalla. Indumentaria probada en batalla y forjada para resistir el entrenamiento más despiadado.
+            </p>
+            <div className="armeria-grid">
+              {stockProducts.map((prod) => (
+                <div className="product-card" key={prod.id}>
+                  <div className="product-image-container">
+                    <img src={prod.image} alt={prod.name} className="product-image" />
+                  </div>
+                  <div className="product-info">
+                    <span className="product-tag">{prod.tag}</span>
+                    <h3>{prod.name}</h3>
+                    <p className="product-price text-gold">${prod.price}</p>
+                    <button 
+                      className="btn-outline product-btn"
+                      onClick={() => handleAddToCart(prod)}
+                    >
+                      Agregar al Botín
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
 
-        <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '4rem auto', width: '50%' }}></div>
-
-        <h2 className="text-center" style={{ fontSize: '2rem', marginBottom: '1rem' }}>EQUIPAMIENTO DE BATALLA <span className="text-gold">(POR ENCARGO)</span></h2>
-        <p className="text-center" style={{ color: 'rgba(255, 255, 255, 0.7)', marginBottom: '3rem', maxWidth: '700px', margin: '0 auto 3rem auto', fontSize: '1rem', lineHeight: '1.5' }}>
-          Reserva tu armadura especial de combate. Los guerreros que elijan adquirir estos artículos
-          comprenden que la forja toma su tiempo (demora de entrega aplicable a pedidos bajo demanda).
-        </p>
-
-        <div className="armeria-grid">
-          {preorderProducts.map((prod) => (
-            <div className="product-card" key={prod.id}>
-              <div className="product-image-container">
-                <img src={prod.image} alt={prod.name} className="product-image" />
-              </div>
-              <div className="product-info">
-                <span className="product-tag" style={{ backgroundColor: '#2a2a2a', color: '#ccc' }}>{prod.tag}</span>
-                <h3>{prod.name}</h3>
-                <p className="product-price text-gold">${prod.price}</p>
-                <button 
-                  className="btn-outline product-btn"
-                  onClick={() => handleAddToCart(prod)}
-                >
-                  Encargar Botín
-                </button>
-              </div>
+        {(activeCategory === 'equipamiento' || activeCategory === 'todos') && (
+          <div className="category-section">
+            {activeCategory === 'todos' && <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '4rem auto', width: '50%' }}></div>}
+            <h2 className="section-title">EQUIPAMIENTO DE BATALLA <span className="text-gold">(POR ENCARGO)</span></h2>
+            <p className="section-description">
+              Reserva tu armadura especial de combate. Los guerreros que elijan adquirir estos artículos
+              comprenden que la forja toma su tiempo (demora aplicable).
+            </p>
+            <div className="armeria-grid">
+              {preorderProducts.map((prod) => (
+                <div className="product-card" key={prod.id}>
+                  <div className="product-image-container">
+                    <img src={prod.image} alt={prod.name} className="product-image" />
+                  </div>
+                  <div className="product-info">
+                    <span className="product-tag" style={{ backgroundColor: '#2a2a2a', color: '#ccc' }}>{prod.tag}</span>
+                    <h3>{prod.name}</h3>
+                    <p className="product-price text-gold">${prod.price}</p>
+                    <button 
+                      className="btn-outline product-btn"
+                      onClick={() => handleAddToCart(prod)}
+                    >
+                      Encargar Botín
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
+
+        {(activeCategory === 'elixires' || activeCategory === 'todos') && (
+          <div className="category-section">
+            {activeCategory === 'todos' && <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '4rem auto', width: '50%' }}></div>}
+            <h2 className="section-title">ELIXIRES DE LOS DIOSES <span className="text-gold">(SUPLEMENTOS)</span></h2>
+            <p className="section-description">
+              Pociones de máxima pureza. Marcas de clase mundial elegidas y testeadas rigurosamente para 
+              garantizar que lleves tu recuperación y fuerza bruta al máximo nivel posible.
+            </p>
+            <div className="armeria-grid">
+              {supplementProducts.map((prod) => (
+                <div className="product-card" key={prod.id}>
+                  <div className="product-image-container elixir-bg">
+                    <img 
+                      src={prod.image} 
+                      alt={prod.name} 
+                      className="product-image elixir-image" 
+                      style={{ objectFit: 'contain', padding: '1rem' }} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/assets/images/products/epic_supplement_placeholder.png';
+                        // Remueve clase estilo real si usa placeholder original
+                        e.target.className = "product-image";
+                        e.target.style.objectFit = "cover";
+                        e.target.style.padding = "0";
+                      }}
+                    />
+                  </div>
+                  <div className="product-info">
+                    <span className="product-tag" style={{ backgroundColor: 'var(--accent-gold)', color: '#000', fontWeight: 'bold' }}>{prod.tag}</span>
+                    <h3>{prod.name}</h3>
+                    <p className="product-price text-gold" style={{ fontSize: '1.2rem', marginTop: 'auto', marginBottom: '1.5rem' }}>${prod.price}</p>
+                    <button 
+                      className="btn-outline product-btn"
+                      onClick={() => handleAddToCart(prod)}
+                    >
+                      Tomar Elixir
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
