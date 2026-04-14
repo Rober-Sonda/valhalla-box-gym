@@ -1,5 +1,7 @@
 .plan-modal-content {
   max-width: 550px !important; /* Más grande que el auth modal para agrupar más data */
+  max-height: 90vh;
+  overflow-y: auto;
   padding: 2.5rem;
 }
 
@@ -56,8 +58,6 @@
 /* Response móvil */
 @media (max-width: 600px) {
   .plan-modal-content {
-    max-height: 90vh; /* Permite scroll */
-    overflow-y: auto;
     padding: 2rem 1.5rem;
   }
   

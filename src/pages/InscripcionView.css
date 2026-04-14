@@ -9,7 +9,7 @@
 }
 
 .inscripcion-card {
-  background-color: #1a1a1c;
+  background-color: var(--bg-card);
   border: 1px solid var(--gold);
   border-radius: 8px;
   width: 100%;
@@ -47,7 +47,7 @@
 }
 
 .inscripcion-header .subtitle {
-  color: #ccc;
+  color: var(--text-muted);
   font-size: 1rem;
   font-style: italic;
   letter-spacing: 1px;
@@ -63,7 +63,7 @@
   text-align: center;
   margin: 2rem 0;
   padding: 1.5rem;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--bg-dark);
   border-radius: 4px;
   border-left: 3px solid var(--gold);
 }
@@ -87,7 +87,7 @@
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .data-grid {
@@ -115,14 +115,14 @@
 
 .data-label {
   font-size: 0.85rem;
-  color: #888;
+  color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: 0.25rem;
 }
 
 .data-value {
   font-size: 1.1rem;
-  color: #eee;
+  color: var(--text-light);
 }
 
 .inscripcion-footer {
@@ -131,14 +131,14 @@
 }
 
 .footer-text {
-  color: #888;
+  color: var(--text-muted);
   font-size: 0.9rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 
 .footer-date {
-  color: #aaa;
+  color: var(--text-muted);
   font-size: 1rem;
   font-weight: 500;
 }
