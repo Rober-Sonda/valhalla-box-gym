@@ -11,7 +11,7 @@ const plans = [
   {
     id: 'escaldo',
     name: 'ESCALDO',
-    desc: 'Nutrición + Entrenamiento (Añadible como extra a otro plan)',
+    desc: 'Plan Nutricional + Rutina (Extra Opcional)',
     price: '39.000',
     period: '/mes',
     features: [
