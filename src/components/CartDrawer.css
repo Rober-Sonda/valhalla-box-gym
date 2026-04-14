@@ -133,19 +133,21 @@
 .quantity-ctrl button {
   background: transparent;
   border: none;
-  color: var(--text-light);
-  width: 30px;
-  height: 30px;
+  color: var(--accent-gold);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .quantity-ctrl button:hover {
-  background: rgba(197, 160, 89, 0.2);
-  color: var(--accent-gold);
+  background: var(--accent-gold);
+  color: #000000;
 }
 
 .quantity-ctrl span {
