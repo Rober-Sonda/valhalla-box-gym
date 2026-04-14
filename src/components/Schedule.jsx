@@ -10,13 +10,13 @@ const Schedule = () => {
       name: 'Musculación',
       schedules: [
         { days: 'Lunes a Viernes', time: '08:00 a 10:00\n13:00 a 21:30', trainer: 'Lautaro, Santino & Nacho' },
-        { days: 'Sábados', time: '11:00 a 14:00', trainer: 'Lautaro' }
+        { days: 'Sábados', time: '11:00 a 14:00', trainer: 'Lautaro & Nacho' }
       ]
     },
     {
       name: 'Crosstraining',
       schedules: [
-        { days: 'Lunes, Miérc y Viernes', time: '14:00 a 15:00\n20:15 a 21:15', trainer: 'Santino & Nacho' }
+        { days: 'Lunes, Miérc y Viernes', time: '14:00 a 15:00\n20:00 a 21:00', trainer: 'Nacho' }
       ]
     },
     {
@@ -28,7 +28,7 @@ const Schedule = () => {
     {
       name: 'Kickboxing',
       schedules: [
-        { days: 'Lunes, Miérc y Viernes', time: '13:00 a 14:00\n19:15 a 20:15', trainer: 'Nacho' },
+        { days: 'Lunes, Miérc y Viernes', time: '13:00 a 14:00\n19:00 a 20:00', trainer: 'Nacho' },
         { days: 'Martes y Jueves', time: '19:00 a 20:00', trainer: 'Nacho' }
       ]
     }
