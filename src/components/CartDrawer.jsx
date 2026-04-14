@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { X, Trash2, ShieldCheck, Phone } from 'lucide-react';
@@ -10,6 +11,7 @@ const CartDrawer = () => {
   const { cart, removeFromCart, updateQuantity, cartTotal, clearCart, isCartOpen, setIsCartOpen } = useCart();
   const { currentUser, setIsAuthModalOpen } = useAuth();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const navigate = useNavigate();
 
   if (!isCartOpen) return null;
 
@@ -78,9 +80,12 @@ const CartDrawer = () => {
               <p>Tu botín está vacío, guerrero.</p>
               <button 
                 className="btn-outline w-100 mt-4" 
-                onClick={() => setIsCartOpen(false)}
+                onClick={() => {
+                  setIsCartOpen(false);
+                  navigate('/armeria');
+                }}
               >
-                VOLVER A LA ARMERÍA
+                IR A LA ARMERÍA
               </button>
             </div>
           ) : (
