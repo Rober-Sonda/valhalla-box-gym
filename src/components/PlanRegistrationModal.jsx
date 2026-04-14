@@ -21,6 +21,13 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
   
   const [isUploading, setIsUploading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [addEscaldo, setAddEscaldo] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setAddEscaldo(false);
+    }
+  }, [isOpen]);
 
   const handleCopyAlias = () => {
     navigator.clipboard.writeText('valhalla.box.gym');
@@ -55,9 +62,18 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
       const docId = newDocRef.id;
       
       const numericPrice = Number(plan.price.replace(/\./g, ''));
-      const discountedPrice = numericPrice * 0.9;
       const isEfectivo = formData.pago === 'efectivo' && plan?.id !== 'escaldo';
-      const finalPriceFormatted = new Intl.NumberFormat('es-AR').format(isEfectivo ? discountedPrice : numericPrice);
+
+      let totalAmount = numericPrice;
+      if (isEfectivo) {
+        totalAmount = numericPrice * 0.9;
+      }
+      if (addEscaldo) {
+        totalAmount += 39000;
+      }
+
+      const finalPriceFormatted = new Intl.NumberFormat('es-AR').format(totalAmount);
+      const finalPlanName = addEscaldo ? `${plan.name} + ESCALDO` : plan.name;
 
       const inscriptionData = {
         userId: currentUser?.uid || null,
@@ -70,8 +86,8 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
         pago: formData.pago,
         precioFinal: finalPriceFormatted,
         plan: {
-          name: plan.name,
-          price: plan.price,
+          name: finalPlanName,
+          price: finalPriceFormatted,
           period: plan.period || ''
         },
         createdAt: serverTimestamp()
@@ -93,8 +109,8 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
       // Generar mensaje de WhatsApp
       const message = 
         `⚔️ ¡Skål Valhalla! Soy *${formData.nombre}* (DNI: ${formData.dni}).\n` +
-        `Me he registrado desde la web para el plan *${plan.name}*.\n\n` +
-        `💰 *Método de Pago*: ${isEfectivo ? 'Efectivo (10% OFF)' : 'Transferencia'}\n` +
+        `Me he registrado desde la web para el plan *${finalPlanName}*.\n\n` +
+        `💰 *Método de Pago*: ${isEfectivo ? (addEscaldo ? 'Efectivo (-10% al plan base)' : 'Efectivo (10% OFF)') : 'Transferencia'}\n` +
         `💳 *Total a coordinar*: $${finalPriceFormatted}\n\n` +
         `🪓 *MI PASE OFICIAL*: ${inscriptionUrl}`;
 
@@ -214,6 +230,26 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
             </div>
           </div>
 
+          {plan?.id !== 'escaldo' && (
+            <div className="form-group-row mt-3 mb-2">
+              <div 
+                className="disclaimer-info w-100" 
+                style={{ cursor: 'pointer', borderLeft: addEscaldo ? '3px solid var(--accent-gold)' : '3px solid var(--border-color)', backgroundColor: addEscaldo ? 'rgba(197, 160, 89, 0.15)' : 'rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }}
+                onClick={() => setAddEscaldo(!addEscaldo)}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                  <div style={{ width: '20px', height: '20px', minWidth: '20px', border: '2px solid var(--accent-gold)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: addEscaldo ? 'var(--accent-gold)' : 'transparent', transition: 'all 0.3s ease' }}>
+                    {addEscaldo && <Check size={14} color="#000" />}
+                  </div>
+                  <div>
+                    <strong style={{ color: 'var(--text-light)', display: 'block', marginBottom: '2px' }}>Sumar Plan Nutricional ESCALDO</strong>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Añadir seguimiento nutricional y de rutina 100% personalizado por +$39.000/mes</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="form-group-row mt-2 d-block">
             <div className="form-group w-100">
               <label>Método de Pago (Para coordinar por WhatsApp)</label>
@@ -251,8 +287,8 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
 
           {(formData.pago === 'efectivo' && plan?.id !== 'escaldo') && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(197, 160, 89, 0.1)', border: '1px solid rgba(197, 160, 89, 0.3)', borderRadius: '8px' }}>
-              <strong className="text-gold">¡10% de Descuento Aplicado!</strong><br />
-              El precio final a abonar será de <strong>${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) * 0.9)}</strong> {plan.period}
+              <strong className="text-gold">¡10% de Descuento Aplicado! {addEscaldo && <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>(Al plan base)</span>}</strong><br />
+              El precio final a abonar será de <strong>${new Intl.NumberFormat('es-AR').format((Number(plan.price.replace(/\./g, '')) * 0.9) + (addEscaldo ? 39000 : 0))}</strong> {plan.period}
             </div>
           )}
 
@@ -270,7 +306,7 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                   {copied ? <Check size={18} color="var(--accent-gold)" /> : <Copy size={18} color="var(--text-muted)" />}
                 </button>
               </div>
-              <small className="text-muted">El pago final es de ${plan.price}. Se coordinará enviando el comprobante por WhatsApp.</small>
+              <small className="text-muted">El pago final es de ${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) + (addEscaldo ? 39000 : 0))}. Se coordinará enviando el comprobante.</small>
             </div>
           )}
 
