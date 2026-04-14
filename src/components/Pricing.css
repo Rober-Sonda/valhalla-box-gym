@@ -139,8 +139,7 @@
 }
 
 .pricing-card-left {
-  flex: 0 0 auto;
-  min-width: 200px;
+  flex: 0 0 260px;
   position: relative;
   z-index: 1;
 }
