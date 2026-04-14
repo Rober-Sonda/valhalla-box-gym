@@ -112,6 +112,33 @@
   text-shadow: 0 0 10px rgba(197, 160, 89, 0.5);
 }
 
+.nav-icons-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-unete-btn {
+  background-color: transparent;
+  color: var(--accent-gold);
+  border: 1px solid var(--accent-gold);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  padding: 0.5rem 1.4rem;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-unete-btn:hover {
+  background-color: rgba(197, 160, 89, 0.15);
+  box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+  transform: translateY(-2px);
+}
+
 .mobile-only {
   display: none;
 }

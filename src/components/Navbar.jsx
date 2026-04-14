@@ -105,35 +105,39 @@ const Navbar = () => {
             <a href="/#pricing" className={activeSection === 'pricing' ? 'active' : ''}>Tarifas</a>
             <Link to="/armeria">Armería</Link>
             
-            <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle Theme">
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            
-            <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn">
-              <GoldSack size={22} />
-              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-            </button>
+            <div className="nav-icons-group">
+              <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle Theme">
+                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+              
+              <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn">
+                <GoldSack size={22} />
+                {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+              </button>
+            </div>
 
             {currentUser ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <span className="text-gold" style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
                   {currentUser.displayName?.split(' ')[0] || 'Guerrero'}
                 </span>
-                <button onClick={logout} className="btn-outline nav-btn" style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}>SALIR</button>
+                <button onClick={logout} className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem' }}>SALIR</button>
               </div>
             ) : (
-              <button onClick={() => setIsAuthModalOpen(true)} className="btn-primary nav-btn">Únete Ahora</button>
+              <button onClick={() => setIsAuthModalOpen(true)} className="nav-unete-btn">ÚNETE AHORA</button>
             )}
           </div>
 
           <div className="mobile-only">
-            <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn" style={{ marginRight: '0.5rem' }}>
-              <GoldSack size={24} />
-              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-            </button>
-            <button onClick={toggleTheme} className="theme-toggle-btn">
-              {isDark ? <Sun size={24} /> : <Moon size={24} />}
-            </button>
+            <div className="nav-icons-group">
+              <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn">
+                <GoldSack size={24} />
+                {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+              </button>
+              <button onClick={toggleTheme} className="theme-toggle-btn">
+                {isDark ? <Sun size={24} /> : <Moon size={24} />}
+              </button>
+            </div>
             <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -149,9 +153,9 @@ const Navbar = () => {
             <Link to="/armeria" onClick={() => setMobileMenuOpen(false)}>Armería</Link>
             
             {currentUser ? (
-              <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="btn-outline mobile-btn">SALIR DE LA CUENTA</button>
+              <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="nav-unete-btn w-100" style={{marginTop: '1rem'}}>SALIR DE LA CUENTA</button>
             ) : (
-              <button onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }} className="btn-primary mobile-btn">Únete Ahora</button>
+              <button onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }} className="nav-unete-btn w-100" style={{marginTop: '1rem'}}>ÚNETE AHORA</button>
             )}
           </div>
         )}
