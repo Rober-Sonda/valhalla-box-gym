@@ -119,9 +119,9 @@
 }
 
 .nav-unete-btn {
-  background-color: transparent;
-  color: var(--accent-gold);
-  border: 1px solid var(--accent-gold);
+  background-color: var(--accent-gold);
+  color: #000000;
+  border: none;
   font-family: var(--font-heading);
   font-size: 1rem;
   letter-spacing: 2px;
@@ -131,11 +131,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  font-weight: 700;
 }
 
 .nav-unete-btn:hover {
-  background-color: rgba(197, 160, 89, 0.15);
-  box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+  background-color: #dfba6b;
+  box-shadow: 0 4px 15px rgba(197, 160, 89, 0.4);
   transform: translateY(-2px);
 }
 
