@@ -88,7 +88,7 @@ const Navbar = () => {
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
       <CartDrawer />
 
-      <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+      <nav className={`navbar ${isScrolled || window.location.pathname !== '/' ? 'scrolled' : ''}`}>
         <div className="navbar-container">
           <Link to="/" className="logo-container">
             <Dumbbell className="logo-icon" size={32} />
