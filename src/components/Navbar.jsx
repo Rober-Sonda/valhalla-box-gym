@@ -77,7 +77,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768 && mobileMenuOpen) setMobileMenuOpen(false);
+      if (window.innerWidth > 1024 && mobileMenuOpen) setMobileMenuOpen(false);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);

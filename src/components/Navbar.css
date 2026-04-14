@@ -208,7 +208,7 @@
   font-family: sans-serif;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .desktop-only {
     display: none;
   }
