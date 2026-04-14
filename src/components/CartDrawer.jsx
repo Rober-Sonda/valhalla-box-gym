@@ -92,7 +92,7 @@ const CartDrawer = () => {
                 ></div>
                 <div className="cart-item-details">
                   <h4>{item.name}</h4>
-                  <p className="text-gold font-bold">${item.price}</p>
+                  <p className="cart-item-price">${item.price}</p>
                   <div className="cart-item-controls">
                     <div className="quantity-ctrl">
                       <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
