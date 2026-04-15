@@ -49,7 +49,10 @@ const AboutUs = () => {
             <div className="trainer-card">
               <div 
                 className="trainer-img" 
-                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop')` }}
+                style={{ 
+                  backgroundImage: `url('/assets/images/jarl_santino.png')`,
+                  backgroundPosition: 'center 35%' 
+                }}
               ></div>
               <div className="trainer-info">
                 <h3>SANTINO</h3>
