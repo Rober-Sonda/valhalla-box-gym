@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { X, FileText, Dumbbell, Landmark, Banknote, Copy, Check, ChevronDown } from 'lucide-react';
+import { X, FileText, Dumbbell, Landmark, Banknote, Copy, Check, ChevronDown, Smartphone } from 'lucide-react';
 import { db } from '../firebase';
 import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import './PlanRegistrationModal.css';
@@ -30,7 +30,7 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
   }, [isOpen]);
 
   const handleCopyAlias = () => {
-    navigator.clipboard.writeText('valhalla.box.gym');
+    navigator.clipboard.writeText('robersonda.mp');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -49,7 +49,8 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
   if (!isOpen || !plan) return null;
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const generatePDFAndSend = async (e) => {
@@ -114,8 +115,44 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
         `💳 *Total a coordinar*: $${finalPriceFormatted}\n\n` +
         `🪓 *MI PASE OFICIAL*: ${inscriptionUrl}`;
 
-      // Redirigir a WhatsApp usando redireccion directa para evitar bloqueos
+      // Redirigir a WhatsApp usando redireccion directa
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      
+      if (formData.pago === 'mercadopago') {
+        try {
+          const apiUrl = "https://us-central1-valhalla-box-gym-app.cloudfunctions.net/api";
+            
+          const res = await fetch(`${apiUrl}/checkout/preference`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              items: [{
+                title: finalPlanName,
+                quantity: 1,
+                unit_price: totalAmount
+              }],
+              payer: {
+                name: formData.nombre,
+                email: formData.email
+              },
+              redirectUrl: window.location.origin
+            })
+          });
+          
+          if (!res.ok) throw new Error("Error generating preference");
+          
+          const data = await res.json();
+          window.open(whatsappUrl, '_blank');
+          window.location.href = data.init_point;
+          onClose();
+          return;
+        } catch (err) {
+          console.error(err);
+          alert("Hubo un error al conectar con Mercado Pago. Intenta nuevamente.");
+          setIsUploading(false);
+          return;
+        }
+      }
       
       window.location.href = whatsappUrl;
       onClose();
@@ -266,7 +303,20 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                   <div className="toggle-watermark">
                     <Landmark size={36} />
                   </div>
-                  <span className="toggle-content">Transferencia</span>
+                  <span className="toggle-content">Banco/Alias</span>
+                </div>
+                <div 
+                  className={`toggle-option ${formData.pago === 'mercadopago' && plan?.id !== 'escaldo' ? 'active' : ''} ${plan?.id === 'escaldo' ? 'disabled' : ''}`}
+                  onClick={() => {
+                    if (plan?.id !== 'escaldo') setFormData({...formData, pago: 'mercadopago'})
+                  }}
+                  style={plan?.id === 'escaldo' ? { opacity: 0.4, cursor: 'not-allowed', filter: 'grayscale(1)' } : {}}
+                  title={plan?.id === 'escaldo' ? 'Usar transferencia para planes a distancia' : ''}
+                >
+                  <div className="toggle-watermark">
+                    <Smartphone size={36} />
+                  </div>
+                  <span className="toggle-content">App MercadoPago</span>
                 </div>
                 <div 
                   className={`toggle-option ${(formData.pago === 'efectivo' && plan?.id !== 'escaldo') ? 'active' : ''} ${plan?.id === 'escaldo' ? 'disabled' : ''}`}
@@ -294,9 +344,9 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
 
           {(formData.pago === 'transferencia' || plan?.id === 'escaldo') && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
-              <strong>Alias para transferencia:</strong> <br />
+              <strong>Alias para transferencia (Banco):</strong> <br />
               <div className="d-flex-center mt-2 mb-2">
-                <code style={{ fontSize: '1.3em', color: 'var(--accent-gold)' }}>valhalla.box.gym</code>
+                <code style={{ fontSize: '1.3em', color: 'var(--accent-gold)' }}>robersonda.mp</code>
                 <button 
                   type="button" 
                   onClick={handleCopyAlias}
@@ -307,6 +357,13 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                 </button>
               </div>
               <small className="text-muted">El pago final es de ${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) + (addEscaldo ? 39000 : 0))}. Se coordinará enviando el comprobante.</small>
+            </div>
+          )}
+
+          {formData.pago === 'mercadopago' && plan?.id !== 'escaldo' && (
+            <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(0, 158, 227, 0.1)', border: '1px solid rgba(0, 158, 227, 0.3)', borderRadius: '8px' }}>
+              <strong style={{ color: '#009EE3' }}>Transferencia directa por Mercado Pago</strong><br />
+              Al presionar "FORJAR ALIANZA", se abrirá una nueva pestaña con la <strong>App de Mercado Pago</strong> para que transfieras el monto exacto (${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) + (addEscaldo ? 39000 : 0))}), y también te llevaremos a WhatsApp para que nos pases el comprobante.
             </div>
           )}
 

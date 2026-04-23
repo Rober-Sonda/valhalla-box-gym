@@ -1,14 +1,222 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import './Armeria.css';
+
+const ProductCard = ({ product, handleAddToCart, isElixir, onQuickView }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const images = product.images || (product.image ? [product.image] : []);
+  const hasMultipleImages = images.length > 1;
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  return (
+    <div className="product-card" onClick={() => onQuickView(product)}>
+      <div className={`product-image-container ${isElixir ? 'elixir-bg' : ''}`}>
+        {hasMultipleImages ? (
+          <div className="product-image-carousel">
+            <button className="carousel-btn prev" onClick={handlePrev}>
+              <ChevronLeft size={20} />
+            </button>
+            <img 
+              src={images[currentImageIndex]} 
+              alt={`${product.name} - ${currentImageIndex + 1}`} 
+              className={`product-image ${isElixir ? 'elixir-image' : ''}`}
+              style={isElixir ? { objectFit: 'contain', padding: '1rem' } : {}}
+            />
+            <button className="carousel-btn next" onClick={handleNext}>
+              <ChevronRight size={20} />
+            </button>
+            <div className="carousel-indicators">
+              {images.map((_, idx) => (
+                <div 
+                  key={idx} 
+                  className={`indicator-dot ${idx === currentImageIndex ? 'active' : ''}`}
+                  onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <img 
+            src={images[0]} 
+            alt={product.name} 
+            className={`product-image ${isElixir ? 'elixir-image' : ''}`}
+            style={isElixir ? { objectFit: 'contain', padding: '1rem' } : {}}
+            onError={(e) => {
+              if (isElixir) {
+                e.target.onerror = null;
+                e.target.src = '/assets/images/products/epic_supplement_placeholder.png';
+                e.target.className = "product-image";
+                e.target.style.objectFit = "cover";
+                e.target.style.padding = "0";
+              }
+            }}
+          />
+        )}
+      </div>
+      <div className="product-info">
+        <span className="product-tag" style={isElixir ? { backgroundColor: 'var(--accent-gold)', color: 'var(--bg-dark)', fontWeight: 'bold' } : (product.tag === 'Por Encargo' ? { backgroundColor: '#2a2a2a', color: '#ccc' } : {})}>
+          {product.tag}
+        </span>
+        <h3>{product.name}</h3>
+        {product.description && (
+          <p className="product-description" style={{ fontSize: '0.85rem', color: '#aaa', marginBottom: '1rem', fontStyle: 'italic' }}>
+            {product.description}
+          </p>
+        )}
+        <p className="product-price text-gold" style={isElixir ? { fontSize: '1.2rem', marginTop: 'auto', marginBottom: '1.5rem' } : {}}>
+          ${product.price}
+        </p>
+        <button 
+          className="btn-outline product-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddToCart(product);
+          }}
+        >
+          {isElixir ? 'Tomar Elixir' : (product.tag === 'Por Encargo' ? 'Encargar Botín' : 'Agregar al Botín')}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const QuickViewModal = ({ product, isElixir, onClose, onAddToCart }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedSize, setSelectedSize] = useState('');
+  
+  if (!product) return null;
+
+  const images = product.images || (product.image ? [product.image] : []);
+  const hasMultipleImages = images.length > 1;
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  return (
+    <div className="quick-view-overlay" onClick={onClose}>
+      <div className="quick-view-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="quick-view-close" onClick={onClose}>
+          <X size={24} />
+        </button>
+        <div className={`quick-view-image-section ${isElixir ? 'elixir-bg' : ''}`}>
+          {hasMultipleImages && (
+            <button className="carousel-btn prev" onClick={handlePrev}>
+              <ChevronLeft size={24} />
+            </button>
+          )}
+          <img 
+            src={images[currentImageIndex]} 
+            alt={`${product.name} - ${currentImageIndex + 1}`} 
+            className={`product-image ${isElixir ? 'elixir-image' : ''}`}
+            style={isElixir ? { objectFit: 'contain', padding: '2rem' } : {}}
+            onError={(e) => {
+              if (isElixir) {
+                e.target.onerror = null;
+                e.target.src = '/assets/images/products/epic_supplement_placeholder.png';
+                e.target.className = "product-image";
+                e.target.style.objectFit = "cover";
+                e.target.style.padding = "0";
+              }
+            }}
+          />
+          {hasMultipleImages && (
+            <button className="carousel-btn next" onClick={handleNext}>
+              <ChevronRight size={24} />
+            </button>
+          )}
+          {hasMultipleImages && (
+            <div className="carousel-indicators">
+              {images.map((_, idx) => (
+                <div 
+                  key={idx} 
+                  className={`indicator-dot ${idx === currentImageIndex ? 'active' : ''}`}
+                  onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="quick-view-info-section">
+          <span className="product-tag" style={isElixir ? { backgroundColor: 'var(--accent-gold)', color: 'var(--bg-dark)', fontWeight: 'bold', display: 'inline-block', width: 'fit-content', padding: '4px 8px', borderRadius: '4px', marginBottom: '1rem' } : (product.tag === 'Por Encargo' ? { backgroundColor: '#2a2a2a', color: '#ccc', display: 'inline-block', width: 'fit-content', padding: '4px 8px', borderRadius: '4px', marginBottom: '1rem' } : { display: 'inline-block', width: 'fit-content', padding: '4px 8px', borderRadius: '4px', marginBottom: '1rem', backgroundColor: 'var(--bg-dark)' })}>
+            {product.tag}
+          </span>
+          <h2>{product.name}</h2>
+          {product.description && (
+            <p className="product-description">{product.description}</p>
+          )}
+          <p className="product-price text-gold">${product.price}</p>
+          
+          {product.sizes && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <p style={{ color: 'var(--text-light)', marginBottom: '0.5rem', fontSize: '0.9rem' }}>SELECCIONAR TALLE / MEDIDA</p>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {product.sizes.map(size => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      background: selectedSize === size ? 'var(--accent-gold)' : 'transparent',
+                      color: selectedSize === size ? '#000' : 'var(--text-light)',
+                      border: `1px solid ${selectedSize === size ? 'var(--accent-gold)' : 'var(--border-color)'}`,
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontWeight: selectedSize === size ? 'bold' : 'normal',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <button 
+            className="btn-outline product-btn"
+            onClick={() => {
+              if (product.sizes && !selectedSize) {
+                alert('Por favor, selecciona un talle antes de agregar al botín.');
+                return;
+              }
+              onAddToCart({ ...product, selectedSize });
+              onClose();
+            }}
+          >
+            {isElixir ? 'Tomar Elixir' : (product.tag === 'Por Encargo' ? 'Encargar Botín' : 'Agregar al Botín')}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Armeria = () => {
   const { addToCart } = useCart();
   const { currentUser, setIsAuthModalOpen } = useAuth();
   const [activeCategory, setActiveCategory] = React.useState('todos');
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -16,91 +224,71 @@ const Armeria = () => {
 
   const stockProducts = [
     {
-      id: 1,
-      name: 'Remera Valhalla Clásica',
-      price: '15000',
+      id: 101,
+      name: 'Armadura Ligera del Berserker (Conjunto)',
+      price: '45000',
       tag: 'Más Vendido',
-      image: '/assets/images/products/tshirt_flat.png'
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      images: [
+        '/assets/images/products/new/IMG_5684.jpg',
+        '/assets/images/products/new/IMG_5685.jpg',
+        '/assets/images/products/new/IMG_5686.jpg'
+      ]
     },
     {
-      id: 2,
-      name: 'Musculosa Stringer Valhalla',
-      price: '14000',
+      id: 104,
+      name: 'Manto de Combate (Musculosa)',
+      price: '22500',
       tag: 'Entrenamiento',
-      image: '/assets/images/products/tanktop_flat.png'
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      images: [
+        '/assets/images/products/new/IMG_5681.jpg',
+        '/assets/images/products/new/IMG_5682.jpg',
+        '/assets/images/products/new/IMG_5683.jpg'
+      ]
     },
     {
-      id: 3,
-      name: 'Short de Lucha Dojo Serpiente',
+      id: 105,
+      name: 'Pantalones de Asedio (Short)',
       price: '25000',
-      tag: 'Equipamiento',
-      image: '/assets/images/products/shorts_flat.png'
-    },
-    {
-      id: 4,
-      name: 'Joggers de Fuerza (Varios Colores)',
-      price: '32000',
-      tag: 'Negro, Gris, Oliva',
-      image: '/assets/images/products/joggers_colors.png'
+      tag: 'Forja Local',
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      images: [
+        '/assets/images/products/new/IMG_5684_shorts_ai.png',
+        '/assets/images/products/new/IMG_5685_shorts_ai.png',
+        '/assets/images/products/new/IMG_5686_shorts_ai.png'
+      ]
     }
   ];
 
   const preorderProducts = [
     {
-      id: 5,
-      name: 'Guantes Profesionales de Combate',
-      price: '85000',
+      id: 102,
+      name: 'Puños de la Valkiria',
+      description: 'Guantes de Boxeo Proyec Rosa/Negro',
+      price: '95000',
       tag: 'Por Encargo',
-      image: '/assets/images/products/gloves_real.png'
+      sizes: ['10oz', '12oz', '14oz', '16oz'],
+      images: [
+        '/assets/images/products/new/epic_guantes.png',
+        '/assets/images/products/new/IMG_5690.jpg',
+        '/assets/images/products/new/IMG_5691.jpg',
+        '/assets/images/products/new/IMG_5693.jpg',
+        '/assets/images/products/new/IMG_5694.jpg'
+      ]
     },
     {
-      id: 6,
-      name: 'Kit de Batalla: Vendas y Bucal Termoformable',
-      price: '27000',
+      id: 103,
+      name: 'Lazos de Sangre Valkiria',
+      description: 'Vendas Profesionales Proyec Rosa',
+      price: '18000',
       tag: 'Por Encargo',
-      image: '/assets/images/products/wraps_real.png'
-    },
-    {
-      id: 7,
-      name: 'Tibiales de Muay Thai Premium',
-      price: '105000',
-      tag: 'Por Encargo',
-      image: '/assets/images/products/shinguards_flat.png'
-    },
-    {
-      id: 8,
-      name: 'Cabezal Protector de Boxeo/MMA',
-      price: '90000',
-      tag: 'Por Encargo',
-      image: '/assets/images/products/headgear_flat.png'
-    },
-    {
-      id: 9,
-      name: 'Focos Curvos / Manoplas (Par)',
-      price: '45000',
-      tag: 'Por Encargo',
-      image: '/assets/images/products/mitts_flat.png'
-    },
-    {
-      id: 10,
-      name: 'Tobilleras de Kickboxing (Par)',
-      price: '14000',
-      tag: 'Por Encargo',
-      image: '/assets/images/products/ankleguards_flat.png'
-    },
-    {
-      id: 11,
-      name: 'Cuerda de Salto Pesada',
-      price: '21000',
-      tag: 'Por Encargo',
-      image: '/assets/images/products/jumprope_flat.png'
-    },
-    {
-      id: 12,
-      name: 'Escudo de Pateo Pao Thai',
-      price: '75000',
-      tag: 'Por Encargo',
-      image: '/assets/images/products/kickshield_flat.png'
+      images: [
+        '/assets/images/products/new/epic_vendas.png',
+        '/assets/images/products/new/IMG_5698.jpg',
+        '/assets/images/products/new/IMG_5699.jpg',
+        '/assets/images/products/new/IMG_5700.jpg'
+      ]
     }
   ];
 
@@ -224,22 +412,7 @@ const Armeria = () => {
             </p>
             <div className="armeria-grid">
               {stockProducts.map((prod) => (
-                <div className="product-card" key={prod.id}>
-                  <div className="product-image-container">
-                    <img src={prod.image} alt={prod.name} className="product-image" />
-                  </div>
-                  <div className="product-info">
-                    <span className="product-tag">{prod.tag}</span>
-                    <h3>{prod.name}</h3>
-                    <p className="product-price text-gold">${prod.price}</p>
-                    <button 
-                      className="btn-outline product-btn"
-                      onClick={() => handleAddToCart(prod)}
-                    >
-                      Agregar al Botín
-                    </button>
-                  </div>
-                </div>
+                <ProductCard key={prod.id} product={prod} handleAddToCart={handleAddToCart} isElixir={false} onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} />
               ))}
             </div>
           </div>
@@ -255,22 +428,7 @@ const Armeria = () => {
             </p>
             <div className="armeria-grid">
               {preorderProducts.map((prod) => (
-                <div className="product-card" key={prod.id}>
-                  <div className="product-image-container">
-                    <img src={prod.image} alt={prod.name} className="product-image" />
-                  </div>
-                  <div className="product-info">
-                    <span className="product-tag" style={{ backgroundColor: '#2a2a2a', color: '#ccc' }}>{prod.tag}</span>
-                    <h3>{prod.name}</h3>
-                    <p className="product-price text-gold">${prod.price}</p>
-                    <button 
-                      className="btn-outline product-btn"
-                      onClick={() => handleAddToCart(prod)}
-                    >
-                      Encargar Botín
-                    </button>
-                  </div>
-                </div>
+                <ProductCard key={prod.id} product={prod} handleAddToCart={handleAddToCart} isElixir={false} onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} />
               ))}
             </div>
           </div>
@@ -286,40 +444,20 @@ const Armeria = () => {
             </p>
             <div className="armeria-grid">
               {supplementProducts.map((prod) => (
-                <div className="product-card" key={prod.id}>
-                  <div className="product-image-container elixir-bg">
-                    <img 
-                      src={prod.image} 
-                      alt={prod.name} 
-                      className="product-image elixir-image" 
-                      style={{ objectFit: 'contain', padding: '1rem' }} 
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = '/assets/images/products/epic_supplement_placeholder.png';
-                        // Remueve clase estilo real si usa placeholder original
-                        e.target.className = "product-image";
-                        e.target.style.objectFit = "cover";
-                        e.target.style.padding = "0";
-                      }}
-                    />
-                  </div>
-                  <div className="product-info">
-                    <span className="product-tag" style={{ backgroundColor: 'var(--accent-gold)', color: 'var(--bg-dark)', fontWeight: 'bold' }}>{prod.tag}</span>
-                    <h3>{prod.name}</h3>
-                    <p className="product-price text-gold" style={{ fontSize: '1.2rem', marginTop: 'auto', marginBottom: '1.5rem' }}>${prod.price}</p>
-                    <button 
-                      className="btn-outline product-btn"
-                      onClick={() => handleAddToCart(prod)}
-                    >
-                      Tomar Elixir
-                    </button>
-                  </div>
-                </div>
+                <ProductCard key={prod.id} product={prod} handleAddToCart={handleAddToCart} isElixir={true} onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} />
               ))}
             </div>
           </div>
         )}
       </div>
+      {isQuickViewOpen && selectedProduct && (
+        <QuickViewModal 
+          product={selectedProduct} 
+          isElixir={supplementProducts.some(p => p.id === selectedProduct.id)} 
+          onClose={() => setIsQuickViewOpen(false)}
+          onAddToCart={handleAddToCart}
+        />
+      )}
     </div>
   );
 };

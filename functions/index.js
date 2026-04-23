@@ -19,6 +19,7 @@ app.use(cookieParser());
 // Para local, puedes usar process.env. Para proudcción se usarían las variables de Firebase.
 const TIKTOK_CLIENT_KEY = process.env.TIKTOK_CLIENT_KEY || functions.params.defineString("TIKTOK_CLIENT_KEY").value() || "TU_TIKTOK_CLIENT_KEY";
 const TIKTOK_CLIENT_SECRET = process.env.TIKTOK_CLIENT_SECRET || functions.params.defineString("TIKTOK_CLIENT_SECRET").value() || "TU_TIKTOK_CLIENT_SECRET";
+const MERCADOPAGO_ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || functions.params.defineString("MERCADOPAGO_ACCESS_TOKEN").value() || "APP_USR-137470552603191-022019-9f33e4301cca5bea5d43e4f79ca29d48-139054499";
 
 // Importante: esta URL en producción debe ser la url pública de la función
 // Localmente, si probamos con emulador y React en puerto 5173, usamos hardcodeada para proxy o enviamos una base redirect.
@@ -224,6 +225,54 @@ app.get("/auth/instagram/callback", async (req, res) => {
     } catch (err) {
         console.error("Error validando token con Instagram:", err.response ? err.response.data : err.message);
         res.redirect(`${frontendUrl}/auth-callback?error=server_error`);
+    }
+});
+
+// ====== MERCADO PAGO CHECKOUT PRO ======
+app.post("/checkout/preference", async (req, res) => {
+    try {
+        const { items, payer } = req.body;
+        
+        if (!items || items.length === 0) {
+            return res.status(400).json({ error: "No items provided" });
+        }
+
+        const frontendUrl = req.body.redirectUrl || req.headers.origin || FRONTEND_URL;
+
+        const preferenceData = {
+            items: items.map(item => ({
+                title: item.title,
+                unit_price: Number(item.unit_price),
+                quantity: Number(item.quantity),
+                currency_id: "ARS"
+            })),
+            payer: {
+                name: payer?.name || "Guerrero",
+                email: payer?.email || "guerrero@valhallaboxgym.com"
+            },
+            back_urls: {
+                success: frontendUrl,
+                failure: frontendUrl,
+                pending: frontendUrl
+            },
+            auto_return: "approved"
+        };
+
+        const response = await axios.post(
+            "https://api.mercadopago.com/checkout/preferences",
+            preferenceData,
+            {
+                headers: {
+                    "Authorization": `Bearer ${MERCADOPAGO_ACCESS_TOKEN}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        res.json({ init_point: response.data.init_point, id: response.data.id });
+    } catch (error) {
+        console.error("Mercado Pago Preference Error:", error.response?.data || error.message);
+        res.status(500).json({ error: "Failed to create preference" });
     }
 });
 
