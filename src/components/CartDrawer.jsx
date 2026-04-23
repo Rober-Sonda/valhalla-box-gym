@@ -72,9 +72,12 @@ const CartDrawer = () => {
           if (!res.ok) throw new Error("Error generating preference");
           
           const data = await res.json();
-          window.open(whatsappUrl, '_blank');
           
           clearCart();
+          
+          // Guardar URL de WhatsApp para cuando el usuario vuelva de pagar
+          localStorage.setItem('pendingWhatsApp', whatsappUrl);
+          
           setIsCartOpen(false);
           setIsCheckingOut(false);
           

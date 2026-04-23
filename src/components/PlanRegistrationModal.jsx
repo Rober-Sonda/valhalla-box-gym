@@ -142,7 +142,10 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
           if (!res.ok) throw new Error("Error generating preference");
           
           const data = await res.json();
-          window.open(whatsappUrl, '_blank');
+          
+          // Guardar URL de WhatsApp para cuando el usuario vuelva de pagar
+          localStorage.setItem('pendingWhatsApp', whatsappUrl);
+          
           window.location.href = data.init_point;
           onClose();
           return;
