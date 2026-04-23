@@ -251,9 +251,9 @@ app.post("/checkout/preference", async (req, res) => {
                 email: payer?.email || "guerrero@valhallaboxgym.com"
             },
             back_urls: {
-                success: frontendUrl,
-                failure: frontendUrl,
-                pending: frontendUrl
+                success: "https://valhalla-box-gym-app.web.app",
+                failure: "https://valhalla-box-gym-app.web.app",
+                pending: "https://valhalla-box-gym-app.web.app"
             },
             auto_return: "approved"
         };

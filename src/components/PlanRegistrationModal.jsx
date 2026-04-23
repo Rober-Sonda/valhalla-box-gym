@@ -290,14 +290,9 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
           <div className="form-group-row mt-2 d-block">
             <div className="form-group w-100">
               <label>Método de Pago (Para coordinar por WhatsApp)</label>
-              {plan?.id === 'escaldo' && (
-                <div className="p-2 mb-2 text-center" style={{ backgroundColor: 'rgba(70, 130, 180, 0.1)', border: '1px solid rgba(70, 130, 180, 0.3)', borderRadius: '4px', fontSize: '0.85rem' }}>
-                  <strong className="text-light">Atención:</strong> El Plan Escaldo (A Distancia) se abona exclusivamente por transferencia.
-                </div>
-              )}
               <div className="payment-toggle mt-2">
                 <div 
-                  className={`toggle-option ${formData.pago === 'transferencia' || plan?.id === 'escaldo' ? 'active' : ''}`}
+                  className={`toggle-option ${formData.pago === 'transferencia' ? 'active' : ''}`}
                   onClick={() => setFormData({...formData, pago: 'transferencia'})}
                 >
                   <div className="toggle-watermark">
@@ -306,12 +301,8 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                   <span className="toggle-content">Banco/Alias</span>
                 </div>
                 <div 
-                  className={`toggle-option ${formData.pago === 'mercadopago' && plan?.id !== 'escaldo' ? 'active' : ''} ${plan?.id === 'escaldo' ? 'disabled' : ''}`}
-                  onClick={() => {
-                    if (plan?.id !== 'escaldo') setFormData({...formData, pago: 'mercadopago'})
-                  }}
-                  style={plan?.id === 'escaldo' ? { opacity: 0.4, cursor: 'not-allowed', filter: 'grayscale(1)' } : {}}
-                  title={plan?.id === 'escaldo' ? 'Usar transferencia para planes a distancia' : ''}
+                  className={`toggle-option ${formData.pago === 'mercadopago' ? 'active' : ''}`}
+                  onClick={() => setFormData({...formData, pago: 'mercadopago'})}
                 >
                   <div className="toggle-watermark">
                     <Smartphone size={36} />
