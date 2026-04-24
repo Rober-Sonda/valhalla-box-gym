@@ -16,7 +16,8 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
     telefono: '',
     direccion: '',
     genero: '',
-    pago: 'transferencia'
+    pago: 'transferencia',
+    duration: 1
   });
   
   const [isUploading, setIsUploading] = useState(false);
@@ -53,6 +54,37 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const getDurationLabel = (months) => {
+    if (months === 1) return 'Mensual';
+    if (months === 3) return 'Trimestral';
+    if (months === 6) return 'Semestral';
+    if (months === 12) return 'Anual';
+    return `${months} Meses`;
+  };
+
+  const calculateTotal = () => {
+    if (!plan) return 0;
+    const numericPrice = Number(plan.price.replace(/\./g, ''));
+    let baseTotal = numericPrice * formData.duration;
+    
+    if (addEscaldo && plan?.id !== 'escaldo') {
+      baseTotal += (39000 * formData.duration);
+    }
+    
+    // Aplicar descuento por duración
+    if (formData.duration === 3) baseTotal = baseTotal * 0.90; // 10% OFF
+    if (formData.duration === 6) baseTotal = baseTotal * 0.85; // 15% OFF
+    if (formData.duration === 12) baseTotal = baseTotal * 0.80; // 20% OFF
+
+    // Descuento extra por pago en efectivo
+    const isEfectivo = formData.pago === 'efectivo' && plan?.id !== 'escaldo';
+    if (isEfectivo) {
+      baseTotal = baseTotal * 0.90;
+    }
+
+    return baseTotal;
+  };
+
   const generatePDFAndSend = async (e) => {
     e.preventDefault();
     setIsUploading(true);
@@ -62,19 +94,12 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
       const newDocRef = doc(collection(db, "inscriptions"));
       const docId = newDocRef.id;
       
-      const numericPrice = Number(plan.price.replace(/\./g, ''));
+      const totalAmount = calculateTotal();
       const isEfectivo = formData.pago === 'efectivo' && plan?.id !== 'escaldo';
 
-      let totalAmount = numericPrice;
-      if (isEfectivo) {
-        totalAmount = numericPrice * 0.9;
-      }
-      if (addEscaldo) {
-        totalAmount += 39000;
-      }
-
       const finalPriceFormatted = new Intl.NumberFormat('es-AR').format(totalAmount);
-      const finalPlanName = addEscaldo ? `${plan.name} + ESCALDO` : plan.name;
+      const basePlanName = addEscaldo ? `${plan.name} + ESCALDO` : plan.name;
+      const finalPlanName = `${basePlanName} (${getDurationLabel(formData.duration)})`;
 
       const inscriptionData = {
         userId: currentUser?.uid || null,
@@ -110,8 +135,9 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
       // Generar mensaje de WhatsApp
       const message = 
         `⚔️ ¡Skål Valhalla! Soy *${formData.nombre}* (DNI: ${formData.dni}).\n` +
-        `Me he registrado desde la web para el plan *${finalPlanName}*.\n\n` +
-        `💰 *Método de Pago*: ${isEfectivo ? (addEscaldo ? 'Efectivo (-10% al plan base)' : 'Efectivo (10% OFF)') : 'Transferencia'}\n` +
+        `Me he registrado desde la web para el plan *${basePlanName}*.\n\n` +
+        `⏳ *Duración*: ${getDurationLabel(formData.duration)}\n` +
+        `💰 *Método de Pago*: ${isEfectivo ? (addEscaldo ? 'Efectivo (-10% extra)' : 'Efectivo (10% OFF)') : 'Transferencia'}\n` +
         `💳 *Total a coordinar*: $${finalPriceFormatted}\n\n` +
         `🪓 *MI PASE OFICIAL*: ${inscriptionUrl}`;
 
@@ -185,6 +211,40 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
         </div>
 
         <form onSubmit={generatePDFAndSend} className="auth-form plan-form">
+          
+          <div className="form-group mb-3">
+            <label style={{ display: 'block', marginBottom: '8px', textAlign: 'center', color: 'var(--text-light)' }}>Duración del Plan</label>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <div 
+                className={`duration-pill ${formData.duration === 1 ? 'active' : ''}`}
+                onClick={() => setFormData({...formData, duration: 1})}
+                style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 1 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 1 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 1 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 1 ? 'bold' : 'normal' }}
+              >
+                1 Mes
+              </div>
+              <div 
+                className={`duration-pill ${formData.duration === 3 ? 'active' : ''}`}
+                onClick={() => setFormData({...formData, duration: 3})}
+                style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 3 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 3 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 3 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 3 ? 'bold' : 'normal' }}
+              >
+                3 Meses <br/><small style={{fontSize:'0.7rem', color: formData.duration === 3 ? 'var(--accent-gold)' : '#28a745'}}>-10%</small>
+              </div>
+              <div 
+                className={`duration-pill ${formData.duration === 6 ? 'active' : ''}`}
+                onClick={() => setFormData({...formData, duration: 6})}
+                style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 6 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 6 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 6 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 6 ? 'bold' : 'normal' }}
+              >
+                6 Meses <br/><small style={{fontSize:'0.7rem', color: formData.duration === 6 ? 'var(--accent-gold)' : '#28a745'}}>-15%</small>
+              </div>
+              <div 
+                className={`duration-pill ${formData.duration === 12 ? 'active' : ''}`}
+                onClick={() => setFormData({...formData, duration: 12})}
+                style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 12 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 12 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 12 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 12 ? 'bold' : 'normal' }}
+              >
+                1 Año <br/><small style={{fontSize:'0.7rem', color: formData.duration === 12 ? 'var(--accent-gold)' : '#28a745'}}>-20%</small>
+              </div>
+            </div>
+          </div>
           
           <div className="form-group-row">
             <div className="form-group flex-fill">
@@ -331,8 +391,11 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
 
           {(formData.pago === 'efectivo' && plan?.id !== 'escaldo') && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(197, 160, 89, 0.1)', border: '1px solid rgba(197, 160, 89, 0.3)', borderRadius: '8px' }}>
-              <strong className="text-gold">¡10% de Descuento Aplicado! {addEscaldo && <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>(Al plan base)</span>}</strong><br />
-              El precio final a abonar será de <strong>${new Intl.NumberFormat('es-AR').format((Number(plan.price.replace(/\./g, '')) * 0.9) + (addEscaldo ? 39000 : 0))}</strong> {plan.period}
+              <strong className="text-gold">
+                ¡{formData.duration > 1 ? 'Descuento por Duración + ' : ''}10% de Descuento en Efectivo! 
+                {addEscaldo && <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}> (Plan + Nutrición)</span>}
+              </strong><br />
+              El precio final a abonar será de <strong>${new Intl.NumberFormat('es-AR').format(calculateTotal())}</strong> por {getDurationLabel(formData.duration)}
             </div>
           )}
 
@@ -350,14 +413,14 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                   {copied ? <Check size={18} color="var(--accent-gold)" /> : <Copy size={18} color="var(--text-muted)" />}
                 </button>
               </div>
-              <small className="text-muted">El pago final es de ${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) + (addEscaldo ? 39000 : 0))}. Se coordinará enviando el comprobante.</small>
+              <small className="text-muted">El pago final es de ${new Intl.NumberFormat('es-AR').format(calculateTotal())} por {getDurationLabel(formData.duration)}. Se coordinará enviando el comprobante.</small>
             </div>
           )}
 
           {formData.pago === 'mercadopago' && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(0, 158, 227, 0.1)', border: '1px solid rgba(0, 158, 227, 0.3)', borderRadius: '8px' }}>
               <strong style={{ color: '#009EE3' }}>Transferencia directa por Mercado Pago</strong><br />
-              Al presionar "FORJAR ALIANZA", serás redirigido de forma segura a <strong>Mercado Pago</strong> para abonar el monto exacto (${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) + (addEscaldo ? 39000 : 0))}).
+              Al presionar "FORJAR ALIANZA", serás redirigido de forma segura a <strong>Mercado Pago</strong> para abonar el monto exacto (${new Intl.NumberFormat('es-AR').format(calculateTotal())}) por su plan {getDurationLabel(formData.duration)}.
             </div>
           )}
 
