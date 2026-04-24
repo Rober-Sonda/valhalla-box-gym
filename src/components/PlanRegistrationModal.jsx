@@ -72,9 +72,9 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
     }
     
     // Aplicar descuento por duración
-    if (formData.duration === 3) baseTotal = baseTotal * 0.90; // 10% OFF
-    if (formData.duration === 6) baseTotal = baseTotal * 0.85; // 15% OFF
-    if (formData.duration === 12) baseTotal = baseTotal * 0.80; // 20% OFF
+    if (formData.duration === 3) baseTotal = baseTotal * 0.85; // 15% OFF
+    if (formData.duration === 6) baseTotal = baseTotal * 0.80; // 20% OFF
+    if (formData.duration === 12) baseTotal = baseTotal * 0.75; // 25% OFF
 
     // Descuento extra por pago en efectivo
     const isEfectivo = formData.pago === 'efectivo' && plan?.id !== 'escaldo';
@@ -227,21 +227,21 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                 onClick={() => setFormData({...formData, duration: 3})}
                 style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 3 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 3 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 3 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 3 ? 'bold' : 'normal' }}
               >
-                3 Meses <br/><small style={{fontSize:'0.7rem', color: formData.duration === 3 ? 'var(--accent-gold)' : '#28a745'}}>-10%</small>
+                3 Meses <br/><small style={{fontSize:'0.7rem', color: formData.duration === 3 ? 'var(--accent-gold)' : '#28a745'}}>-15%</small>
               </div>
               <div 
                 className={`duration-pill ${formData.duration === 6 ? 'active' : ''}`}
                 onClick={() => setFormData({...formData, duration: 6})}
                 style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 6 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 6 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 6 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 6 ? 'bold' : 'normal' }}
               >
-                6 Meses <br/><small style={{fontSize:'0.7rem', color: formData.duration === 6 ? 'var(--accent-gold)' : '#28a745'}}>-15%</small>
+                6 Meses <br/><small style={{fontSize:'0.7rem', color: formData.duration === 6 ? 'var(--accent-gold)' : '#28a745'}}>-20%</small>
               </div>
               <div 
                 className={`duration-pill ${formData.duration === 12 ? 'active' : ''}`}
                 onClick={() => setFormData({...formData, duration: 12})}
                 style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 12 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 12 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 12 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 12 ? 'bold' : 'normal' }}
               >
-                1 Año <br/><small style={{fontSize:'0.7rem', color: formData.duration === 12 ? 'var(--accent-gold)' : '#28a745'}}>-20%</small>
+                1 Año <br/><small style={{fontSize:'0.7rem', color: formData.duration === 12 ? 'var(--accent-gold)' : '#28a745'}}>-25%</small>
               </div>
             </div>
           </div>
@@ -419,8 +419,16 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
 
           {formData.pago === 'mercadopago' && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(0, 158, 227, 0.1)', border: '1px solid rgba(0, 158, 227, 0.3)', borderRadius: '8px' }}>
-              <strong style={{ color: '#009EE3' }}>Transferencia directa por Mercado Pago</strong><br />
-              Al presionar "FORJAR ALIANZA", serás redirigido de forma segura a <strong>Mercado Pago</strong> para abonar el monto exacto (${new Intl.NumberFormat('es-AR').format(calculateTotal())}) por su plan {getDurationLabel(formData.duration)}.
+              <strong style={{ color: '#009EE3', fontSize: '1.1rem' }}>Abonar con Mercado Pago</strong><br />
+              <span style={{ display: 'block', marginTop: '10px', color: 'var(--text-light)' }}>
+                Al presionar "FORJAR ALIANZA", serás redirigido de forma segura a <strong>Mercado Pago</strong> para abonar el monto exacto:
+              </span>
+              <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#fff', margin: '15px auto', padding: '12px', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: '8px', maxWidth: '300px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                ${new Intl.NumberFormat('es-AR').format(calculateTotal())}
+                <div style={{fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 'normal', marginTop: '4px'}}>
+                  por su plan {getDurationLabel(formData.duration)}
+                </div>
+              </div>
             </div>
           )}
 
