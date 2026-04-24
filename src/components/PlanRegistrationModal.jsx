@@ -354,10 +354,10 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
             </div>
           )}
 
-          {formData.pago === 'mercadopago' && plan?.id !== 'escaldo' && (
+          {formData.pago === 'mercadopago' && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(0, 158, 227, 0.1)', border: '1px solid rgba(0, 158, 227, 0.3)', borderRadius: '8px' }}>
               <strong style={{ color: '#009EE3' }}>Transferencia directa por Mercado Pago</strong><br />
-              Al presionar "FORJAR ALIANZA", se abrirá una nueva pestaña con la <strong>App de Mercado Pago</strong> para que transfieras el monto exacto (${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) + (addEscaldo ? 39000 : 0))}), y también te llevaremos a WhatsApp para que nos pases el comprobante.
+              Al presionar "FORJAR ALIANZA", serás redirigido de forma segura a <strong>Mercado Pago</strong> para abonar el monto exacto (${new Intl.NumberFormat('es-AR').format(Number(plan.price.replace(/\./g, '')) + (addEscaldo ? 39000 : 0))}).
             </div>
           )}
 
