@@ -118,9 +118,10 @@ const Navbar = () => {
 
             {currentUser ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <span className="text-gold" style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
+                <Link to="/perfil" className="text-gold" style={{ fontSize: '0.9rem', fontWeight: 'bold', textDecoration: 'none' }}>
                   {currentUser.displayName?.split(' ')[0] || 'Guerrero'}
-                </span>
+                </Link>
+                <Link to="/perfil" className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'transparent', border: '1px solid var(--accent-gold)' }}>MI ALIANZA</Link>
                 <button onClick={logout} className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem' }}>SALIR</button>
               </div>
             ) : (
@@ -153,7 +154,10 @@ const Navbar = () => {
             <Link to="/armeria" onClick={() => setMobileMenuOpen(false)}>Armería</Link>
             
             {currentUser ? (
-              <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="nav-unete-btn w-100" style={{marginTop: '1rem'}}>SALIR DE LA CUENTA</button>
+              <>
+                <Link to="/perfil" onClick={() => setMobileMenuOpen(false)} className="nav-unete-btn w-100" style={{marginTop: '1rem', background: 'transparent', border: '1px solid var(--accent-gold)', textAlign: 'center', display: 'block'}}>MI ALIANZA</Link>
+                <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="nav-unete-btn w-100" style={{marginTop: '1rem'}}>SALIR DE LA CUENTA</button>
+              </>
             ) : (
               <button onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }} className="nav-unete-btn w-100" style={{marginTop: '1rem'}}>ÚNETE AHORA</button>
             )}

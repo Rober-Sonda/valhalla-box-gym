@@ -101,6 +101,10 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
       const basePlanName = addEscaldo ? `${plan.name} + ESCALDO` : plan.name;
       const finalPlanName = `${basePlanName} (${getDurationLabel(formData.duration)})`;
 
+      const startDate = new Date();
+      const expiresAt = new Date();
+      expiresAt.setMonth(expiresAt.getMonth() + formData.duration);
+
       const inscriptionData = {
         userId: currentUser?.uid || null,
         nombre: formData.nombre,
@@ -114,8 +118,13 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
         plan: {
           name: finalPlanName,
           price: finalPriceFormatted,
-          period: plan.period || ''
+          period: plan.period || '',
+          id: plan.id
         },
+        startDate: startDate.toISOString(),
+        expiresAt: expiresAt.toISOString(),
+        durationMonths: formData.duration,
+        status: 'active',
         createdAt: serverTimestamp()
       };
 
