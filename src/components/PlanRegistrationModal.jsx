@@ -72,9 +72,9 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
     }
     
     // Aplicar descuento por duración
-    if (formData.duration === 3) baseTotal = baseTotal * 0.85; // 15% OFF
-    if (formData.duration === 6) baseTotal = baseTotal * 0.80; // 20% OFF
-    if (formData.duration === 12) baseTotal = baseTotal * 0.75; // 25% OFF
+    if (formData.duration === 3) baseTotal = baseTotal * 0.90; // 10% OFF
+    if (formData.duration === 6) baseTotal = baseTotal * 0.85; // 15% OFF
+    if (formData.duration === 12) baseTotal = baseTotal * 0.80; // 20% OFF
 
     // Descuento extra por pago en efectivo
     const isEfectivo = formData.pago === 'efectivo' && plan?.id !== 'escaldo';
@@ -220,28 +220,28 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                 onClick={() => setFormData({...formData, duration: 1})}
                 style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 1 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 1 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 1 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 1 ? 'bold' : 'normal' }}
               >
-                1 Mes
+                Batalla <br/><span style={{fontSize: '0.85rem', fontWeight: 'normal'}}>1 Mes</span>
               </div>
               <div 
                 className={`duration-pill ${formData.duration === 3 ? 'active' : ''}`}
                 onClick={() => setFormData({...formData, duration: 3})}
                 style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 3 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 3 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 3 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 3 ? 'bold' : 'normal' }}
               >
-                3 Meses <br/><small style={{fontSize:'0.7rem', color: formData.duration === 3 ? 'var(--accent-gold)' : '#28a745'}}>-15%</small>
+                Incursión <br/><span style={{fontSize: '0.85rem', fontWeight: 'normal'}}>3 Meses</span><br/><small style={{fontSize:'0.75rem', color: formData.duration === 3 ? 'var(--accent-gold)' : '#28a745'}}>-10%</small>
               </div>
               <div 
                 className={`duration-pill ${formData.duration === 6 ? 'active' : ''}`}
                 onClick={() => setFormData({...formData, duration: 6})}
                 style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 6 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 6 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 6 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 6 ? 'bold' : 'normal' }}
               >
-                6 Meses <br/><small style={{fontSize:'0.7rem', color: formData.duration === 6 ? 'var(--accent-gold)' : '#28a745'}}>-20%</small>
+                Campaña <br/><span style={{fontSize: '0.85rem', fontWeight: 'normal'}}>6 Meses</span><br/><small style={{fontSize:'0.75rem', color: formData.duration === 6 ? 'var(--accent-gold)' : '#28a745'}}>-15%</small>
               </div>
               <div 
                 className={`duration-pill ${formData.duration === 12 ? 'active' : ''}`}
                 onClick={() => setFormData({...formData, duration: 12})}
                 style={{ flex: '1', minWidth: '80px', padding: '10px 5px', textAlign: 'center', border: `1px solid ${formData.duration === 12 ? 'var(--accent-gold)' : 'var(--border-color)'}`, borderRadius: '6px', cursor: 'pointer', backgroundColor: formData.duration === 12 ? 'rgba(197, 160, 89, 0.15)' : 'var(--bg-dark)', color: formData.duration === 12 ? 'var(--accent-gold)' : 'var(--text-muted)', transition: 'all 0.2s', fontWeight: formData.duration === 12 ? 'bold' : 'normal' }}
               >
-                1 Año <br/><small style={{fontSize:'0.7rem', color: formData.duration === 12 ? 'var(--accent-gold)' : '#28a745'}}>-25%</small>
+                Saga <br/><span style={{fontSize: '0.85rem', fontWeight: 'normal'}}>1 Año</span><br/><small style={{fontSize:'0.75rem', color: formData.duration === 12 ? 'var(--accent-gold)' : '#28a745'}}>-20%</small>
               </div>
             </div>
           </div>
