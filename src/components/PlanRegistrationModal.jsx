@@ -391,17 +391,24 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
 
           {(formData.pago === 'efectivo' && plan?.id !== 'escaldo') && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'rgba(197, 160, 89, 0.1)', border: '1px solid rgba(197, 160, 89, 0.3)', borderRadius: '8px' }}>
-              <strong className="text-gold">
-                ¡{formData.duration > 1 ? 'Descuento por Duración + ' : ''}10% de Descuento en Efectivo! 
-                {addEscaldo && <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}> (Plan + Nutrición)</span>}
+              <strong className="text-gold" style={{ fontSize: '1.1rem' }}>
+                ¡{formData.duration > 1 ? 'Descuento por Duración + ' : ''}10% de Descuento Extra!
               </strong><br />
-              El precio final a abonar será de <strong>${new Intl.NumberFormat('es-AR').format(calculateTotal())}</strong> por {getDurationLabel(formData.duration)}
+              <span style={{ display: 'block', marginTop: '10px', color: 'var(--text-light)' }}>
+                El precio final a abonar en el establecimiento será de:
+              </span>
+              <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: 'var(--accent-gold)', margin: '15px auto', padding: '12px', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: '8px', maxWidth: '300px', border: '1px solid rgba(197, 160, 89, 0.2)' }}>
+                ${new Intl.NumberFormat('es-AR').format(calculateTotal())}
+                <div style={{fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 'normal', marginTop: '4px'}}>
+                  por su plan {getDurationLabel(formData.duration)} {addEscaldo && <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}> (Plan + Nutrición)</span>}
+                </div>
+              </div>
             </div>
           )}
 
           {(formData.pago === 'transferencia' || plan?.id === 'escaldo') && (
             <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
-              <strong>Alias para transferencia (Banco):</strong> <br />
+              <strong style={{ fontSize: '1.1rem' }}>Alias para transferencia (Banco):</strong> <br />
               <div className="d-flex-center mt-2 mb-2">
                 <code style={{ fontSize: '1.3em', color: 'var(--accent-gold)' }}>robersonda.mp</code>
                 <button 
@@ -413,7 +420,16 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                   {copied ? <Check size={18} color="var(--accent-gold)" /> : <Copy size={18} color="var(--text-muted)" />}
                 </button>
               </div>
-              <small className="text-muted">El pago final es de ${new Intl.NumberFormat('es-AR').format(calculateTotal())} por {getDurationLabel(formData.duration)}. Se coordinará enviando el comprobante.</small>
+              <span style={{ display: 'block', marginTop: '10px', color: 'var(--text-light)' }}>
+                Monto exacto a transferir:
+              </span>
+              <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#fff', margin: '15px auto', padding: '12px', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: '8px', maxWidth: '300px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                ${new Intl.NumberFormat('es-AR').format(calculateTotal())}
+                <div style={{fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 'normal', marginTop: '4px'}}>
+                  por su plan {getDurationLabel(formData.duration)}
+                </div>
+              </div>
+              <small className="text-muted" style={{display: 'block', marginTop: '10px'}}>Se coordinará enviando el comprobante por WhatsApp.</small>
             </div>
           )}
 
