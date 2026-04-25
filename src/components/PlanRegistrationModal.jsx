@@ -131,6 +131,13 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
 
   const generatePDFAndSend = async (e) => {
     e.preventDefault();
+    
+    // Evitar que el form se envíe antes de tiempo si el usuario aprieta 'Enter' en un input
+    if (currentStep < totalSteps) {
+      handleNext();
+      return;
+    }
+    
     setIsUploading(true);
 
     try {
