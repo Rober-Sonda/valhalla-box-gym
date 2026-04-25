@@ -628,12 +628,13 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
               </button>
             )}
             
-            {currentStep < totalSteps ? (
-              <button type="button" className="btn-primary d-flex-center" onClick={handleNext} style={{flex: 2}}>
+            {currentStep < totalSteps && (
+              <button key="btn-next" type="button" className="btn-primary d-flex-center" onClick={handleNext} style={{flex: 2}}>
                 SIGUIENTE <ArrowRight size={20} />
               </button>
-            ) : (
-              <button type="submit" className="btn-primary d-flex-center" disabled={isUploading} style={{flex: 2}}>
+            )}
+            {currentStep === totalSteps && (
+              <button key="btn-submit" type="submit" className="btn-primary d-flex-center" disabled={isUploading} style={{flex: 2}}>
                 {isUploading ? 'FORJANDO...' : 'FORJAR ALIANZA'}
               </button>
             )}
