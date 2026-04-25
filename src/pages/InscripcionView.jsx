@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Dumbbell, ArrowLeft, Loader2, User, Phone, MapPin, Mail, Copy } from 'lucide-react';
+import { Dumbbell, ArrowLeft, Loader2, User, Phone, MapPin, Mail, Copy, FileText } from 'lucide-react';
 import './InscripcionView.css';
 
 const InscripcionView = () => {
@@ -115,6 +115,23 @@ Fecha exp.: ${date}
         <div className="plan-details">
           <h2 className="plan-title">PLAN ELEGIDO: <span className="text-gold">{data.plan.name.toUpperCase()}</span></h2>
           <p className="plan-price">Pase Mensual: ${data.plan.price}</p>
+          
+          {data.plan.name.toLowerCase().includes('escaldo') && (
+            <div style={{ marginTop: '20px', padding: '15px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid var(--accent-gold)', borderRadius: '8px', textAlign: 'center' }}>
+              <p style={{ color: 'var(--text-light)', marginBottom: '10px', fontSize: '0.9rem' }}>Este plan incluye seguimiento personalizado.</p>
+              <a 
+                href="https://docs.google.com/spreadsheets/d/1G_TCV6lkMTM8XuVwC3h1zJpUvPKtDNsqxYljKh8rwJA/edit?usp=sharing" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn-primary" 
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', width: '100%', justifyContent: 'center' }}
+              >
+                <FileText size={18} />
+                Ficha del Guerrero (Excel)
+              </a>
+              <small style={{display: 'block', textAlign: 'center', marginTop: '10px', color: 'var(--text-muted)', fontSize: '0.75rem'}}>* Acceso exclusivo para coaches de Valhalla</small>
+            </div>
+          )}
         </div>
 
         <div className="user-details">

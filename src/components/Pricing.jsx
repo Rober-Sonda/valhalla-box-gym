@@ -32,7 +32,7 @@ const plans = [
     features: [
       'Rutinas guiadas',
       'APP Exclusiva',
-      '1 vez al día los 5 días (Lun-Sáb)',
+      '1 vez al día los 6 días (Lun-Sáb)',
     ],
     btnClass: 'btn-outline',
     popular: false,

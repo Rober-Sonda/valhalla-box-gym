@@ -224,30 +224,6 @@ const Armeria = () => {
 
   const stockProducts = [
     {
-      id: 101,
-      name: 'Armadura Ligera del Berserker (Conjunto)',
-      price: '45000',
-      tag: 'Más Vendido',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: [
-        '/assets/images/products/new/IMG_5684.jpg',
-        '/assets/images/products/new/IMG_5685.jpg',
-        '/assets/images/products/new/IMG_5686.jpg'
-      ]
-    },
-    {
-      id: 104,
-      name: 'Manto de Combate (Musculosa)',
-      price: '22500',
-      tag: 'Entrenamiento',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: [
-        '/assets/images/products/new/IMG_5681.jpg',
-        '/assets/images/products/new/IMG_5682.jpg',
-        '/assets/images/products/new/IMG_5683.jpg'
-      ]
-    },
-    {
       id: 105,
       name: 'Pantalones de Asedio (Short)',
       price: '25000',

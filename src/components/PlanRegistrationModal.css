@@ -55,8 +55,42 @@
   gap: 1rem;
 }
 
+.duration-pills-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.duration-pill {
+  flex: 1;
+  min-width: 80px;
+  padding: 10px 5px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: var(--bg-dark);
+  color: var(--text-muted);
+  transition: all 0.2s;
+  font-weight: normal;
+}
+
+.duration-pill.active {
+  border-color: var(--accent-gold);
+  background-color: rgba(197, 160, 89, 0.15);
+  color: var(--accent-gold);
+  font-weight: bold;
+}
+
 /* Response móvil */
 @media (max-width: 600px) {
+  .duration-pills-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
   .plan-modal-content {
     padding: 2rem 1.5rem;
   }
