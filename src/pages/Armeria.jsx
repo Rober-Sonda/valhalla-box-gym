@@ -224,15 +224,75 @@ const Armeria = () => {
 
   const stockProducts = [
     {
-      id: 105,
+      id: 106,
       name: 'Pantalones de Asedio (Short)',
+      description: 'Shorts de entrenamiento de secado rápido, color negro con logos blancos.',
       price: '25000',
       tag: 'Forja Local',
       sizes: ['S', 'M', 'L', 'XL', 'XXL'],
       images: [
-        '/assets/images/products/new/IMG_5684_shorts_ai.png',
-        '/assets/images/products/new/IMG_5685_shorts_ai.png',
-        '/assets/images/products/new/IMG_5686_shorts_ai.png'
+        '/assets/images/products/new/valhalla_shorts_negros_1.jpg',
+        '/assets/images/products/new/valhalla_shorts_negros_2.jpg'
+      ]
+    },
+    {
+      id: 107,
+      name: 'Manto de la Tempestad',
+      description: 'Campera rompevientos ligera con capucha, diseño bicolor beige y negro con cierre frontal.',
+      price: '55000',
+      tag: 'Forja Local',
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      images: [
+        '/assets/images/products/new/valhalla_campera_bicolor_1.jpg',
+        '/assets/images/products/new/valhalla_campera_bicolor_2.jpg'
+      ]
+    },
+    {
+      id: 108,
+      name: 'Armadura de la Tempestad (Conjunto)',
+      description: 'Conjunto deportivo completo: campera rompevientos beige y negro, más shorts negros.',
+      price: '75000',
+      tag: 'Forja Local',
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      images: [
+        '/assets/images/products/new/valhalla_conjunto_rompevientos_1.jpg',
+        '/assets/images/products/new/valhalla_conjunto_rompevientos_2.jpg'
+      ]
+    },
+    {
+      id: 109,
+      name: 'Grebas del Conquistador (Jogger)',
+      description: 'Pantalón largo de entrenamiento tipo jogger, diseño bicolor en negro y gris.',
+      price: '40000',
+      tag: 'Forja Local',
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      images: [
+        '/assets/images/products/new/valhalla_jogger_bicolor_1.jpg',
+        '/assets/images/products/new/valhalla_jogger_bicolor_2.jpg'
+      ]
+    },
+    {
+      id: 110,
+      name: 'Cota de Malla Ligera',
+      description: 'Remera deportiva de entrenamiento manga corta, color negro con estampados en blanco.',
+      price: '25000',
+      tag: 'Forja Local',
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      images: [
+        '/assets/images/products/new/valhalla_remera_negra_1.jpg',
+        '/assets/images/products/new/valhalla_remera_negra_2.jpg'
+      ]
+    },
+    {
+      id: 111,
+      name: 'Armadura de Batalla Estival (Conjunto)',
+      description: 'Conjunto de verano para entrenamiento: incluye remera negra y shorts deportivos negros.',
+      price: '45000',
+      tag: 'Forja Local',
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      images: [
+        '/assets/images/products/new/valhalla_conjunto_verano_1.jpg',
+        '/assets/images/products/new/valhalla_conjunto_verano_2.jpg'
       ]
     }
   ];
