@@ -3,27 +3,42 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
+    function isAdmin() {
+      return request.auth != null && (request.auth.token.email == 'valhalla.escaldo@gmail.com' || request.auth.token.email == 'rober.junin@gmail.com');
+    }
+
     // Inscripciones registradas
     match /inscriptions/{document} {
-      // Cualquier persona puede crear su inscripción.
       allow create: if true;
-      // Cualquier persona puede visualizar el comprobante con su ID explícito
       allow get: if true;
-      // Bloquea listar todas las inscripciones o borrarlas
-      allow list, update, delete: if false;
+      allow read, write: if isAdmin();
     }
 
     // Órdenes de la Armería (Tienda)
     match /orders/{document} {
-      // Permite agregar órdenes de compra libremente
       allow create: if true;
-      // Impide extraer o borrar ventas
-      allow read, update, delete: if false;
+      allow read, write: if isAdmin();
     }
 
-    // Cerramos el resto de la DB para evitar lecturas/escrituras fantasma
+    // Productos y Tarifas (Públicos para leer, Privados para editar)
+    match /products/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /plans/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Finanzas (100% Privado)
+    match /finances/{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // Cerramos el resto de la DB
     match /{document=**} {
-      allow read, write: if false;
+      allow read, write: if isAdmin();
     }
   }
 }

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ShoppingBag, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { db } from '../firebase';
 import './Armeria.css';
 
 const ProductCard = ({ product, handleAddToCart, isElixir, onQuickView }) => {
@@ -67,7 +69,7 @@ const ProductCard = ({ product, handleAddToCart, isElixir, onQuickView }) => {
         )}
       </div>
       <div className="product-info">
-        <span className="product-tag" style={isElixir ? { backgroundColor: 'var(--accent-gold)', color: 'var(--bg-dark)', fontWeight: 'bold' } : (product.tag === 'Por Encargo' ? { backgroundColor: '#2a2a2a', color: '#ccc' } : {})}>
+        <span className="product-tag" style={isElixir ? { backgroundColor: 'var(--accent-gold)', color: 'var(--bg-dark)', fontWeight: 'bold' } : ((product.isPreorder || product.tag === 'Por Encargo') ? { backgroundColor: '#2a2a2a', color: '#ccc' } : {})}>
           {product.tag}
         </span>
         <h3>{product.name}</h3>
@@ -86,7 +88,7 @@ const ProductCard = ({ product, handleAddToCart, isElixir, onQuickView }) => {
             handleAddToCart(product);
           }}
         >
-          {isElixir ? 'Tomar Elixir' : (product.tag === 'Por Encargo' ? 'Encargar Botín' : 'Agregar al Botín')}
+          {isElixir ? 'Tomar Elixir' : ((product.isPreorder || product.tag === 'Por Encargo') ? 'Encargar Botín' : 'Agregar al Botín')}
         </button>
       </div>
     </div>
@@ -203,7 +205,7 @@ const QuickViewModal = ({ product, isElixir, onClose, onAddToCart }) => {
               onClose();
             }}
           >
-            {isElixir ? 'Tomar Elixir' : (product.tag === 'Por Encargo' ? 'Encargar Botín' : 'Agregar al Botín')}
+            {isElixir ? 'Tomar Elixir' : ((product.isPreorder || product.tag === 'Por Encargo') ? 'Encargar Botín' : 'Agregar al Botín')}
           </button>
         </div>
       </div>
@@ -218,181 +220,17 @@ const Armeria = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
+  const [products, setProducts] = useState([]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    const q = query(collection(db, 'products'), where('status', '==', 'active'));
+    const unsub = onSnapshot(q, (snapshot) => {
+      const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setProducts(fetched);
+    });
+    return () => unsub();
   }, []);
-
-  const stockProducts = [
-    {
-      id: 106,
-      name: 'Pantalones de Asedio (Short)',
-      description: 'Shorts de entrenamiento de secado rápido, color negro con logos blancos.',
-      price: '25000',
-      tag: 'Forja Local',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: [
-        '/assets/images/products/new/valhalla_shorts_negros_1.jpg',
-        '/assets/images/products/new/valhalla_shorts_negros_2.jpg'
-      ]
-    },
-    {
-      id: 107,
-      name: 'Manto de la Tempestad',
-      description: 'Campera rompevientos ligera con capucha, diseño bicolor beige y negro con cierre frontal.',
-      price: '55000',
-      tag: 'Forja Local',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: [
-        '/assets/images/products/new/valhalla_campera_bicolor_1.jpg',
-        '/assets/images/products/new/valhalla_campera_bicolor_2.jpg'
-      ]
-    },
-    {
-      id: 108,
-      name: 'Armadura de la Tempestad (Conjunto)',
-      description: 'Conjunto deportivo completo: campera rompevientos beige y negro, más shorts negros.',
-      price: '75000',
-      tag: 'Forja Local',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: [
-        '/assets/images/products/new/valhalla_conjunto_rompevientos_1.jpg',
-        '/assets/images/products/new/valhalla_conjunto_rompevientos_2.jpg'
-      ]
-    },
-    {
-      id: 109,
-      name: 'Grebas del Conquistador (Jogger)',
-      description: 'Pantalón largo de entrenamiento tipo jogger, diseño bicolor en negro y gris.',
-      price: '40000',
-      tag: 'Forja Local',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: [
-        '/assets/images/products/new/valhalla_jogger_bicolor_1.jpg',
-        '/assets/images/products/new/valhalla_jogger_bicolor_2.jpg'
-      ]
-    },
-    {
-      id: 110,
-      name: 'Cota de Malla Ligera',
-      description: 'Remera deportiva de entrenamiento manga corta, color negro con estampados en blanco.',
-      price: '25000',
-      tag: 'Forja Local',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: [
-        '/assets/images/products/new/valhalla_remera_negra_1.jpg',
-        '/assets/images/products/new/valhalla_remera_negra_2.jpg'
-      ]
-    },
-    {
-      id: 111,
-      name: 'Armadura de Batalla Estival (Conjunto)',
-      description: 'Conjunto de verano para entrenamiento: incluye remera negra y shorts deportivos negros.',
-      price: '45000',
-      tag: 'Forja Local',
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: [
-        '/assets/images/products/new/valhalla_conjunto_verano_1.jpg',
-        '/assets/images/products/new/valhalla_conjunto_verano_2.jpg'
-      ]
-    }
-  ];
-
-  const preorderProducts = [
-    {
-      id: 102,
-      name: 'Puños de la Valkiria',
-      description: 'Guantes de Boxeo Proyec Rosa/Negro',
-      price: '95000',
-      tag: 'Por Encargo',
-      sizes: ['10oz', '12oz', '14oz', '16oz'],
-      images: [
-        '/assets/images/products/new/epic_guantes.png',
-        '/assets/images/products/new/IMG_5690.jpg',
-        '/assets/images/products/new/IMG_5691.jpg',
-        '/assets/images/products/new/IMG_5693.jpg',
-        '/assets/images/products/new/IMG_5694.jpg'
-      ]
-    },
-    {
-      id: 103,
-      name: 'Lazos de Sangre Valkiria',
-      description: 'Vendas Profesionales Proyec Rosa',
-      price: '18000',
-      tag: 'Por Encargo',
-      images: [
-        '/assets/images/products/new/epic_vendas.png',
-        '/assets/images/products/new/IMG_5698.jpg',
-        '/assets/images/products/new/IMG_5699.jpg',
-        '/assets/images/products/new/IMG_5700.jpg'
-      ]
-    }
-  ];
-
-  const supplementProducts = [
-    {
-      id: 13,
-      name: 'Proteína Gold Standard (Optimum Nutrition)',
-      price: '110000',
-      tag: 'Elixir de Recuperación',
-      image: '/assets/images/products/supp_on.jpg'
-    },
-    {
-      id: 14,
-      name: 'Creatina Monohidrato (ENA)',
-      price: '45000',
-      tag: 'Fuerza Bruta',
-      image: '/assets/images/products/supp_ena.jpg'
-    },
-    {
-      id: 15,
-      name: 'Pre-Entreno C4 Explosive (Cellucor)',
-      price: '60000',
-      tag: 'Furia de Berserker',
-      image: '/assets/images/products/supp_c4.jpg'
-    },
-    {
-      id: 16,
-      name: 'Animal Pak Multivitamínico (Universal)',
-      price: '85000',
-      tag: 'Vitalidad Ancestral',
-      image: '/assets/images/products/supp_animal.jpg'
-    },
-    {
-      id: 17,
-      name: 'Syntha-6 Protein Blend (BSN)',
-      price: '95000',
-      tag: 'Sabor de Valhalla',
-      image: '/assets/images/products/supp_syntha.jpg'
-    },
-    {
-      id: 18,
-      name: 'ISO100 Hidrolizada (Dymatize)',
-      price: '130000',
-      tag: 'Absorción Relámpago',
-      image: '/assets/images/products/supp_iso100.jpg'
-    },
-    {
-      id: 19,
-      name: 'Whey Protein (Star Nutrition)',
-      price: '75000',
-      tag: 'Armadura Muscular',
-      image: '/assets/images/products/supp_star.jpg'
-    },
-    {
-      id: 20,
-      name: 'L-Glutamina Pura (SPX)',
-      price: '38000',
-      tag: 'Aliento Sanador',
-      image: '/assets/images/products/supp_glutamina.jpg'
-    },
-    {
-      id: 21,
-      name: 'AminoX BCAA (BSN)',
-      price: '55000',
-      tag: 'Resistencia de Odín',
-      image: '/assets/images/products/supp_aminox.jpg'
-    }
-  ];
 
   const handleAddToCart = (product) => {
     if (!currentUser) {
@@ -401,6 +239,8 @@ const Armeria = () => {
     }
     addToCart({ ...product, price: parseFloat(product.price) });
   };
+
+  const uniqueCategories = [...new Set(products.map(p => p.category).filter(Boolean))];
 
   return (
     <div className="armeria-page">
@@ -420,76 +260,41 @@ const Armeria = () => {
           >
             TODOS
           </button>
-          <button 
-            className={`armeria-tab-btn ${activeCategory === 'vestimenta' ? 'active' : ''}`} 
-            onClick={() => setActiveCategory('vestimenta')}
-          >
-            FORJA LOCAL
-          </button>
-          <button 
-            className={`armeria-tab-btn ${activeCategory === 'equipamiento' ? 'active' : ''}`} 
-            onClick={() => setActiveCategory('equipamiento')}
-          >
-            EQUIPO DE BATALLA
-          </button>
-          <button 
-            className={`armeria-tab-btn ${activeCategory === 'elixires' ? 'active' : ''}`} 
-            onClick={() => setActiveCategory('elixires')}
-          >
-            ELIXIRES (SUPLEMENTOS)
-          </button>
+          {uniqueCategories.map(cat => (
+            <button 
+              key={cat}
+              className={`armeria-tab-btn ${activeCategory === cat ? 'active' : ''}`} 
+              onClick={() => setActiveCategory(cat)}
+              style={{ textTransform: 'uppercase' }}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
         
-        {(activeCategory === 'vestimenta' || activeCategory === 'todos') && (
-          <div className="category-section">
-            <h2 className="section-title">FORJA LOCAL <span className="text-gold">(EN STOCK)</span></h2>
-            <p className="section-description">
-              Vístete con los colores del Valhalla. Indumentaria probada en batalla y forjada para resistir el entrenamiento más despiadado.
-            </p>
-            <div className="armeria-grid">
-              {stockProducts.map((prod) => (
-                <ProductCard key={prod.id} product={prod} handleAddToCart={handleAddToCart} isElixir={false} onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} />
-              ))}
+        <div className="armeria-grid" style={{ marginTop: '3rem' }}>
+          {products
+            .filter(prod => activeCategory === 'todos' || prod.category === activeCategory)
+            .map((prod) => (
+              <ProductCard 
+                key={prod.id} 
+                product={prod.isOffer ? { ...prod, price: prod.offerPrice } : prod} 
+                handleAddToCart={prod.sizes?.length > 0 ? () => { setSelectedProduct(prod); setIsQuickViewOpen(true); } : handleAddToCart} 
+                isElixir={prod.category === 'elixires'} 
+                onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} 
+              />
+          ))}
+          {products.filter(prod => activeCategory === 'todos' || prod.category === activeCategory).length === 0 && (
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: '#aaa' }}>
+              No hay productos disponibles en esta categoría en este momento.
             </div>
-          </div>
-        )}
-
-        {(activeCategory === 'equipamiento' || activeCategory === 'todos') && (
-          <div className="category-section">
-            {activeCategory === 'todos' && <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '4rem auto', width: '50%' }}></div>}
-            <h2 className="section-title">EQUIPAMIENTO DE BATALLA <span className="text-gold">(POR ENCARGO)</span></h2>
-            <p className="section-description">
-              Reserva tu armadura especial de combate. Los guerreros que elijan adquirir estos artículos
-              comprenden que la forja toma su tiempo (demora aplicable).
-            </p>
-            <div className="armeria-grid">
-              {preorderProducts.map((prod) => (
-                <ProductCard key={prod.id} product={prod} handleAddToCart={handleAddToCart} isElixir={false} onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {(activeCategory === 'elixires' || activeCategory === 'todos') && (
-          <div className="category-section">
-            {activeCategory === 'todos' && <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '4rem auto', width: '50%' }}></div>}
-            <h2 className="section-title">ELIXIRES DE LOS DIOSES <span className="text-gold">(SUPLEMENTOS)</span></h2>
-            <p className="section-description">
-              Pociones de máxima pureza. Marcas de clase mundial elegidas y testeadas rigurosamente para 
-              garantizar que lleves tu recuperación y fuerza bruta al máximo nivel posible.
-            </p>
-            <div className="armeria-grid">
-              {supplementProducts.map((prod) => (
-                <ProductCard key={prod.id} product={prod} handleAddToCart={handleAddToCart} isElixir={true} onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} />
-              ))}
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       {isQuickViewOpen && selectedProduct && (
         <QuickViewModal 
           product={selectedProduct} 
-          isElixir={supplementProducts.some(p => p.id === selectedProduct.id)} 
+          isElixir={selectedProduct.category === 'elixires'} 
           onClose={() => setIsQuickViewOpen(false)}
           onAddToCart={handleAddToCart}
         />

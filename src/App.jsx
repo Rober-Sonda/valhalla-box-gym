@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -8,11 +8,16 @@ import Armeria from './pages/Armeria';
 import InscripcionView from './pages/InscripcionView';
 import AuthHandler from './pages/AuthHandler';
 import ProfileDashboard from './pages/ProfileDashboard';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminRoute from './components/AdminRoute';
 
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 
 function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   useEffect(() => {
     // Interceptar el retorno de Mercado Pago para abrir WhatsApp automáticamente
     const params = new URLSearchParams(window.location.search);
@@ -46,8 +51,9 @@ function App() {
             <Route path="/inscripcion/:id" element={<InscripcionView />} />
             <Route path="/auth-callback" element={<AuthHandler />} />
             <Route path="/perfil" element={<ProfileDashboard />} />
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           </Routes>
-          <Footer />
+          {!isAdminRoute && <Footer />}
         </div>
       </CartProvider>
     </AuthProvider>

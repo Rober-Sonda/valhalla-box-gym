@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Pricing.css';
 import { Check, Banknote } from 'lucide-react';
 import { EpicShield, EpicSword, EpicDoubleAxe, EpicBerserker, StockShield, StockAxeShield, StockHammers, StockHelmet } from './EpicIcons';
@@ -7,74 +7,44 @@ import PlanRegistrationModal from './PlanRegistrationModal';
 
 const WHATSAPP_NUMBER = '542317533963';
 
-const plans = [
-  {
-    id: 'escaldo',
-    name: 'ESCALDO',
-    desc: 'Plan Nutricional + Rutina (Extra Opcional)',
-    price: '39.000',
-    period: '/mes',
-    features: [
-      'APP Exclusiva',
-      'Plan Nutricional',
-      'Seguimiento 100%',
-    ],
-    btnClass: 'btn-outline',
-    popular: false,
-    weapon: StockShield,
-  },
-  {
-    id: 'guerrero',
-    name: 'GUERRERO',
-    desc: 'Sala de Musculación',
-    price: '37.000',
-    period: '/mes',
-    features: [
-      'Rutinas guiadas',
-      'APP Exclusiva',
-      '1 vez al día los 6 días (Lun-Sáb)',
-    ],
-    btnClass: 'btn-outline',
-    popular: false,
-    weapon: StockAxeShield,
-  },
-  {
-    id: 'vikingo',
-    name: 'VIKINGO',
-    desc: 'Acceso exclusivo a Clases',
-    price: '39.000',
-    period: '/mes',
-    features: [
-      'Kick Boxing',
-      'G.A.P',
-      'Crosstraining',
-    ],
-    btnClass: 'btn-primary',
-    popular: true,
-    weapon: StockHammers,
-  },
-  {
-    id: 'berserker',
-    name: 'BERSERKER',
-    desc: 'Pase Libre: Musculación + Clases',
-    price: '44.000',
-    period: '/mes',
-    features: [
-      'Rutinas guiadas',
-      'Clases incluidas',
-      'APP Exclusiva',
-      'De Lunes a Sábados',
-    ],
-    btnClass: 'btn-outline',
-    popular: false,
-    weapon: StockHelmet,
-  },
-];
+import { collection, onSnapshot, query, where, orderBy } from 'firebase/firestore';
+import { db } from '../firebase';
+
+const iconMap = {
+  'StockShield': StockShield,
+  'StockAxeShield': StockAxeShield,
+  'StockHammers': StockHammers,
+  'StockHelmet': StockHelmet,
+  'EpicShield': EpicShield,
+  'EpicSword': EpicSword,
+  'EpicDoubleAxe': EpicDoubleAxe,
+  'EpicBerserker': EpicBerserker
+};
 
 const Pricing = () => {
   const { currentUser, setIsAuthModalOpen } = useAuth();
+  const [plans, setPlans] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
+
+  useEffect(() => {
+    // Escuchar solo planes activos
+    const q = query(collection(db, 'plans'), where('status', '==', 'active'));
+    const unsub = onSnapshot(q, (snapshot) => {
+      // Ordenar por precio ascendente manualmente si es necesario, o por un campo 'order'
+      // Por ahora los devolvemos como vienen o los ordenamos por precio
+      const fetchedPlans = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      fetchedPlans.sort((a, b) => a.price - b.price);
+      
+      // Formatear precio para que tenga el punto (ej: 39000 -> "39.000")
+      const formattedPlans = fetchedPlans.map(p => ({
+        ...p,
+        price: new Intl.NumberFormat('es-AR').format(p.price)
+      }));
+      setPlans(formattedPlans);
+    });
+    return () => unsub();
+  }, []);
 
   const handleSelectPlan = (plan) => {
     if (!currentUser) {
@@ -102,7 +72,16 @@ const Pricing = () => {
             >
               <div className="watermark-container">
                 <div className="card-watermark">
-                  <plan.weapon />
+                  {plan.imageUrl ? (
+                    <img 
+                      src={plan.imageUrl} 
+                      alt={plan.name} 
+                      style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.15 }} 
+                    />
+                  ) : (() => {
+                    const WeaponIcon = iconMap[plan.weapon] || StockShield;
+                    return <WeaponIcon />;
+                  })()}
                 </div>
               </div>
 

@@ -122,6 +122,9 @@ const Navbar = () => {
                   {currentUser.displayName?.split(' ')[0] || 'Guerrero'}
                 </Link>
                 <Link to="/perfil" className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'transparent', border: '1px solid var(--accent-gold)' }}>MI ALIANZA</Link>
+                {['valhalla.escaldo@gmail.com', 'rober.junin@gmail.com'].includes(currentUser?.email) && (
+                  <Link to="/admin" className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'var(--accent-gold)', color: '#000', border: 'none' }}>ADMIN</Link>
+                )}
                 <button onClick={logout} className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem' }}>SALIR</button>
               </div>
             ) : (
@@ -156,7 +159,10 @@ const Navbar = () => {
             {currentUser ? (
               <>
                 <Link to="/perfil" onClick={() => setMobileMenuOpen(false)} className="nav-unete-btn w-100" style={{marginTop: '1rem', background: 'transparent', border: '1px solid var(--accent-gold)', textAlign: 'center', display: 'block'}}>MI ALIANZA</Link>
-                <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="nav-unete-btn w-100" style={{marginTop: '1rem'}}>SALIR DE LA CUENTA</button>
+                {['valhalla.escaldo@gmail.com', 'rober.junin@gmail.com'].includes(currentUser?.email) && (
+                  <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="nav-unete-btn w-100" style={{marginTop: '0.5rem', background: 'var(--accent-gold)', color: '#000', border: 'none', textAlign: 'center', display: 'block'}}>PANEL ADMIN</Link>
+                )}
+                <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="nav-unete-btn w-100" style={{marginTop: '0.5rem'}}>SALIR DE LA CUENTA</button>
               </>
             ) : (
               <button onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }} className="nav-unete-btn w-100" style={{marginTop: '1rem'}}>ÚNETE AHORA</button>
