@@ -19,7 +19,7 @@ app.use(cookieParser());
 // Para local, puedes usar process.env. Para proudcción se usarían las variables de Firebase.
 const TIKTOK_CLIENT_KEY = process.env.TIKTOK_CLIENT_KEY || functions.params.defineString("TIKTOK_CLIENT_KEY").value() || "TU_TIKTOK_CLIENT_KEY";
 const TIKTOK_CLIENT_SECRET = process.env.TIKTOK_CLIENT_SECRET || functions.params.defineString("TIKTOK_CLIENT_SECRET").value() || "TU_TIKTOK_CLIENT_SECRET";
-const MERCADOPAGO_ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || functions.params.defineString("MERCADOPAGO_ACCESS_TOKEN").value() || "APP_USR-137470552603191-022019-9f33e4301cca5bea5d43e4f79ca29d48-139054499";
+const MERCADOPAGO_ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || functions.params.defineString("MERCADOPAGO_ACCESS_TOKEN").value() || "APP_USR-177980058107317-043012-0e68d76f8e833a56999866061150ba9d-162060012";
 
 // Importante: esta URL en producción debe ser la url pública de la función
 // Localmente, si probamos con emulador y React en puerto 5173, usamos hardcodeada para proxy o enviamos una base redirect.

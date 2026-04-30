@@ -54,7 +54,7 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
   }, [isOpen, plan]);
 
   const handleCopyAlias = () => {
-    navigator.clipboard.writeText('robersonda.mp');
+    navigator.clipboard.writeText('Valhalla.box.gym');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -580,7 +580,7 @@ const PlanRegistrationModal = ({ plan, isOpen, onClose }) => {
                 <div className="p-3 mb-3 text-center mt-2" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                   <strong style={{ fontSize: '1.1rem' }}>Alias para transferencia (Banco):</strong> <br />
                   <div className="d-flex-center mt-2 mb-2">
-                    <code style={{ fontSize: '1.3em', color: 'var(--accent-gold)' }}>robersonda.mp</code>
+                    <code style={{ fontSize: '1.3em', color: 'var(--accent-gold)' }}>Valhalla.box.gym</code>
                     <button type="button" onClick={handleCopyAlias} style={{ background: 'var(--bg-dark)', border: '1px solid var(--border-color)', borderRadius: '4px', cursor: 'pointer', padding: '6px', display: 'flex', marginLeft: '10px' }} title="Copiar Alias">
                       {copied ? <Check size={18} color="var(--accent-gold)" /> : <Copy size={18} color="var(--text-muted)" />}
                     </button>

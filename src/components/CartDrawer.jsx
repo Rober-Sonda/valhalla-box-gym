@@ -44,7 +44,7 @@ const CartDrawer = () => {
       // 2. Formatear mensaje para WhatsApp al Administrador
       const message = `¡Skål! Soy ${order.userName}, y quiero forjar mi armadura con este pedido:\n\n` +
         cart.map(item => `- ${item.quantity}x ${item.name} ${item.selectedSize ? `(Talle/Medida: ${item.selectedSize})` : ''} ($${item.price}) = $${item.quantity * item.price}`).join('\n') +
-        `\n\nTotal del Botín: $${cartTotal}\n\n*Método de pago:* ${pago === 'mercadopago' ? 'Mercado Pago (App)' : 'Transferencia / Billetera Virtual'}\n*Alias/Destino:* robersonda.mp`;
+        `\n\nTotal del Botín: $${cartTotal}\n\n*Método de pago:* ${pago === 'mercadopago' ? 'Mercado Pago (App)' : 'Transferencia / Billetera Virtual'}\n*Alias/Destino:* Valhalla.box.gym`;
 
       const whatsappUrl = `https://wa.me/542317533963?text=${encodeURIComponent(message)}`;
       
@@ -202,7 +202,7 @@ const CartDrawer = () => {
             {pago === 'transferencia' ? (
               <div className="mt-3 text-center" style={{ padding: '1rem', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px', backgroundColor: 'rgba(0,0,0,0.2)' }}>
                 <p className="text-muted mb-1" style={{ fontSize: '0.8rem' }}>Paga fácilmente transfiriendo al ALIAS (Banco):</p>
-                <p className="text-gold font-bold" style={{ fontSize: '1rem', letterSpacing: '1px' }}>robersonda.mp</p>
+                <p className="text-gold font-bold" style={{ fontSize: '1rem', letterSpacing: '1px' }}>Valhalla.box.gym</p>
               </div>
             ) : (
               <div className="mt-3 text-center" style={{ padding: '1rem', border: '1px solid rgba(0, 158, 227, 0.3)', borderRadius: '4px', backgroundColor: 'rgba(0, 158, 227, 0.1)' }}>
