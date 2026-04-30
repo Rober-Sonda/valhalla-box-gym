@@ -15,8 +15,8 @@ service cloud.firestore {
     // Inscripciones registradas
     match /inscriptions/{document} {
       allow create: if true;
-      allow get: if true;
-      allow read, write: if isAdmin();
+      allow read: if isAdmin() || (request.auth != null && (resource.data.email == request.auth.token.email || resource.data.userId == request.auth.uid));
+      allow write: if isAdmin();
     }
 
     // Órdenes de la Armería (Tienda)
