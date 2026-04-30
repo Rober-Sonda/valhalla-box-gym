@@ -3,7 +3,7 @@ import { db } from '../../firebase';
 import { collection, onSnapshot, doc, updateDoc, deleteDoc, addDoc, setDoc } from 'firebase/firestore';
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Edit2, Trash2, Plus, EyeOff, Eye, UploadCloud } from 'lucide-react';
+import { Edit2, Trash2, Plus, EyeOff, Eye, UploadCloud, X } from 'lucide-react';
 import { EpicShield, EpicSword, EpicDoubleAxe, EpicBerserker, StockShield, StockAxeShield, StockHammers, StockHelmet } from '../EpicIcons';
 
 const iconMap = {
@@ -153,116 +153,124 @@ const AdminPlans = () => {
       </div>
 
       <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div className="table-responsive">
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
-            <thead>
-              <tr style={{ backgroundColor: 'var(--bg-dark)', borderBottom: '1px solid var(--border-color)' }}>
-                <th style={{ padding: '1rem' }}>Plan</th>
-                <th style={{ padding: '1rem' }}>Precio</th>
-                <th style={{ padding: '1rem' }}>Ícono</th>
-                <th style={{ padding: '1rem' }}>Estado</th>
-                <th style={{ padding: '1rem' }}>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {plans.map(plan => (
-                <tr key={plan.id} style={{ borderBottom: '1px solid var(--border-color)', opacity: plan.status === 'active' ? 1 : 0.5 }}>
-                  <td style={{ padding: '1rem' }}>
-                    <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      {plan.name}
-                      {plan.popular && <span style={{ fontSize: '0.6rem', background: 'var(--accent-gold)', color: '#000', padding: '2px 4px', borderRadius: 2 }}>POPULAR</span>}
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{plan.desc}</div>
-                  </td>
-                  <td style={{ padding: '1rem' }}>${plan.price} {plan.period}</td>
-                  <td style={{ padding: '1rem' }}>
-                    <div style={{ color: 'var(--text-light)', opacity: 0.5, display: 'flex', alignItems: 'center' }}>
-                      {plan.imageUrl ? (
-                        <img src={plan.imageUrl} alt="Plan Icon" style={{ width: 40, height: 40, objectFit: 'contain' }} />
-                      ) : (
-                        iconMap[plan.weapon] || iconMap['StockShield']
-                      )}
-                    </div>
-                  </td>
-                  <td style={{ padding: '1rem' }}>
-                    <span style={{ 
-                      padding: '4px 8px', 
-                      borderRadius: 4, 
-                      fontSize: '0.8rem',
-                      backgroundColor: plan.status === 'active' ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)',
-                      color: plan.status === 'active' ? '#4ade80' : '#f87171'
-                    }}>
-                      {plan.status === 'active' ? 'Activo' : 'Descontinuado'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '1rem' }}>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button onClick={() => handleOpenModal(plan)} style={{ background: 'transparent', border: 'none', color: '#60a5fa', cursor: 'pointer' }} title="Editar">
-                        <Edit2 size={18} />
-                      </button>
-                      <button onClick={() => toggleStatus(plan.id, plan.status)} style={{ background: 'transparent', border: 'none', color: plan.status === 'active' ? '#f87171' : '#4ade80', cursor: 'pointer' }} title={plan.status === 'active' ? 'Descontinuar' : 'Activar'}>
-                        {plan.status === 'active' ? <EyeOff size={18} /> : <Eye size={18} />}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {plans.length === 0 && (
-                <tr>
-                  <td colSpan="5" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                    No hay tarifas. Usa el panel de Migración en Ajustes para cargar las predeterminadas.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div className="admin-responsive-grid">
+          <div className="admin-responsive-row header">
+            <div className="admin-responsive-cell">Plan</div>
+            <div className="admin-responsive-cell">Precio</div>
+            <div className="admin-responsive-cell">Ícono</div>
+            <div className="admin-responsive-cell">Estado</div>
+            <div className="admin-responsive-cell">Acciones</div>
+          </div>
+          {plans.map(plan => (
+            <div key={plan.id} className="admin-responsive-row" style={{ opacity: plan.status === 'active' ? 1 : 0.5 }}>
+              <div className="admin-responsive-cell">
+                <span className="mobile-label">Plan</span>
+                <div>
+                  <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {plan.name}
+                    {plan.popular && <span style={{ fontSize: '0.6rem', background: 'var(--accent-gold)', color: '#000', padding: '2px 4px', borderRadius: 2 }}>POPULAR</span>}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{plan.desc}</div>
+                </div>
+              </div>
+              <div className="admin-responsive-cell">
+                <span className="mobile-label">Precio</span>
+                <div>${plan.price} {plan.period}</div>
+              </div>
+              <div className="admin-responsive-cell">
+                <span className="mobile-label">Ícono</span>
+                <div style={{ color: 'var(--text-light)', opacity: 0.5, display: 'flex', alignItems: 'center' }}>
+                  {plan.imageUrl ? (
+                    <img src={plan.imageUrl} alt="Plan Icon" style={{ width: 40, height: 40, objectFit: 'contain' }} />
+                  ) : (
+                    iconMap[plan.weapon] || iconMap['StockShield']
+                  )}
+                </div>
+              </div>
+              <div className="admin-responsive-cell">
+                <span className="mobile-label">Estado</span>
+                <span style={{ 
+                  padding: '4px 8px', 
+                  borderRadius: 4, 
+                  fontSize: '0.8rem',
+                  backgroundColor: plan.status === 'active' ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)',
+                  color: plan.status === 'active' ? '#4ade80' : '#f87171'
+                }}>
+                  {plan.status === 'active' ? 'Activo' : 'Descontinuado'}
+                </span>
+              </div>
+              <div className="admin-responsive-cell" style={{ justifyContent: 'flex-end' }}>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <button onClick={() => handleOpenModal(plan)} style={{ background: 'transparent', border: 'none', color: '#60a5fa', cursor: 'pointer', padding: '0.2rem' }} title="Editar">
+                    <Edit2 size={20} />
+                  </button>
+                  <button onClick={() => toggleStatus(plan.id, plan.status)} style={{ background: 'transparent', border: 'none', color: plan.status === 'active' ? '#f87171' : '#4ade80', cursor: 'pointer', padding: '0.2rem' }} title={plan.status === 'active' ? 'Descontinuar' : 'Activar'}>
+                    {plan.status === 'active' ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+          {plans.length === 0 && (
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+              No hay tarifas. Usa el panel de Migración en Ajustes para cargar las predeterminadas.
+            </div>
+          )}
         </div>
       </div>
 
       {isModalOpen && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'var(--overlay-dark)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
-          <div className="admin-card" style={{ width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
-            <h3 style={{ marginTop: 0, borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
-              {editingPlan ? 'Editar Tarifa' : 'Nueva Tarifa'}
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(5px)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
+          <div style={{ width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto', backgroundColor: 'var(--bg-dark)', border: '1px solid var(--accent-gold)', borderRadius: '12px', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', position: 'relative' }}>
+            <h3 style={{ marginTop: 0, color: 'var(--text-light)', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '1rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              {editingPlan ? 'EDITAR TARIFA' : 'NUEVA TARIFA'}
             </h3>
-            <form onSubmit={handleSave} className="admin-form-grid">
+            <button type="button" onClick={handleCloseModal} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', borderRadius: '50%', transition: 'background-color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+              <X size={24} />
+            </button>
+            <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               {!editingPlan && (
-                <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                  <label className="form-label">ID Interno (ej: guerrero, berserker)</label>
-                  <input type="text" className="admin-input" name="id" value={formData.id} onChange={handleChange} placeholder="Si lo dejas vacío se genera automático" />
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 'bold' }}>ID Interno (ej: guerrero, berserker)</label>
+                  <input type="text" style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-light)', outline: 'none' }} name="id" value={formData.id} onChange={handleChange} placeholder="Si lo dejas vacío se genera automático" />
                 </div>
               )}
-              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                <label className="form-label">Nombre del Plan</label>
-                <input type="text" className="admin-input" name="name" value={formData.name} onChange={handleChange} required />
-              </div>
-              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                <label className="form-label">Descripción Corta</label>
-                <input type="text" className="admin-input" name="desc" value={formData.desc} onChange={handleChange} required />
-              </div>
               
-              <div className="form-group">
-                <label className="form-label">Precio ($)</label>
-                <input type="number" className="admin-input" name="price" value={formData.price} onChange={handleChange} required />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Período (ej: /mes)</label>
-                <input type="text" className="admin-input" name="period" value={formData.period} onChange={handleChange} required />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 'bold' }}>Nombre del Plan</label>
+                  <input type="text" style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-light)', outline: 'none' }} name="name" value={formData.name} onChange={handleChange} required />
+                </div>
+                
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 'bold' }}>Descripción Corta</label>
+                  <input type="text" style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-light)', outline: 'none' }} name="desc" value={formData.desc} onChange={handleChange} required />
+                </div>
+                
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 'bold' }}>Precio ($)</label>
+                  <input type="number" style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-light)', outline: 'none' }} name="price" value={formData.price} onChange={handleChange} required />
+                </div>
+                
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 'bold' }}>Período (ej: /mes)</label>
+                  <input type="text" style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-light)', outline: 'none' }} name="period" value={formData.period} onChange={handleChange} required />
+                </div>
               </div>
 
-              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                <label className="form-label">Beneficios (uno por línea)</label>
-                <textarea className="admin-input" name="features" value={formData.features} onChange={handleChange} rows="5" required></textarea>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 'bold' }}>Beneficios (uno por línea)</label>
+                <textarea style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-light)', outline: 'none', resize: 'vertical' }} name="features" value={formData.features} onChange={handleChange} rows="5" required></textarea>
               </div>
 
-              <div className="form-group" style={{ gridColumn: '1 / -1', padding: '1rem', backgroundColor: 'var(--bg-dark)', borderRadius: 4 }}>
-                <label className="form-label">Ícono o Imagen de Fondo</label>
+              <div style={{ backgroundColor: 'rgba(212, 175, 55, 0.05)', border: '1px dashed rgba(212, 175, 55, 0.5)', padding: '1rem', borderRadius: '8px' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--accent-gold)', fontSize: '0.9rem', fontWeight: 'bold' }}>Ícono o Imagen de Fondo</label>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '0.5rem' }}>
                   <div style={{ flex: 1 }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>Opción 1: Elegir Ícono SVG</label>
-                    <select className="admin-input" name="weapon" value={formData.weapon} onChange={handleChange} style={{ margin: 0 }}>
+                    <select style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.5)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-light)', outline: 'none', margin: 0 }} name="weapon" value={formData.weapon} onChange={handleChange}>
                       {iconNames.map(name => (
-                        <option key={name} value={name}>{name}</option>
+                        <option key={name} value={name} style={{ color: '#000' }}>{name}</option>
                       ))}
                     </select>
                   </div>
@@ -277,7 +285,7 @@ const AdminPlans = () => {
                         style={{ display: 'none' }} 
                         id="plan-image-upload"
                       />
-                      <label htmlFor="plan-image-upload" className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.8rem', margin: 0, width: '100%', justifyContent: 'center', cursor: 'pointer' }}>
+                      <label htmlFor="plan-image-upload" className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 1rem', fontSize: '0.8rem', margin: 0, width: '100%', justifyContent: 'center', cursor: 'pointer', borderRadius: '6px' }}>
                         <UploadCloud size={16} /> {isUploading ? 'Subiendo...' : 'Subir Imagen'}
                       </label>
                     </div>
@@ -290,24 +298,27 @@ const AdminPlans = () => {
                   </div>
                 )}
               </div>
-              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                <label className="form-label">Clase del Botón</label>
-                <select className="admin-input" name="btnClass" value={formData.btnClass} onChange={handleChange}>
-                  <option value="btn-outline">Outline (Normal)</option>
-                  <option value="btn-primary">Primary (Destacado)</option>
-                </select>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', alignItems: 'end' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 'bold' }}>Clase del Botón</label>
+                  <select style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '6px', color: 'var(--text-light)', outline: 'none' }} name="btnClass" value={formData.btnClass} onChange={handleChange}>
+                    <option value="btn-outline" style={{ color: '#000' }}>Outline (Normal)</option>
+                    <option value="btn-primary" style={{ color: '#000' }}>Primary (Destacado)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.8rem', backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+                    <input type="checkbox" name="popular" checked={formData.popular} onChange={handleChange} style={{ accentColor: 'var(--accent-gold)' }} />
+                    <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>Marcar como Popular</span>
+                  </label>
+                </div>
               </div>
 
-              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                  <input type="checkbox" name="popular" checked={formData.popular} onChange={handleChange} />
-                  <strong>Marcar como Recomendado / Popular</strong>
-                </label>
-              </div>
-
-              <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-                <button type="button" className="admin-btn-secondary" onClick={handleCloseModal}>Cancelar</button>
-                <button type="submit" className="admin-btn-primary">Guardar Tarifa</button>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
+                <button type="button" onClick={handleCloseModal} style={{ padding: '0.8rem 1.5rem', background: 'transparent', color: 'var(--text-light)', border: '1px solid var(--border-color)', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>Cancelar</button>
+                <button type="submit" style={{ padding: '0.8rem 1.5rem', background: 'var(--accent-gold)', color: '#000', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', boxShadow: '0 4px 15px rgba(212, 175, 55, 0.3)' }}>Guardar Tarifa</button>
               </div>
             </form>
           </div>

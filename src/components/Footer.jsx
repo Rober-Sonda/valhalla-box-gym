@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Footer.css';
 import { Dumbbell, Instagram, MapPin } from 'lucide-react';
-
-const WHATSAPP_NUMBER = '542317533963';
-const MAPS_URL = 'https://www.google.com/maps/search/Urquiza+671,+9+de+Julio,+Buenos+Aires,+Argentina';
-const INSTAGRAM_URL = 'https://www.instagram.com/valhallaboxgym';
+import { db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const WhatsAppIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="contact-icon" style={{ flexShrink: 0 }}>
@@ -13,11 +11,34 @@ const WhatsAppIcon = () => (
 );
 
 const Footer = () => {
+  const [settings, setSettings] = useState({
+    whatsapp: '542317533963',
+    address: 'Urquiza 671, 9 de Julio (6500)',
+    mapsUrl: 'https://www.google.com/maps/search/Urquiza+671,+9+de+Julio,+Buenos+Aires,+Argentina',
+    instagramUrl: 'https://www.instagram.com/valhallaboxgym',
+    slogan: 'Forjando guerreros a través de disciplina, fuerza y comunidad.',
+    copyright: 'Valhalla Box Gym. Todos los derechos reservados.'
+  });
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const docSnap = await getDoc(doc(db, 'settings', 'footer'));
+        if (docSnap.exists()) {
+          setSettings(docSnap.data());
+        }
+      } catch (error) {
+        console.error("Error fetching footer settings:", error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
   const handleWhatsApp = () => {
     const message =
       '⚔️ ¡Skål! Me acerco desde las tierras del sur para conocer el Valhalla Box Gym.\n' +
       'Quiero más información sobre el salón de los guerreros. ¡Que Odin guíe mi camino! 🪓🛡️';
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
@@ -30,7 +51,7 @@ const Footer = () => {
               <span className="logo-text">VALHALLA <span className="text-gold">BOX GYM</span></span>
             </div>
             <p className="text-muted">
-              Forjando guerreros a través de disciplina, fuerza y comunidad.
+              {settings.slogan}
             </p>
           </div>
 
@@ -49,8 +70,8 @@ const Footer = () => {
             <ul>
               <li>
                 <MapPin size={20} className="contact-icon" />
-                <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="contact-link">
-                  Urquiza 671, 9 de Julio (6500)
+                <a href={settings.mapsUrl} target="_blank" rel="noopener noreferrer" className="contact-link">
+                  {settings.address}
                 </a>
               </li>
               <li>
@@ -61,7 +82,7 @@ const Footer = () => {
               </li>
               <li>
                 <Instagram size={20} className="contact-icon" />
-                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="contact-link">
+                <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" className="contact-link">
                   Instagram
                 </a>
               </li>
@@ -70,7 +91,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p className="text-muted">&copy; {new Date().getFullYear()} Valhalla Box Gym. Todos los derechos reservados.</p>
+          <p className="text-muted">&copy; {new Date().getFullYear()} {settings.copyright}</p>
         </div>
       </div>
     </footer>

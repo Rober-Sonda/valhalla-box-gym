@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ShoppingBag, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, ChevronLeft, ChevronRight, X, Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
@@ -85,10 +85,14 @@ const ProductCard = ({ product, handleAddToCart, isElixir, onQuickView }) => {
           className="btn-outline product-btn"
           onClick={(e) => {
             e.stopPropagation();
-            handleAddToCart(product);
+            if (product.sizes && product.sizes.length > 0) {
+              onQuickView(product);
+            } else {
+              handleAddToCart(product);
+            }
           }}
         >
-          {isElixir ? 'Tomar Elixir' : ((product.isPreorder || product.tag === 'Por Encargo') ? 'Encargar Botín' : 'Agregar al Botín')}
+          {isElixir ? 'Tomar Elixir' : (product.sizes && product.sizes.length > 0 ? 'Elegir Medida' : ((product.isPreorder || product.tag === 'Por Encargo') ? 'Encargar Botín' : 'Agregar al Botín'))}
         </button>
       </div>
     </div>
@@ -197,8 +201,8 @@ const QuickViewModal = ({ product, isElixir, onClose, onAddToCart }) => {
           <button 
             className="btn-outline product-btn"
             onClick={() => {
-              if (product.sizes && !selectedSize) {
-                alert('Por favor, selecciona un talle antes de agregar al botín.');
+              if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+                alert('Por favor, selecciona una medida (talle, oz, etc.) antes de agregar al botín.');
                 return;
               }
               onAddToCart({ ...product, selectedSize });
@@ -219,17 +223,35 @@ const Armeria = () => {
   const [activeCategory, setActiveCategory] = React.useState('todos');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  // Reset page when category or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, searchQuery]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const q = query(collection(db, 'products'), where('status', '==', 'active'));
-    const unsub = onSnapshot(q, (snapshot) => {
+    const qProducts = query(collection(db, 'products'), where('status', '==', 'active'));
+    const unsubProducts = onSnapshot(qProducts, (snapshot) => {
       const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setProducts(fetched);
     });
-    return () => unsub();
+
+    const unsubCategories = onSnapshot(collection(db, 'categories'), (snapshot) => {
+      const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setCategories(fetched);
+    });
+
+    return () => {
+      unsubProducts();
+      unsubCategories();
+    };
   }, []);
 
   const handleAddToCart = (product) => {
@@ -240,7 +262,31 @@ const Armeria = () => {
     addToCart({ ...product, price: parseFloat(product.price) });
   };
 
-  const uniqueCategories = [...new Set(products.map(p => p.category).filter(Boolean))];
+  const activeCategories = categories.filter(c => c.status === 'active').map(c => c.name);
+
+  const activeCategoriesLower = activeCategories.map(c => c.toLowerCase().trim());
+
+  // Fallback to legacy categories if the categories collection is empty, otherwise use DB active categories
+  const displayCategories = activeCategories.length > 0 
+    ? activeCategories 
+    : [...new Set(products.map(p => p.category).filter(Boolean))];
+
+  const filteredProducts = products.filter(prod => {
+    const prodCat = prod.category ? prod.category.toLowerCase().trim() : '';
+    // Si la DB tiene categorías cargadas, descartar el producto si su categoría no está activa
+    if (activeCategories.length > 0 && !activeCategoriesLower.includes(prodCat)) {
+      return false;
+    }
+
+    const matchesCategory = activeCategory === 'todos' || 
+      (prodCat === activeCategory.toLowerCase().trim());
+    const matchesSearch = prod.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (prod.description && prod.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div className="armeria-page">
@@ -253,43 +299,94 @@ const Armeria = () => {
       </div>
 
       <div className="container armeria-products-section">
-        <div className="armeria-tabs">
-          <button 
-            className={`armeria-tab-btn ${activeCategory === 'todos' ? 'active' : ''}`} 
-            onClick={() => setActiveCategory('todos')}
-          >
-            TODOS
-          </button>
-          {uniqueCategories.map(cat => (
+        
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '500px', display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+            <Search size={20} style={{ position: 'absolute', left: '1rem', color: 'var(--text-muted)', zIndex: 5 }} />
+            <input 
+              type="text" 
+              placeholder="Buscar armamento por nombre..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ 
+                width: '100%', 
+                padding: '1rem 1rem 1rem 3rem', 
+                borderRadius: '8px', 
+                border: '1px solid var(--border-color)', 
+                backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+                color: 'var(--text-light)', 
+                outline: 'none',
+                fontSize: '1rem',
+                fontFamily: 'inherit',
+                transition: 'all 0.3s ease'
+              }}
+              onFocus={(e) => { 
+                e.target.style.borderColor = 'var(--accent-gold)'; 
+                e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+              }}
+              onBlur={(e) => { 
+                e.target.style.borderColor = 'var(--border-color)'; 
+                e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+              }}
+            />
+          </div>
+          
+          <div className="armeria-tabs">
             <button 
-              key={cat}
-              className={`armeria-tab-btn ${activeCategory === cat ? 'active' : ''}`} 
-              onClick={() => setActiveCategory(cat)}
-              style={{ textTransform: 'uppercase' }}
+              className={`armeria-tab-btn ${activeCategory === 'todos' ? 'active' : ''}`} 
+              onClick={() => setActiveCategory('todos')}
             >
-              {cat}
+              TODOS
             </button>
-          ))}
+            {displayCategories.map(cat => (
+              <button 
+                key={cat}
+                className={`armeria-tab-btn ${activeCategory === cat ? 'active' : ''}`} 
+                onClick={() => setActiveCategory(cat)}
+                style={{ textTransform: 'uppercase' }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
         
         <div className="armeria-grid" style={{ marginTop: '3rem' }}>
-          {products
-            .filter(prod => activeCategory === 'todos' || prod.category === activeCategory)
-            .map((prod) => (
-              <ProductCard 
-                key={prod.id} 
-                product={prod.isOffer ? { ...prod, price: prod.offerPrice } : prod} 
-                handleAddToCart={prod.sizes?.length > 0 ? () => { setSelectedProduct(prod); setIsQuickViewOpen(true); } : handleAddToCart} 
-                isElixir={prod.category === 'elixires'} 
-                onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} 
-              />
+          {paginatedProducts.map((prod) => (
+            <ProductCard 
+              key={prod.id} 
+              product={prod.isOffer ? { ...prod, price: prod.offerPrice } : prod} 
+              handleAddToCart={prod.sizes?.length > 0 ? () => { setSelectedProduct(prod); setIsQuickViewOpen(true); } : handleAddToCart} 
+              isElixir={prod.category === 'elixires'} 
+              onQuickView={(p) => { setSelectedProduct(p); setIsQuickViewOpen(true); }} 
+            />
           ))}
-          {products.filter(prod => activeCategory === 'todos' || prod.category === activeCategory).length === 0 && (
+          {filteredProducts.length === 0 && (
             <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: '#aaa' }}>
-              No hay productos disponibles en esta categoría en este momento.
+              No hay productos que coincidan con tu búsqueda.
             </div>
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginTop: '3rem' }}>
+            <button 
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              style={{ padding: '0.5rem 1rem', backgroundColor: currentPage === 1 ? 'transparent' : 'var(--accent-gold)', color: currentPage === 1 ? 'var(--text-muted)' : '#000', border: '1px solid var(--accent-gold)', borderRadius: '4px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
+            >
+              Anterior
+            </button>
+            <span style={{ color: 'var(--text-light)' }}>Página {currentPage} de {totalPages}</span>
+            <button 
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              style={{ padding: '0.5rem 1rem', backgroundColor: currentPage === totalPages ? 'transparent' : 'var(--accent-gold)', color: currentPage === totalPages ? 'var(--text-muted)' : '#000', border: '1px solid var(--accent-gold)', borderRadius: '4px', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
       </div>
       {isQuickViewOpen && selectedProduct && (
         <QuickViewModal 

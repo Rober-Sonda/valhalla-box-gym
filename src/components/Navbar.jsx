@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, Dumbbell, Sun, Moon, Coins } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, Dumbbell, Sun, Moon, Bell } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { db } from '../firebase';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import AuthModal from './AuthModal';
 import CartDrawer from './CartDrawer';
 import './Navbar.css';
@@ -23,6 +25,32 @@ const Navbar = () => {
 
   const { currentUser, logout, isAuthModalOpen, setIsAuthModalOpen } = useAuth();
   const { cartCount, setIsCartOpen } = useCart();
+  const [hasNewNotifications, setHasNewNotifications] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchGlobalNotifs = async () => {
+      if (!currentUser) return;
+      try {
+        const q = query(collection(db, 'notifications'), orderBy('createdAt', 'desc'), limit(5));
+        const snapshot = await getDocs(q);
+        const allNotifs = snapshot.docs.map(doc => doc.data());
+        
+        const now = new Date();
+        const yesterday = new Date(now.getTime() - (24 * 60 * 60 * 1000));
+        
+        const hasRecent = allNotifs.some(n => {
+          const createdAt = n.createdAt?.toDate ? n.createdAt.toDate() : new Date(0);
+          return createdAt > yesterday && n.target === 'all';
+        });
+        
+        setHasNewNotifications(hasRecent);
+      } catch (error) {
+        console.error("Error fetching global notifications:", error);
+      }
+    };
+    fetchGlobalNotifs();
+  }, [currentUser]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -114,6 +142,8 @@ const Navbar = () => {
                 <GoldSack size={22} />
                 {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
               </button>
+
+              {/* Notificaciones removidas del Navbar público, ahora integradas como punto rojo en perfil */}
             </div>
 
             {currentUser ? (
@@ -121,11 +151,13 @@ const Navbar = () => {
                 <Link to="/perfil" className="text-gold" style={{ fontSize: '0.9rem', fontWeight: 'bold', textDecoration: 'none' }}>
                   {currentUser.displayName?.split(' ')[0] || 'Guerrero'}
                 </Link>
-                <Link to="/perfil" className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'transparent', border: '1px solid var(--accent-gold)' }}>MI ALIANZA</Link>
+                <Link to="/perfil" className="nav-unete-btn" style={{ position: 'relative', padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'transparent', border: '1px solid var(--accent-gold)' }}>
+                  MI ALIANZA
+                  {hasNewNotifications && <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '10px', height: '10px', backgroundColor: '#ff4444', borderRadius: '50%', border: '2px solid var(--bg-dark)' }}></span>}
+                </Link>
                 {['valhalla.escaldo@gmail.com', 'rober.junin@gmail.com'].includes(currentUser?.email) && (
                   <Link to="/admin" className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'var(--accent-gold)', color: '#000', border: 'none' }}>ADMIN</Link>
                 )}
-                <button onClick={logout} className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem' }}>SALIR</button>
               </div>
             ) : (
               <button onClick={() => setIsAuthModalOpen(true)} className="nav-unete-btn">ÚNETE AHORA</button>
@@ -134,6 +166,7 @@ const Navbar = () => {
 
           <div className="mobile-only">
             <div className="nav-icons-group">
+              {/* Bell removida del mobile */}
               <button onClick={() => setIsCartOpen(true)} className="cart-toggle-btn">
                 <GoldSack size={24} />
                 {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
@@ -142,8 +175,9 @@ const Navbar = () => {
                 {isDark ? <Sun size={24} /> : <Moon size={24} />}
               </button>
             </div>
-            <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ position: 'relative' }}>
               {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              {hasNewNotifications && !mobileMenuOpen && <span style={{ position: 'absolute', top: '2px', right: '2px', width: '10px', height: '10px', backgroundColor: '#ff4444', borderRadius: '50%', border: '2px solid var(--bg-dark)' }}></span>}
             </button>
           </div>
         </div>
@@ -158,7 +192,10 @@ const Navbar = () => {
             
             {currentUser ? (
               <>
-                <Link to="/perfil" onClick={() => setMobileMenuOpen(false)} className="nav-unete-btn w-100" style={{marginTop: '1rem', background: 'transparent', border: '1px solid var(--accent-gold)', textAlign: 'center', display: 'block'}}>MI ALIANZA</Link>
+                <Link to="/perfil" onClick={() => setMobileMenuOpen(false)} className="nav-unete-btn w-100" style={{ position: 'relative', marginTop: '1rem', background: 'transparent', border: '1px solid var(--accent-gold)', textAlign: 'center', display: 'block' }}>
+                  MI ALIANZA
+                  {hasNewNotifications && <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '12px', height: '12px', backgroundColor: '#ff4444', borderRadius: '50%', border: '2px solid var(--bg-dark)' }}></span>}
+                </Link>
                 {['valhalla.escaldo@gmail.com', 'rober.junin@gmail.com'].includes(currentUser?.email) && (
                   <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="nav-unete-btn w-100" style={{marginTop: '0.5rem', background: 'var(--accent-gold)', color: '#000', border: 'none', textAlign: 'center', display: 'block'}}>PANEL ADMIN</Link>
                 )}

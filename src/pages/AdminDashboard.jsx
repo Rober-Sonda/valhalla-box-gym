@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../firebase';
 import { collection, onSnapshot, query, orderBy, limit, addDoc, getDocs, doc, setDoc } from 'firebase/firestore';
-import { LogOut, BarChart3, ShoppingBag, CreditCard, Settings, PlusCircle, Trash2, Edit2, Plus, Eye, EyeOff, UploadCloud, Bell, MinusCircle, Shield } from 'lucide-react';
+import { LogOut, BarChart3, ShoppingBag, CreditCard, Settings, Users, Shield, Bell, BellRing, BellOff, Megaphone, UploadCloud } from 'lucide-react';
 import AdminProducts from '../components/admin/AdminProducts';
 import AdminPlans from '../components/admin/AdminPlans';
 import AdminFinances from '../components/admin/AdminFinances';
+import AdminMembers from '../components/admin/AdminMembers';
+import AdminFooterSettings from '../components/admin/AdminFooterSettings';
+import AdminNotifications from '../components/admin/AdminNotifications';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -134,17 +137,37 @@ const AdminDashboard = () => {
         return <AdminProducts />;
       case 'plans':
         return <AdminPlans />;
+      case 'members':
+        return <AdminMembers />;
+      case 'anuncios':
+        return <AdminNotifications />;
       case 'settings':
         return (
-          <div className="admin-card">
-            <h3 style={{ marginBottom: '1rem' }}>Mantenimiento y Migración</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
-              Utiliza esta sección para cargar los productos y tarifas predeterminados a la base de datos si está vacía. 
-              Esto subirá todos los productos actuales (short, conjuntos, elixires) y los 4 planes.
-            </p>
-            <button className="admin-btn-primary" onClick={handleMigrate}>
-              <UploadCloud size={20} /> Migrar Datos a Firebase
-            </button>
+          <div style={{ padding: '1rem' }}>
+            <div style={{ marginBottom: '2rem' }}>
+              <h2 style={{ margin: 0, color: 'var(--accent-gold)', fontSize: '1.8rem', textTransform: 'uppercase', letterSpacing: '2px' }}>Ajustes y Mantenimiento</h2>
+              <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Configuraciones globales de la plataforma.</p>
+            </div>
+
+            <AdminFooterSettings />
+            
+            <div style={{ marginTop: '3rem', backgroundColor: 'var(--bg-dark)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--border-color)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+              <h3 style={{ borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '1rem', marginBottom: '1.5rem', color: 'var(--text-light)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <UploadCloud size={24} color="var(--accent-gold)" /> Migración de Datos
+              </h3>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+                Utiliza esta herramienta para cargar automáticamente el catálogo completo (vestimenta, suplementos, accesorios) y las 4 tarifas (Escaldo, Guerrero, Vikingo, Berserker) en una base de datos vacía.
+              </p>
+              <div style={{ backgroundColor: 'rgba(243, 156, 18, 0.05)', borderLeft: '4px solid var(--accent-gold)', borderRadius: '0 8px 8px 0', padding: '1.2rem', marginBottom: '2rem' }}>
+                <p style={{ color: 'var(--accent-gold)', margin: 0, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>⚠️ IMPORTANTE</p>
+                <p style={{ color: 'var(--text-light)', margin: '0.5rem 0 0 0', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                  Por favor, contacte al desarrollador/creador del sitio antes de utilizar esta función. Ejecutar la migración múltiples veces puede duplicar el inventario y causar errores en vivo.
+                </p>
+              </div>
+              <button onClick={handleMigrate} style={{ padding: '0.8rem 1.5rem', background: 'transparent', color: 'var(--text-light)', border: '1px solid var(--accent-gold)', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.3s' }}>
+                <UploadCloud size={18} /> Ejecutar Carga de Base de Datos
+              </button>
+            </div>
           </div>
         );
       default:
@@ -179,6 +202,18 @@ const AdminDashboard = () => {
             <CreditCard size={20} /> <span>Tarifas</span>
           </button>
           <button 
+            className={`admin-nav-btn ${activeTab === 'members' ? 'active' : ''}`}
+            onClick={() => setActiveTab('members')}
+          >
+            <Users size={20} /> <span>Miembros</span>
+          </button>
+          <button 
+            className={`admin-nav-btn ${activeTab === 'anuncios' ? 'active' : ''}`}
+            onClick={() => setActiveTab('anuncios')}
+          >
+            <Megaphone size={20} /> <span>Anuncios</span>
+          </button>
+          <button 
             className={`admin-nav-btn ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => setActiveTab('settings')}
           >
@@ -190,9 +225,6 @@ const AdminDashboard = () => {
             <span className="admin-user-email">{currentUser?.email}</span>
             <span className="admin-user-role">Propietario / Admin</span>
           </div>
-          <button className="admin-logout-btn" onClick={logout}>
-            <LogOut size={18} /> <span>Salir</span>
-          </button>
         </div>
       </div>
       <div className="admin-content">
@@ -201,14 +233,26 @@ const AdminDashboard = () => {
             {activeTab === 'overview' && 'Panel Financiero'}
             {activeTab === 'products' && 'Gestión de Productos (Armería)'}
             {activeTab === 'plans' && 'Gestión de Tarifas'}
+            {activeTab === 'members' && 'Gestión de Miembros'}
+            {activeTab === 'anuncios' && 'Comunicados a la Tribu'}
             {activeTab === 'settings' && 'Ajustes y Mantenimiento'}
           </h2>
           <div className="admin-topbar-actions" style={{ display: 'flex', alignItems: 'center' }}>
-             <button className={`notification-btn ${notificationsEnabled ? 'enabled' : ''}`} title="Notificaciones activadas">
-               <Bell size={20} />
-             </button>
-             <button className="admin-logout-btn-mobile" onClick={logout} title="Salir" style={{ display: 'none', background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', marginLeft: '1rem' }}>
-               <LogOut size={20} />
+             <button 
+               className={`notification-btn ${notificationsEnabled ? 'enabled' : ''}`} 
+               title={notificationsEnabled ? "Notificaciones sonoras/push activadas" : "Notificaciones silenciadas"}
+               onClick={() => {
+                 if (!notificationsEnabled && Notification.permission !== 'denied') {
+                   Notification.requestPermission().then(permission => {
+                     if (permission === 'granted') setNotificationsEnabled(true);
+                   });
+                 } else if (notificationsEnabled) {
+                   setNotificationsEnabled(false);
+                 }
+               }}
+               style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+             >
+               {notificationsEnabled ? <BellRing size={20} /> : <BellOff size={20} />}
              </button>
           </div>
         </div>

@@ -1,33 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import './Services.css';
 
 const Services = () => {
-  const services = [
-    {
-      id: 1,
-      title: 'MUSCULACIÓN',
-      image: '/assets/images/strength.png',
-      description: 'fuerza y desarrollo libre'
-    },
-    {
-      id: 2,
-      title: 'GAP',
-      image: '/assets/images/gap.png',
-      description: 'glúteos, abdomen y piernas'
-    },
-    {
-      id: 3,
-      title: 'CROSSTRAINING',
-      image: '/assets/images/crosstraining.png',
-      description: 'entrenamiento de alta intensidad'
-    },
-    {
-      id: 4,
-      title: 'KICKBOXING',
-      image: '/assets/images/striking.png',
-      description: 'combate y striking'
-    }
-  ];
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const q = query(collection(db, 'disciplines'), where('active', '==', true));
+        const snapshot = await getDocs(q);
+        setServices(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      } catch (error) {
+        console.error("Error fetching disciplines:", error);
+      }
+    };
+    fetchServices();
+  }, []);
 
   return (
     <section className="services-section" id="services">
@@ -42,16 +32,20 @@ const Services = () => {
             <div className="service-card" key={service.id}>
               <div 
                 className="service-image" 
-                style={{ backgroundImage: `url(${service.image})` }}
+                style={{ backgroundImage: `url('${service.image}')` }}
               >
                 <div className="service-overlay"></div>
               </div>
               <div className="service-content">
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
+                {service.schedule && <p style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', marginTop: '0.5rem' }}>{service.schedule}</p>}
               </div>
             </div>
           ))}
+          {services.length === 0 && (
+            <p className="text-center text-muted w-100">Las disciplinas están siendo forjadas...</p>
+          )}
         </div>
 
         <div className="services-cta text-center mt-5">

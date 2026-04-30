@@ -312,3 +312,75 @@
     width: 100%;
   }
 }
+
+/* Responsive Admin Lists */
+.admin-responsive-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-responsive-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  background: rgba(0,0,0,0.3);
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+}
+
+.mobile-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+  .admin-responsive-row.header {
+    display: none;
+  }
+  .admin-responsive-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 0.5rem;
+  }
+  .admin-responsive-cell:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-responsive-grid {
+    gap: 0;
+  }
+  .admin-responsive-row {
+    grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr;
+    align-items: center;
+    background: transparent;
+    padding: 1rem;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
+  }
+  .admin-responsive-row.products-row {
+    grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 1fr;
+  }
+  .admin-responsive-row.header {
+    background: var(--bg-dark);
+    font-weight: bold;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+  }
+  .mobile-label {
+    display: none;
+  }
+  .admin-responsive-cell {
+    display: block;
+    border: none;
+    padding: 0;
+  }
+}

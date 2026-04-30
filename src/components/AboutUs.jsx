@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import './AboutUs.css';
 
 const AboutUs = () => {
+  const [jarls, setJarls] = useState([]);
+
+  useEffect(() => {
+    const fetchJarls = async () => {
+      try {
+        const q = query(collection(db, 'jarls'), where('active', '==', true));
+        const snapshot = await getDocs(q);
+        setJarls(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      } catch (error) {
+        console.error("Error fetching jarls:", error);
+      }
+    };
+    fetchJarls();
+  }, []);
+
   return (
     <section className="about-section" id="about">
       <div className="container">
@@ -22,44 +39,22 @@ const AboutUs = () => {
           <p className="text-center subtitle mb-5">LOS ENTRENADORES QUE TE GUIARÁN EN BATALLA</p>
           
           <div className="trainers-grid">
-            <div className="trainer-card">
-              <div 
-                className="trainer-img" 
-                style={{ backgroundImage: `url('/assets/images/jarl_nacho_v9.png')` }}
-              ></div>
-              <div className="trainer-info">
-                <h3>NACHO</h3>
-                <p className="specialty">Head Coach & Strength</p>
-                <p className="quote">"El hierro no miente. Te da exactamente lo que le entregas."</p>
+            {jarls.map((jarl) => (
+              <div className="trainer-card" key={jarl.id}>
+                <div 
+                  className="trainer-img" 
+                  style={{ backgroundImage: `url('${jarl.image}')`, backgroundPosition: 'center' }}
+                ></div>
+                <div className="trainer-info">
+                  <h3>{jarl.name}</h3>
+                  <p className="specialty">{jarl.specialty}</p>
+                  <p className="quote">{jarl.quote}</p>
+                </div>
               </div>
-            </div>
-
-            <div className="trainer-card">
-              <div 
-                className="trainer-img" 
-                style={{ backgroundImage: `url('/assets/images/jarl_lautaro_v1.png')` }}
-              ></div>
-              <div className="trainer-info">
-                <h3>LAUTARO</h3>
-                <p className="specialty">Functional & Agility</p>
-                <p className="quote">"La motivación es temporal. La disciplina te hace leyenda."</p>
-              </div>
-            </div>
-
-            <div className="trainer-card">
-              <div 
-                className="trainer-img" 
-                style={{ 
-                  backgroundImage: `url('/assets/images/jarl_santino.png')`,
-                  backgroundPosition: 'center 35%' 
-                }}
-              ></div>
-              <div className="trainer-info">
-                <h3>SANTINO</h3>
-                <p className="specialty">Striking Specialist</p>
-                <p className="quote">"Entrena tan duro que la vida real parezca fácil."</p>
-              </div>
-            </div>
+            ))}
+            {jarls.length === 0 && (
+              <p className="text-center text-muted w-100">Los Jarls se están preparando para la batalla...</p>
+            )}
           </div>
         </div>
       </div>
