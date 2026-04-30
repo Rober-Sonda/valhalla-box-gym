@@ -6,7 +6,7 @@ import { Shield, Clock, AlertTriangle, CheckCircle, Calendar, Download, Edit2, S
 import './ProfileDashboard.css';
 
 const ProfileDashboard = () => {
-  const { currentUser, logout } = useAuth();
+  const { currentUser } = useAuth();
   const [activePlan, setActivePlan] = useState(null);
   const [userProfile, setUserProfile] = useState({
     nickname: '',
@@ -124,10 +124,16 @@ const ProfileDashboard = () => {
 
   if (!currentUser) {
     return (
-      <div className="profile-container" style={{paddingTop: '120px', minHeight: '60vh'}}>
-        <div className="profile-card text-center" style={{maxWidth: '500px', margin: '0 auto'}}>
-          <Shield size={64} className="text-muted mx-auto mb-3" />
-          <h2>Debes iniciar sesión para ver tu perfil.</h2>
+      <div className="profile-container" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', paddingBottom: '4rem' }}>
+        <div className="profile-card text-center" style={{maxWidth: '500px', width: '100%', padding: '3rem 2rem'}}>
+          <Shield size={64} className="text-gold mx-auto mb-3" />
+          <h2 style={{ color: 'var(--text-light)', marginBottom: '1rem' }}>El Salón está reservado para los guerreros de la Tribu</h2>
+          <p className="text-muted" style={{ marginBottom: '2rem' }}>
+            Debes iniciar sesión para forjar tu alianza y ver tu estado de batalla.
+          </p>
+          <button className="btn-primary" onClick={() => window.location.href = '/'}>
+            VOLVER A LA ENTRADA
+          </button>
         </div>
       </div>
     );
@@ -150,7 +156,7 @@ const ProfileDashboard = () => {
   }
 
   return (
-    <div className="profile-page">
+    <div className="profile-page" style={{ paddingBottom: '4rem' }}>
       <div className="container profile-container">
         
         <div className="profile-header">
@@ -161,26 +167,25 @@ const ProfileDashboard = () => {
               <div className="avatar-placeholder">{currentUser.displayName?.charAt(0) || 'G'}</div>
             )}
           </div>
-          <div className="profile-title">
-            <h1>SALÓN DE <span className="text-gold">{userProfile.nickname || currentUser.displayName?.split(' ')[0] || 'GUERRERO'}</span></h1>
-            <p className="text-muted">{currentUser.email}</p>
-          </div>
-          <div style={{ display: 'flex', gap: '1rem', marginLeft: 'auto', alignSelf: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-            {!isEditingProfile && (
-              <button className="btn-outline" onClick={() => setIsEditingProfile(true)} style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Edit2 size={16} /> Completar Perfil
-              </button>
-            )}
-            <button className="btn-outline" onClick={logout} style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f87171', borderColor: 'rgba(248,113,113,0.3)' }}>
-              <LogOut size={16} /> Salir
-            </button>
+          <div className="profile-title" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+            <div>
+              <h1 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                SALÓN DE <span className="text-gold">{userProfile.nickname || currentUser.displayName?.split(' ')[0] || 'GUERRERO'}</span>
+                {!isEditingProfile && (
+                  <button onClick={() => setIsEditingProfile(true)} title="Actualizar Linaje" style={{ background: 'transparent', border: 'none', color: 'var(--accent-gold)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '0.2rem', marginLeft: '0.5rem' }}>
+                    <Edit2 size={20} />
+                  </button>
+                )}
+              </h1>
+              <p className="text-muted" style={{ margin: 0, marginTop: '0.2rem' }}>{currentUser.email}</p>
+            </div>
           </div>
         </div>
 
         {isEditingProfile && (
           <div className="profile-card mb-4" style={{ backgroundColor: 'var(--bg-dark)', border: '1px solid var(--accent-gold)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ margin: 0, color: 'var(--text-light)' }}>Mis Datos de Guerrero</h3>
+              <h3 style={{ margin: 0, color: 'var(--text-light)' }}>Linaje del Guerrero (Mis Datos)</h3>
               <button onClick={() => setIsEditingProfile(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
                 <X size={20} />
               </button>

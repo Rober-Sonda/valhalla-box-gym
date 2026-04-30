@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Dumbbell, Sun, Moon, Bell } from 'lucide-react';
+import { Menu, X, Dumbbell, Sun, Moon, Bell, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { db } from '../firebase';
@@ -158,6 +158,9 @@ const Navbar = () => {
                 {['valhalla.escaldo@gmail.com', 'rober.junin@gmail.com'].includes(currentUser?.email) && (
                   <Link to="/admin" className="nav-unete-btn" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'var(--accent-gold)', color: '#000', border: 'none' }}>ADMIN</Link>
                 )}
+                <button onClick={logout} title="Cerrar Sesión" style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '0.4rem' }}>
+                  <LogOut size={20} className="hover-red" />
+                </button>
               </div>
             ) : (
               <button onClick={() => setIsAuthModalOpen(true)} className="nav-unete-btn">ÚNETE AHORA</button>
