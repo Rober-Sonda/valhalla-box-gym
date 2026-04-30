@@ -178,7 +178,7 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <div className="admin-sidebar">
-        <div className="admin-brand" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="admin-brand">
           <Shield size={24} color="var(--accent-gold)" />
           <span className="admin-brand-text"><span className="text-gold">ADMIN</span> PANEL</span>
         </div>
