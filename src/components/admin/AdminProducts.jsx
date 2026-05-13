@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
 import { collection, onSnapshot, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
-import { Edit2, Trash2, Plus, EyeOff, Eye, X, Search, Settings } from 'lucide-react';
+import { Edit2, Trash2, Plus, EyeOff, Eye, X, Search, Settings, AlertTriangle } from 'lucide-react';
 import AdminCategoriesModal from './AdminCategoriesModal';
 
 const AdminProducts = () => {
@@ -12,6 +12,7 @@ const AdminProducts = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [filterCategory, setFilterCategory] = useState('todos');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showLowStock, setShowLowStock] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -26,7 +27,11 @@ const AdminProducts = () => {
     status: 'active',
     isOffer: false,
     offerPrice: 0,
-    isPreorder: false
+    isPreorder: false,
+    stock: 0,
+    minStock: 0,
+    stockBySize: {},
+    minStockBySize: {}
   });
 
   useEffect(() => {
@@ -58,7 +63,11 @@ const AdminProducts = () => {
         tag: product.tag || '',
         cost: product.cost || 0,
         expenses: product.expenses || 0,
-        isPreorder: product.isPreorder || false
+        isPreorder: product.isPreorder || false,
+        stock: product.stock || 0,
+        minStock: product.minStock || 0,
+        stockBySize: product.stockBySize || {},
+        minStockBySize: product.minStockBySize || {}
       });
     } else {
       setEditingProduct(null);
@@ -73,7 +82,11 @@ const AdminProducts = () => {
         tag: '',
         cost: '',
         expenses: '',
-        isPreorder: false
+        isPreorder: false,
+        stock: 0,
+        minStock: 0,
+        stockBySize: {},
+        minStockBySize: {}
       });
     }
     setIsModalOpen(true);
@@ -98,6 +111,15 @@ const AdminProducts = () => {
     e.preventDefault();
     const profitMargin = Number(formData.price) - Number(formData.cost) - Number(formData.expenses);
     
+    const sizesArray = formData.sizes ? formData.sizes.split(',').map(s => s.trim()).filter(s => s) : [];
+    
+    const cleanedStockBySize = {};
+    const cleanedMinStockBySize = {};
+    sizesArray.forEach(size => {
+      cleanedStockBySize[size] = Number(formData.stockBySize[size]) || 0;
+      cleanedMinStockBySize[size] = Number(formData.minStockBySize[size]) || 0;
+    });
+
     const productData = {
       ...formData,
       price: Number(formData.price),
@@ -105,9 +127,13 @@ const AdminProducts = () => {
       expenses: Number(formData.expenses),
       offerPrice: Number(formData.offerPrice),
       isPreorder: formData.isPreorder,
+      stock: sizesArray.length > 0 ? sizesArray.reduce((sum, size) => sum + cleanedStockBySize[size], 0) : Number(formData.stock),
+      minStock: sizesArray.length > 0 ? sizesArray.reduce((sum, size) => sum + cleanedMinStockBySize[size], 0) : Number(formData.minStock),
+      stockBySize: cleanedStockBySize,
+      minStockBySize: cleanedMinStockBySize,
       profitMargin,
       images: formData.images.split(',').map(s => s.trim()).filter(s => s),
-      sizes: formData.sizes ? formData.sizes.split(',').map(s => s.trim()).filter(s => s) : []
+      sizes: sizesArray
     };
 
     try {
@@ -137,8 +163,21 @@ const AdminProducts = () => {
     const matchesCategory = filterCategory === 'todos' || 
       (p.category && filterCategory && p.category.toLowerCase().trim() === filterCategory.toLowerCase().trim());
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    
+    let matchesStock = true;
+    if (showLowStock) {
+      if (p.isPreorder) matchesStock = false;
+      else if (p.sizes && p.sizes.length > 0) {
+        matchesStock = p.sizes.some(size => (p.stockBySize?.[size] || 0) <= (p.minStockBySize?.[size] || 0));
+      } else {
+        matchesStock = (p.stock || 0) <= (p.minStock || 0);
+      }
+    }
+
+    return matchesCategory && matchesSearch && matchesStock;
   });
+
+  const sizesArrayForRender = formData.sizes ? formData.sizes.split(',').map(s => s.trim()).filter(s => s) : [];
 
   return (
     <div className="admin-products">
@@ -180,12 +219,31 @@ const AdminProducts = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setShowLowStock(!showLowStock)}
+              style={{
+                background: showLowStock ? 'rgba(212, 175, 55, 0.2)' : 'rgba(255,255,255,0.05)',
+                border: `1px solid ${showLowStock ? 'var(--accent-gold)' : 'var(--border-color)'}`,
+                borderRadius: '8px',
+                color: showLowStock ? 'var(--accent-gold)' : 'var(--text-muted)',
+                padding: '0 1rem',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                transition: 'all 0.3s ease',
+                fontWeight: showLowStock ? 'bold' : 'normal'
+              }}
+              title="Filtrar Alertas de Stock"
+            >
+              <AlertTriangle size={18} /> {showLowStock ? 'Ocultar Alertas' : 'Alertas de Stock'}
+            </button>
             <select 
               value={filterCategory} 
               onChange={(e) => setFilterCategory(e.target.value)}
               className="admin-input"
-              style={{ width: 'auto', minWidth: '200px', margin: 0 }}
+              style={{ width: 'auto', minWidth: '150px', margin: 0 }}
             >
               <option value="todos">Todas las Categorías</option>
               {categories.map(cat => (
@@ -224,6 +282,7 @@ const AdminProducts = () => {
             <div className="admin-responsive-cell">Categoría</div>
             <div className="admin-responsive-cell">Precio</div>
             <div className="admin-responsive-cell">Costo</div>
+            <div className="admin-responsive-cell">Stock</div>
             <div className="admin-responsive-cell">Estado</div>
             <div className="admin-responsive-cell">Acciones</div>
           </div>
@@ -247,6 +306,29 @@ const AdminProducts = () => {
               <div className="admin-responsive-cell">
                 <span className="mobile-label">Costo</span>
                 <div style={{ color: '#ff6b6b' }}>${product.cost}</div>
+              </div>
+              <div className="admin-responsive-cell">
+                <span className="mobile-label">Stock</span>
+                <div>
+                  {product.isPreorder ? (
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Por Encargo</span>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontWeight: 'bold', color: product.stock <= product.minStock ? '#f87171' : 'var(--text-light)' }}>
+                        {product.stock || 0} u.
+                      </span>
+                      {product.sizes && product.sizes.length > 0 && (
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                          {product.sizes.map(s => {
+                            const st = product.stockBySize?.[s] || 0;
+                            const min = product.minStockBySize?.[s] || 0;
+                            return st <= min ? <span key={s} style={{ color: '#f87171', marginRight: '4px' }}>{s}:{st}</span> : null;
+                          })}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="admin-responsive-cell">
                 <span className="mobile-label">Estado</span>
@@ -345,10 +427,10 @@ const AdminProducts = () => {
                     <label className="form-label">Gastos Adicionales ($) <small>(Envío, Empaquetado)</small></label>
                     <input type="number" className="admin-input" name="expenses" value={formData.expenses} onChange={handleChange} />
                   </div>
-                  <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', justifyContent: 'center' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem', backgroundColor: formData.isOffer ? 'rgba(212, 175, 55, 0.1)' : 'rgba(255,255,255,0.05)', borderRadius: '6px', border: formData.isOffer ? '1px solid var(--accent-gold)' : '1px solid transparent' }}>
-                      <input type="checkbox" name="isOffer" checked={formData.isOffer} onChange={handleChange} />
-                      <strong style={{ color: formData.isOffer ? 'var(--accent-gold)' : 'var(--text-light)' }}>Activar Oferta Especial</strong>
+                  <div className="form-group" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                    <label className="admin-input" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', margin: 0, borderColor: formData.isOffer ? 'var(--accent-gold)' : 'var(--border-color)', transition: 'border-color 0.3s ease' }}>
+                      <input type="checkbox" name="isOffer" checked={formData.isOffer} onChange={handleChange} style={{ width: '18px', height: '18px', accentColor: 'var(--accent-gold)', cursor: 'pointer' }} />
+                      <span style={{ color: formData.isOffer ? 'var(--accent-gold)' : 'var(--text-light)', fontWeight: formData.isOffer ? 'bold' : 'normal', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '1px' }}>Activar Oferta Especial</span>
                     </label>
                   </div>
                   {formData.isOffer && (
@@ -374,12 +456,56 @@ const AdminProducts = () => {
                     <label className="form-label">Talles / Medidas (separados por coma)</label>
                     <input type="text" className="admin-input" name="sizes" value={formData.sizes} onChange={handleChange} placeholder="Ej: S, M, L, XL ó 12oz, 14oz" />
                   </div>
-                  <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', justifyContent: 'center' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem', backgroundColor: formData.isPreorder ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255,255,255,0.05)', borderRadius: '6px' }}>
-                      <input type="checkbox" name="isPreorder" checked={formData.isPreorder} onChange={handleChange} />
-                      <strong>Marcar "Por Encargo" (Sin stock)</strong>
+                  <div className="form-group" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                    <label className="admin-input" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', margin: 0, borderColor: formData.isPreorder ? 'var(--accent-gold)' : 'var(--border-color)', transition: 'border-color 0.3s ease' }}>
+                      <input type="checkbox" name="isPreorder" checked={formData.isPreorder} onChange={handleChange} style={{ width: '18px', height: '18px', accentColor: 'var(--accent-gold)', cursor: 'pointer' }} />
+                      <span style={{ color: formData.isPreorder ? 'var(--accent-gold)' : 'var(--text-light)', fontWeight: formData.isPreorder ? 'bold' : 'normal', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '1px' }}>Por Encargo (Sin stock)</span>
                     </label>
                   </div>
+                  
+                  {sizesArrayForRender.length > 0 ? (
+                    <div className="form-group" style={{ gridColumn: '1 / -1', backgroundColor: 'rgba(255,255,255,0.02)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      <label className="form-label" style={{ marginBottom: '1rem', color: 'var(--accent-gold)' }}>Stock por Talle / Medida</label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+                        {sizesArrayForRender.map(size => (
+                          <div key={size} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '1rem', border: '1px solid var(--border-color)', borderRadius: '6px', backgroundColor: 'var(--bg-dark)' }}>
+                            <span style={{ fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>Talle: {size}</span>
+                            <div>
+                              <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Stock Actual</label>
+                              <input 
+                                type="number" 
+                                className="admin-input" 
+                                style={{ marginTop: '0.25rem', padding: '0.5rem' }}
+                                value={formData.stockBySize[size] || 0} 
+                                onChange={(e) => setFormData(prev => ({ ...prev, stockBySize: { ...prev.stockBySize, [size]: e.target.value } }))} 
+                              />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Stock Mínimo</label>
+                              <input 
+                                type="number" 
+                                className="admin-input" 
+                                style={{ marginTop: '0.25rem', padding: '0.5rem' }}
+                                value={formData.minStockBySize[size] || 0} 
+                                onChange={(e) => setFormData(prev => ({ ...prev, minStockBySize: { ...prev.minStockBySize, [size]: e.target.value } }))} 
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="form-group">
+                        <label className="form-label">Stock Actual General</label>
+                        <input type="number" className="admin-input" name="stock" value={formData.stock} onChange={handleChange} required={!formData.isPreorder} />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Stock Mínimo General</label>
+                        <input type="number" className="admin-input" name="minStock" value={formData.minStock} onChange={handleChange} required={!formData.isPreorder} />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 

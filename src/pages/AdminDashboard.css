@@ -372,7 +372,7 @@
     border-radius: 0;
   }
   .admin-responsive-row.products-row {
-    grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
   }
   .admin-responsive-row.header {
     background: var(--bg-dark);

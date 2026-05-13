@@ -292,7 +292,7 @@ const Armeria = () => {
     <div className="armeria-page">
       <div className="armeria-header">
         <div className="armeria-overlay"></div>
-        <div className="container relative z-10 text-center" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: '10rem', paddingBottom: '7rem', color: 'var(--text-light)' }}>
+        <div className="container relative z-10 text-center" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: '14rem', paddingBottom: '7rem', color: 'var(--text-light)' }}>
           <h1 className="page-title">LA <span className="text-gold">ARMERÍA</span></h1>
           <p className="page-subtitle" style={{ maxWidth: '600px' }}>VÍSTETE PARA LA BATALLA. ARMADURA BERSERKER PARA GUERREROS.</p>
         </div>
@@ -331,19 +331,20 @@ const Armeria = () => {
             />
           </div>
           
-          <div className="armeria-tabs">
+          <div className="armeria-tabs" style={{ gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', overflowX: 'visible', padding: '1rem 0' }}>
             <button 
-              className={`armeria-tab-btn ${activeCategory === 'todos' ? 'active' : ''}`} 
+              className={activeCategory === 'todos' ? 'btn-primary' : 'btn-outline'} 
               onClick={() => setActiveCategory('todos')}
+              style={{ padding: '0.8rem 1.5rem', fontSize: '1rem' }}
             >
               TODOS
             </button>
             {displayCategories.map(cat => (
               <button 
                 key={cat}
-                className={`armeria-tab-btn ${activeCategory === cat ? 'active' : ''}`} 
+                className={activeCategory === cat ? 'btn-primary' : 'btn-outline'} 
                 onClick={() => setActiveCategory(cat)}
-                style={{ textTransform: 'uppercase' }}
+                style={{ padding: '0.8rem 1.5rem', fontSize: '1rem', textTransform: 'uppercase' }}
               >
                 {cat}
               </button>
